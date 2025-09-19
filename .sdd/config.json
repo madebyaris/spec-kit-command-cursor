@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "SDD Cursor Commands",
+    "description": "Spec-Driven Development toolkit for Cursor IDE",
+    "created": "2024-09-19"
+  },
+  "settings": {
+    "defaultFeaturePrefix": "feat-",
+    "autoNumberFeatures": true,
+    "requireReviews": true,
+    "collaborationMode": true,
+    "templates": {
+      "spec": ".sdd/templates/spec-template.md",
+      "plan": ".sdd/templates/plan-template.md", 
+      "tasks": ".sdd/templates/tasks-template.md"
+    }
+  },
+  "directories": {
+    "specs": "specs",
+    "active": "specs/active",
+    "completed": "specs/completed",
+    "backlog": "specs/backlog"
+  },
+  "workflow": {
+    "phases": ["specify", "plan", "tasks", "implement", "review", "complete"],
+    "requiredFiles": ["spec.md", "plan.md", "tasks.md"],
+    "optionalFiles": ["progress.md", "reviews.md", "notes.md"]
+  }
+}

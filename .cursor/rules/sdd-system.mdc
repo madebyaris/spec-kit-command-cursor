@@ -1,0 +1,56 @@
+---
+alwaysApply: true
+---
+
+# SDD (Spec-Driven Development) System Overview
+
+This project implements a comprehensive **Spec-Driven Development** workflow using three core commands that work together to transform ideas into structured implementation plans.
+
+## Core Philosophy
+Spec-Driven Development emphasizes creating detailed, executable specifications **before** writing code, ensuring:
+- Requirements are clear before implementation
+- Technical decisions are well-planned and documented  
+- Development tasks are structured and manageable
+- Team collaboration is enhanced through shared understanding
+
+## Three-Phase Workflow
+
+### 1. Specify Phase (`/specify`)
+Transform feature ideas into detailed requirements
+- **Focus**: What needs to be built and why
+- **Output**: [spec.md](mdc:specs/active/feat-XXX-[name]/spec.md) with comprehensive requirements
+- **Key Elements**: User stories, acceptance criteria, success metrics
+
+### 2. Plan Phase (`/plan`) 
+Convert specifications into technical implementation strategy
+- **Focus**: How to build it technically
+- **Output**: [plan.md](mdc:specs/active/feat-XXX-[name]/plan.md) with architecture and design
+- **Key Elements**: Technology stack, system architecture, security considerations
+
+### 3. Tasks Phase (`/tasks`)
+Break down plans into actionable development tasks
+- **Focus**: Discrete, manageable implementation steps
+- **Output**: [tasks.md](mdc:specs/active/feat-XXX-[name]/tasks.md) with prioritized tasks
+- **Key Elements**: Task dependencies, effort estimates, success criteria
+
+## File Organization
+
+The system uses a structured approach with:
+- **Active features**: [specs/active/](mdc:specs/active/) - Features currently in development
+- **Templates**: [.sdd/templates/](mdc:.sdd/templates/) - Reusable document templates
+- **Configuration**: [.sdd/config.json](mdc:.sdd/config.json) - System settings and preferences
+- **Guidelines**: [.sdd/guidelines.md](mdc:.sdd/guidelines.md) - Development methodology guide
+
+## Quality Assurance
+Each phase includes comprehensive review checklists and validation rules to ensure:
+- Specifications are clear and testable
+- Plans are technically sound and scalable
+- Tasks are actionable and properly estimated
+- Documentation maintains consistency across the project
+
+## Collaboration Support
+The system supports multi-developer workflows with:
+- Assignee tracking for features and tasks
+- Progress monitoring through status updates
+- Review workflows with feedback integration
+- Audit trails for change management
