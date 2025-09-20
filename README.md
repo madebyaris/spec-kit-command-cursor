@@ -78,6 +78,86 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 </tr>
 </table>
 
+## 🎯 When to Use SDD 2.0
+
+<div align="center">
+
+### **Choose Your Starting Point**
+
+</div>
+
+<table>
+<tr>
+<td width="33%">
+
+### **✅ Perfect Fit**
+**Existing Project + New Feature**
+
+🎯 **Scenario**: Adding auth to existing React app
+
+**Why Perfect:**
+- Existing codebase to analyze
+- Established patterns to reuse  
+- Integration points available
+- Research finds internal patterns
+
+**Research Focus:**
+- Internal code patterns
+- Existing architecture
+- Current tech stack usage
+- Integration opportunities
+
+</td>
+<td width="33%">
+
+### **✅ Also Great**
+**PRD + External Research**
+
+📋 **Scenario**: Have requirements, need implementation approach
+
+**Why Good:**
+- Product requirements defined
+- Research external solutions
+- Study competitor approaches  
+- Investigate best practices
+
+**Research Focus:**
+- Industry best practices
+- Competitor analysis
+- Technology comparisons
+- Pattern libraries & frameworks
+
+</td>
+<td width="33%">
+
+### **⚠️ Challenging**
+**Complete Greenfield**
+
+🚧 **Scenario**: Starting from absolute zero
+
+**Why Difficult:**
+- No requirements defined
+- No existing patterns
+- No context to research
+- Everything is unknown
+
+**Recommendation:**
+- Define basic requirements first
+- Research similar products
+- Then use SDD 2.0 for features
+
+</td>
+</tr>
+</table>
+
+<div align="center">
+
+### 💡 **Key Insight**
+
+SDD 2.0 shines when you have **some context to build upon** - whether that's existing code or clear requirements to research.
+
+</div>
+
 ## 🚀 Quick Start
 
 ### 1. Install the System
@@ -89,6 +169,8 @@ cd spec-kit-command-cursor
 
 ### 2. Configure Cursor
 🎉 **Zero configuration required!** The `.cursor/commands/*.md` files contain the SDD command definitions, and `.cursor/rules/*.mdc` provides minimal system context. Cursor automatically recognizes these commands when you open the project.
+
+> **💡 Pro Tip:** SDD 2.0 works best with existing projects or when you have a PRD/requirements document to guide research.
 
 ### 3. Start Building with Purpose
 Transform any feature idea using the proven SDD workflow:
@@ -141,9 +223,13 @@ Transform any feature idea using the proven SDD workflow:
 /research <task-id> <research-topic>
 ```
 
-**Example:**
+**Examples:**
 ```bash
+# Existing project: Research internal patterns
 /research user-auth-system JWT authentication with existing patterns
+
+# PRD-based: Research external solutions  
+/research payment-system Stripe vs PayPal integration patterns for subscription SaaS
 ```
 
 </td>
@@ -151,10 +237,11 @@ Transform any feature idea using the proven SDD workflow:
 
 **🔍 What it creates:**
 - 📄 `specs/active/user-auth-system/research.md`
-- 🔍 Existing codebase pattern analysis
-- 🌐 External research findings
-- 🎯 Recommended approaches
+- 🔍 Codebase pattern analysis (existing projects)
+- 🌐 External research & competitor analysis (PRD-based)
+- 🎯 Recommended approaches with pros/cons
 - ⚡ Technical opportunities and constraints
+- 📚 Best practices and industry standards
 
 </td>
 </tr>
@@ -374,10 +461,10 @@ Modify `.sdd/config.json` for your workflow:
 > **See SDD in action! From idea to implementation in minutes.**
 
 <details>
-<summary><strong>🎬 Complete Walkthrough: Building a User Rating System</strong></summary>
+<summary><strong>🎬 Scenario 1: Adding Feature to Existing App</strong></summary>
 
-### 💡 **Step 1: Start with a Raw Idea**
-*"I want to add a user rating system to my app"*
+### 💡 **Step 1: Start with a Feature Idea**
+*"I want to add a user rating system to my existing e-commerce app"*
 
 ### 🎯 **Step 2: Create the Specification**
 ```bash
@@ -428,6 +515,62 @@ Follow the tasks in priority order, updating `progress.md` as you go:
 ```
 
 **🎉 Result:** Feature delivered on time, on spec, with no surprises!
+
+</details>
+
+<details>
+<summary><strong>📋 Scenario 2: PRD-Based Development</strong></summary>
+
+### 📋 **Step 1: Start with Requirements Document**
+*"We have a PRD for a real-time chat system for our SaaS platform"*
+
+### 🔍 **Step 2: Research External Solutions**
+```bash
+/research chat-system WebSocket vs Socket.io vs Pusher for real-time messaging in SaaS
+```
+
+**✨ Result:** Creates comprehensive research
+```
+📁 specs/active/chat-system/
+└── 📄 research.md  # Competitor analysis, technology comparison, best practices
+```
+
+### 🎯 **Step 3: Create Specification**
+```bash
+/specify chat-system Real-time messaging with typing indicators and file sharing
+```
+
+**🚀 Result:** Creates detailed specification
+```
+📁 specs/active/chat-system/
+├── 📄 research.md
+└── 📄 spec.md  # Requirements informed by research findings
+```
+
+### 🏗️ **Step 4: Generate Technical Plan**
+```bash
+/plan chat-system
+```
+
+**📋 Result:** Creates implementation strategy
+```
+📁 specs/active/chat-system/
+├── 📄 research.md
+├── 📄 spec.md  
+└── 🏗️ plan.md  # Architecture using researched technologies
+```
+
+### 📋 **Step 5: Break Down Tasks**
+```bash
+/tasks chat-system
+```
+
+### ⚡ **Step 6: Execute Implementation**
+```bash
+/implement chat-system
+```
+
+**🎉 Result:** Chat system built using researched best practices and proven patterns!
 
 </details>
 
