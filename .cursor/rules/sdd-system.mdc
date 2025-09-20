@@ -13,33 +13,51 @@ Spec-Driven Development emphasizes creating detailed, executable specifications 
 - Development tasks are structured and manageable
 - Team collaboration is enhanced through shared understanding
 
-## Three-Phase Workflow
+## Five-Phase Enhanced Workflow (SDD 2.0)
 
-### 1. Specify Phase (`/specify`)
-Transform feature ideas into detailed requirements
-- **Focus**: What needs to be built and why
-- **Output**: [spec.md](mdc:specs/active/feat-XXX-[name]/spec.md) with comprehensive requirements
+### 1. Research Phase (`/research`)
+Investigate existing patterns and gather comprehensive context
+- **Focus**: Find what already exists and establish foundation
+- **Output**: [research.md](mdc:specs/active/[task-id]/research.md) with patterns and findings
+- **Key Elements**: Codebase analysis, external research, technical opportunities
+
+### 2. Specify Phase (`/specify`)
+Transform researched ideas into detailed requirements
+- **Focus**: What needs to be built and why (informed by research)
+- **Output**: [spec.md](mdc:specs/active/[task-id]/spec.md) with comprehensive requirements
 - **Key Elements**: User stories, acceptance criteria, success metrics
 
-### 2. Plan Phase (`/plan`) 
+### 3. Plan Phase (`/plan`) 
 Convert specifications into technical implementation strategy
-- **Focus**: How to build it technically
-- **Output**: [plan.md](mdc:specs/active/feat-XXX-[name]/plan.md) with architecture and design
+- **Focus**: How to build it technically (leveraging research findings)
+- **Output**: [plan.md](mdc:specs/active/[task-id]/plan.md) with architecture and design
 - **Key Elements**: Technology stack, system architecture, security considerations
 
-### 3. Tasks Phase (`/tasks`)
+### 4. Tasks Phase (`/tasks`)
 Break down plans into actionable development tasks
 - **Focus**: Discrete, manageable implementation steps
-- **Output**: [tasks.md](mdc:specs/active/feat-XXX-[name]/tasks.md) with prioritized tasks
+- **Output**: [tasks.md](mdc:specs/active/[task-id]/tasks.md) with prioritized tasks
 - **Key Elements**: Task dependencies, effort estimates, success criteria
+
+### 5. Implement Phase (`/implement`)
+Execute the plan with continuous implementation flow
+- **Focus**: Maximum efficiency execution with pattern reuse
+- **Output**: [todo-list.md](mdc:specs/active/[task-id]/todo-list.md) and implementation artifacts
+- **Key Elements**: Todo-list generation, continuous execution, progress tracking
 
 ## File Organization
 
-The system uses a structured approach with:
-- **Active features**: [specs/active/](mdc:specs/active/) - Features currently in development
-- **Templates**: [.sdd/templates/](mdc:.sdd/templates/) - Reusable document templates
+The system uses a context-engineering approach with:
+- **Active tasks**: [specs/active/[task-id]/](mdc:specs/active/) - Tasks currently in development
+- **Task artifacts**: research.md, spec.md, plan.md, tasks.md, todo-list.md, progress.md
+- **Templates**: [.sdd/templates/](mdc:.sdd/templates/) - Reusable document templates  
 - **Configuration**: [.sdd/config.json](mdc:.sdd/config.json) - System settings and preferences
 - **Guidelines**: [.sdd/guidelines.md](mdc:.sdd/guidelines.md) - Development methodology guide
+
+## Task ID Convention
+- Use semantic slugs: `user-auth-system`, `payment-integration`, `dashboard-redesign`
+- Avoid generic numbering: `feat-001` (legacy approach)
+- Focus on meaningful, searchable identifiers
 
 ## Quality Assurance
 Each phase includes comprehensive review checklists and validation rules to ensure:

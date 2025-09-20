@@ -49,10 +49,12 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 <tr>
 <td width="50%">
 
-### 🎨 **Intelligent Command System**
+### 🎨 **Enhanced 5-Command System** (SDD 2.0)
+- `/research` - Investigate existing patterns & gather context
 - `/specify` - Transform ideas into detailed specs
 - `/plan` - Generate technical implementation plans
 - `/tasks` - Break down into actionable development tasks
+- `/implement` - Execute with continuous implementation flow
 
 ### 🏗️ **Professional Templates** 
 - Comprehensive specification templates
@@ -92,29 +94,71 @@ cd spec-kit-command-cursor
 Transform any feature idea using the proven SDD workflow:
 
 ```bash
-# 🎯 Step 1: Create detailed specification
-/specify user-authentication Implement JWT-based authentication system with login/logout
+# 🔍 Step 1: Research existing patterns and gather context
+/research user-auth-system JWT authentication with existing patterns
 
-# 🏗️ Step 2: Generate technical implementation plan  
-/plan user-authentication
+# 🎯 Step 2: Create detailed specification (informed by research)
+/specify user-auth-system Implement JWT-based authentication system with login/logout
 
-# 📋 Step 3: Break down into actionable development tasks
-/tasks user-authentication
+# 🏗️ Step 3: Generate technical implementation plan  
+/plan user-auth-system
+
+# 📋 Step 4: Break down into actionable development tasks
+/tasks user-auth-system
+
+# ⚡ Step 5: Execute implementation with continuous flow
+/implement user-auth-system
 ```
 
 > **🎊 That's it!** You now have a complete roadmap from idea to implementation.
 
-## 📋 The Three Core Commands
+## 📋 The Five Enhanced Commands (SDD 2.0)
 
 <div align="center">
 
 | Command | Purpose | Input | Output |
 |---------|---------|-------|--------|
-| 🎯 `/specify` | Transform ideas → Requirements | Feature idea | Detailed specification |
+| 🔍 `/research` | Investigate → Context | Research topic | Patterns & findings |
+| 🎯 `/specify` | Ideas → Requirements | Feature idea | Detailed specification |
 | 🏗️ `/plan` | Requirements → Technical design | Specification | Implementation plan |
 | 📋 `/tasks` | Design → Actionable tasks | Plan | Development roadmap |
+| ⚡ `/implement` | Plan → Code | Task plan | Todo-list & execution |
 
 </div>
+
+### 🔍 `/research` - Investigate Existing Patterns
+
+> **"Good artists copy, great artists steal (and improve)"**
+
+<table>
+<tr>
+<td width="50%">
+
+**Purpose:** Investigate existing codebase patterns and gather comprehensive context before specification.
+
+**Usage:**
+```bash
+/research <task-id> <research-topic>
+```
+
+**Example:**
+```bash
+/research user-auth-system JWT authentication with existing patterns
+```
+
+</td>
+<td width="50%">
+
+**🔍 What it creates:**
+- 📄 `specs/active/user-auth-system/research.md`
+- 🔍 Existing codebase pattern analysis
+- 🌐 External research findings
+- 🎯 Recommended approaches
+- ⚡ Technical opportunities and constraints
+
+</td>
+</tr>
+</table>
 
 ### 🎯 `/specify` - Create Feature Specifications
 
@@ -133,14 +177,14 @@ Transform any feature idea using the proven SDD workflow:
 
 **Example:**
 ```bash
-/specify photo-gallery Build a responsive photo gallery with upload, tagging, and search functionality
+/specify user-auth-system Implement JWT-based authentication system with login/logout
 ```
 
 </td>
 <td width="50%">
 
 **✨ What it creates:**
-- 📄 `specs/active/feat-XXX-photo-gallery/spec.md`
+- 📄 `specs/active/user-auth-system/spec.md`
 - 📝 Comprehensive requirements document
 - 👤 User stories with acceptance criteria
 - 📊 Success metrics and edge cases
@@ -169,7 +213,7 @@ Transform any feature idea using the proven SDD workflow:
 
 **Example:**
 ```bash
-/plan photo-gallery
+/plan user-auth-system
 ```
 
 </td>
@@ -205,7 +249,7 @@ Transform any feature idea using the proven SDD workflow:
 
 **Example:**
 ```bash
-/tasks photo-gallery
+/tasks user-auth-system
 ```
 
 </td>
@@ -217,6 +261,42 @@ Transform any feature idea using the proven SDD workflow:
 - ⏱️ Effort estimates and success criteria
 - 📈 Progress tracking template
 - 🎯 Definition of done for each task
+
+</td>
+</tr>
+</table>
+
+### ⚡ `/implement` - Execute Implementation
+
+> **"The best plan is worthless without execution"**
+
+<table>
+<tr>
+<td width="50%">
+
+**Purpose:** Execute the planned implementation with maximum efficiency and continuous flow.
+
+**Usage:**
+```bash
+/implement <task-id>
+```
+
+**Prerequisites:** 🏗️ Must have existing `plan.md` file
+
+**Example:**
+```bash
+/implement user-auth-system
+```
+
+</td>
+<td width="50%">
+
+**⚡ What it creates:**
+- ✅ `todo-list.md` with comprehensive execution plan
+- 🔄 Continuous implementation flow
+- 📈 Progress tracking and updates
+- 🎯 Pattern reuse strategy
+- 💻 Implementation artifacts and code
 
 </td>
 </tr>
