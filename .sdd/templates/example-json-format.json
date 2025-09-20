@@ -1,0 +1,75 @@
+{
+  "task_id": "user-auth-system",
+  "spec": {
+    "problem": "Users need secure authentication",
+    "users": ["new users", "returning users", "admins"],
+    "value": "Secure access control + user management",
+    "must_have": [
+      {
+        "req": "Login with email/password",
+        "criteria": "User can authenticate with valid credentials"
+      },
+      {
+        "req": "JWT token generation", 
+        "criteria": "Secure token with 24h expiry"
+      }
+    ],
+    "stories": [
+      {
+        "role": "User",
+        "action": "wants to login securely",
+        "outcome": "access protected features",
+        "acceptance": "Valid creds → JWT token + redirect",
+        "priority": "P0",
+        "effort": "M"
+      }
+    ],
+    "success_metrics": "Login success rate >95%, Auth response <200ms",
+    "dependencies": ["User database", "JWT library"],
+    "out_of_scope": ["Social auth", "2FA", "Password reset"]
+  },
+  "plan": {
+    "tech_stack": {
+      "frontend": "React + Context API",
+      "backend": "Node.js + Express", 
+      "database": "PostgreSQL",
+      "auth": "JWT + bcrypt"
+    },
+    "components": [
+      {"name": "LoginForm", "desc": "Auth UI", "tech": "React"},
+      {"name": "AuthService", "desc": "JWT handling", "tech": "Node.js"},
+      {"name": "UserModel", "desc": "User data", "tech": "Sequelize"}
+    ],
+    "apis": [
+      {
+        "method": "POST",
+        "endpoint": "/api/auth/login",
+        "request": "{email, password}",
+        "response": "{token, user, expires}"
+      }
+    ]
+  },
+  "tasks": {
+    "setup": [
+      {"task": "Install JWT + bcrypt deps", "effort": "0.5h", "owner": "dev1"}
+    ],
+    "core": [
+      {
+        "task": "Create User model + migration",
+        "effort": "2h", 
+        "owner": "dev1",
+        "deps": "setup"
+      },
+      {
+        "task": "Build AuthService with JWT",
+        "effort": "4h",
+        "owner": "dev1", 
+        "deps": "User model"
+      }
+    ],
+    "estimates": {
+      "total": "12h",
+      "target": "3 days"
+    }
+  }
+}

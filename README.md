@@ -49,12 +49,11 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 <tr>
 <td width="50%">
 
-### 🎨 **Enhanced 5-Command System** (SDD 2.0)
-- `/research` - Investigate existing patterns & gather context
-- `/specify` - Transform ideas into detailed specs
-- `/plan` - Generate technical implementation plans
-- `/tasks` - Break down into actionable development tasks
-- `/implement` - Execute with continuous implementation flow
+### 🎨 **Smart Command System** (SDD 2.5)
+- **Primary**: `/brief` - 30-minute planning → start coding (80% of features)
+- **Living Docs**: `/evolve` - Keep specs aligned during development
+- **Advanced**: Full SDD 2.0 workflow for complex features (20% of cases)
+- **Escalation**: `/upgrade` - Convert brief to full planning when needed
 
 ### 🏗️ **Professional Templates** 
 - Comprehensive specification templates
@@ -90,22 +89,22 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 <tr>
 <td width="33%">
 
-### **✅ Perfect Fit**
-**Existing Project + New Feature**
+### **🚀 Perfect for SDD 2.5 (Brief)**
+**Quick Features & Iterations**
 
-🎯 **Scenario**: Adding auth to existing React app
+🚀 **Scenario**: Adding user avatar upload to existing app
 
 **Why Perfect:**
-- Existing codebase to analyze
-- Established patterns to reuse  
-- Integration points available
-- Research finds internal patterns
+- Familiar technology and patterns
+- Single team development
+- Clear requirements
+- Low risk/complexity
 
-**Research Focus:**
-- Internal code patterns
-- Existing architecture
-- Current tech stack usage
-- Integration opportunities
+**Brief Focus:**
+- 30-minute planning
+- Essential decisions only
+- Start coding immediately
+- Evolve during development
 
 </td>
 <td width="33%">
@@ -130,21 +129,22 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 </td>
 <td width="33%">
 
-### **⚠️ Challenging**
-**Complete Greenfield**
+### **🏗️ Needs Full SDD 2.0**
+**Complex & High-Risk Features**
 
-🚧 **Scenario**: Starting from absolute zero
+🏗️ **Scenario**: Payment processing with PCI compliance
 
-**Why Difficult:**
-- No requirements defined
-- No existing patterns
-- No context to research
-- Everything is unknown
+**Why Full SDD:**
+- Multiple teams coordination
+- Regulatory requirements
+- Architectural changes needed
+- High business risk
 
-**Recommendation:**
-- Define basic requirements first
-- Research similar products
-- Then use SDD 2.0 for features
+**Full Workflow:**
+- Comprehensive research
+- Detailed specifications
+- Complete technical planning
+- Structured task breakdown
 
 </td>
 </tr>
@@ -154,7 +154,8 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 
 ### 💡 **Key Insight**
 
-SDD 2.0 shines when you have **some context to build upon** - whether that's existing code or clear requirements to research.
+**SDD 2.5** (Brief): Perfect for 80% of features - rapid development with essential planning  
+**SDD 2.0** (Full): For 20% of complex features requiring comprehensive coordination
 
 </div>
 
@@ -176,35 +177,46 @@ cd spec-kit-command-cursor
 Transform any feature idea using the proven SDD workflow:
 
 ```bash
-# 🔍 Step 1: Research existing patterns and gather context
-/research user-auth-system JWT authentication with existing patterns
+# 🚀 Default: 30-minute planning then start coding (80% of features)
+/brief user-auth-system JWT authentication with login/logout functionality
 
-# 🎯 Step 2: Create detailed specification (informed by research)
-/specify user-auth-system Implement JWT-based authentication system with login/logout
+# Start coding immediately after 30-minute brief!
 
-# 🏗️ Step 3: Generate technical implementation plan  
-/plan user-auth-system
+# 🔄 Update specs as you discover things during development
+/evolve user-auth-system Added password strength validation based on security review
 
-# 📋 Step 4: Break down into actionable development tasks
-/tasks user-auth-system
-
-# ⚡ Step 5: Execute implementation with continuous flow
-/implement user-auth-system
+# 🏗️ For complex features: Use full SDD 2.0 workflow (20% of features)
+/research payment-system → /specify → /plan → /tasks → /implement
 ```
 
-> **🎊 That's it!** You now have a complete roadmap from idea to implementation.
+> **🎊 That's it!** 30 minutes of planning → start building immediately!
 
-## 📋 The Five Enhanced Commands (SDD 2.0)
+## 📋 SDD 2.5 Commands (Agile-Compatible)
 
 <div align="center">
 
-| Command | Purpose | Input | Output |
-|---------|---------|-------|--------|
-| 🔍 `/research` | Investigate → Context | Research topic | Patterns & findings |
-| 🎯 `/specify` | Ideas → Requirements | Feature idea | Detailed specification |
-| 🏗️ `/plan` | Requirements → Technical design | Specification | Implementation plan |
-| 📋 `/tasks` | Design → Actionable tasks | Plan | Development roadmap |
-| ⚡ `/implement` | Plan → Code | Task plan | Todo-list & execution |
+### **🚀 Primary Workflow (80% of features)**
+
+| Command | Purpose | Time | Output |
+|---------|---------|------|--------|
+| 🚀 `/brief` | Idea → 30min Plan | 30 min | Feature brief ready for coding |
+| 🔄 `/evolve` | Update during development | 2-5 min | Living documentation updates |
+
+### **🏗️ Advanced Workflow (20% of complex features)**
+
+| Command | Purpose | Time | Output |
+|---------|---------|------|--------|
+| 🔍 `/research` | Investigate → Context | 60 min | Patterns & findings |
+| 🎯 `/specify` | Ideas → Requirements | 90 min | Detailed specification |
+| 🏗️ `/plan` | Requirements → Technical design | 120 min | Implementation plan |
+| 📋 `/tasks` | Design → Actionable tasks | 60 min | Development roadmap |
+| ⚡ `/implement` | Plan → Code | Variable | Todo-list & execution |
+
+### **🔄 Escalation**
+
+| Command | Purpose | When | Output |
+|---------|---------|------|--------|
+| ⬆️ `/upgrade` | Brief → Full SDD | Complexity discovered | Complete planning suite |
 
 </div>
 
@@ -235,21 +247,91 @@ Transform any feature idea using the proven SDD workflow:
 </td>
 <td width="50%">
 
-**🔍 What it creates:**
-- 📄 `specs/active/user-auth-system/research.md`
-- 🔍 Codebase pattern analysis (existing projects)
-- 🌐 External research & competitor analysis (PRD-based)
-- 🎯 Recommended approaches with pros/cons
-- ⚡ Technical opportunities and constraints
-- 📚 Best practices and industry standards
+**🚀 What it creates:**
+- 📄 `specs/active/user-auth-system/feature-brief.md` (single document)
+- 🎯 Problem statement & success metrics
+- 🔍 Quick pattern research & technology decisions
+- 📝 Essential requirements & user stories  
+- 🏗️ Implementation approach & next actions
+- ⏱️ **Ready to code in 30 minutes!**
 
 </td>
 </tr>
 </table>
 
-### 🎯 `/specify` - Create Feature Specifications
+### 🔄 `/evolve` - Living Documentation Updates
 
-> **"Great software starts with great specifications"**
+> **"Keep specs aligned with reality as you code"**
+
+<table>
+<tr>
+<td width="50%">
+
+**Purpose:** Update feature briefs continuously during development to maintain alignment between specs and implementation.
+
+**Usage:**
+```bash
+/evolve <task-id> <change-or-discovery>
+```
+
+**Example:**
+```bash
+/evolve user-auth-system Added password strength validation after security review
+```
+
+</td>
+<td width="50%">
+
+**🔄 What it creates:**
+- 📝 Updates existing `feature-brief.md` with new information
+- 📋 Adds changelog entries with reasoning
+- 🎯 Maintains spec-implementation alignment
+- ⚡ **Takes 2-5 minutes during development**
+
+</td>
+</tr>
+</table>
+
+## 🏗️ Advanced Mode: Full SDD 2.0 (20% of complex features)
+
+For features requiring comprehensive planning (multiple teams, architectural changes, high risk):
+
+### ⬆️ `/upgrade` - Brief to Full Planning
+
+> **"Seamlessly scale up when complexity emerges"**
+
+<table>
+<tr>
+<td width="50%">
+
+**Purpose:** Convert lightweight brief to comprehensive SDD 2.0 planning when complexity is discovered.
+
+**Usage:**
+```bash
+/upgrade <task-id> <reason-for-upgrade>
+```
+
+**Example:**
+```bash
+/upgrade checkout-flow Discovered PCI compliance and multi-payment provider needs
+```
+
+</td>
+<td width="50%">
+
+**⬆️ What it creates:**
+- 🏗️ Expands brief into full SDD 2.0 suite
+- 📄 research.md, spec.md, plan.md, tasks.md
+- 🔄 Preserves all existing decisions
+- 📈 **Scales planning when needed**
+
+</td>
+</tr>
+</table>
+
+### 🎯 `/specify` - Detailed Requirements (Advanced)
+
+> **"Comprehensive specifications for complex features"**
 
 <table>
 <tr>
@@ -830,7 +912,11 @@ Help make SDD even better!
 ### 🎊 **Try Your First SDD Command Right Now!**
 
 ```bash
-/specify hello-world Create a simple hello world feature to test the SDD workflow
+# 🚀 Start with lightweight 30-minute brief (most features)
+/brief hello-world Create a simple hello world feature to test the SDD workflow
+
+# 🏗️ For complex features, use full SDD 2.0 workflow  
+/research payment-system → /specify → /plan → /tasks → /implement
 ```
 
 </div>

@@ -10,10 +10,15 @@
     "autoNumberFeatures": true,
     "requireReviews": true,
     "collaborationMode": true,
+    "defaultWorkflow": "brief", 
+    "planningTimeLimit": 30,
     "templates": {
-      "spec": ".sdd/templates/spec-template.md",
-      "plan": ".sdd/templates/plan-template.md", 
-      "tasks": ".sdd/templates/tasks-template.md"
+      "brief": ".sdd/templates/feature-brief-v2.md",
+      "spec": ".sdd/templates/spec-compact.md",
+      "plan": ".sdd/templates/plan-compact.md", 
+      "tasks": ".sdd/templates/tasks-compact.md",
+      "research": ".sdd/templates/research-compact.md",
+      "todo": ".sdd/templates/todo-compact.md"
     }
   },
   "directories": {

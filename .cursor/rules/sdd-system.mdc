@@ -13,37 +13,42 @@ Spec-Driven Development emphasizes creating detailed, executable specifications 
 - Development tasks are structured and manageable
 - Team collaboration is enhanced through shared understanding
 
-## Five-Phase Enhanced Workflow (SDD 2.0)
+## SDD 2.5: Agile-Compatible Lightweight Workflow (Default)
 
-### 1. Research Phase (`/research`)
-Investigate existing patterns and gather comprehensive context
-- **Focus**: Find what already exists and establish foundation
-- **Output**: [research.md](mdc:specs/active/[task-id]/research.md) with patterns and findings
-- **Key Elements**: Codebase analysis, external research, technical opportunities
+### Primary Approach (80% of features)
 
-### 2. Specify Phase (`/specify`)
-Transform researched ideas into detailed requirements
-- **Focus**: What needs to be built and why (informed by research)
-- **Output**: [spec.md](mdc:specs/active/[task-id]/spec.md) with comprehensive requirements
-- **Key Elements**: User stories, acceptance criteria, success metrics
+#### `/brief` - 30-Minute Planning
+Transform ideas into actionable development plans in 30 minutes
+- **Time**: 30 minutes total planning before coding
+- **Output**: Single [feature-brief.md](mdc:specs/active/[task-id]/feature-brief.md) with essential context
+- **Philosophy**: "Just enough" planning to start coding confidently
+- **Key Elements**: Problem/users, quick research, requirements, next actions
 
-### 3. Plan Phase (`/plan`) 
-Convert specifications into technical implementation strategy
-- **Focus**: How to build it technically (leveraging research findings)
-- **Output**: [plan.md](mdc:specs/active/[task-id]/plan.md) with architecture and design
-- **Key Elements**: Technology stack, system architecture, security considerations
+#### `/evolve` - Living Documentation
+Keep specifications aligned with reality during development
+- **Purpose**: Continuous updates as discoveries are made during coding
+- **Output**: Updates existing feature-brief.md with changelog
+- **Philosophy**: Specifications as living documents that evolve with code
 
-### 4. Tasks Phase (`/tasks`)
-Break down plans into actionable development tasks
-- **Focus**: Discrete, manageable implementation steps
-- **Output**: [tasks.md](mdc:specs/active/[task-id]/tasks.md) with prioritized tasks
-- **Key Elements**: Task dependencies, effort estimates, success criteria
+### Advanced Approach (20% of complex features) - SDD 2.0
 
-### 5. Implement Phase (`/implement`)
-Execute the plan with continuous implementation flow
-- **Focus**: Maximum efficiency execution with pattern reuse
-- **Output**: [todo-list.md](mdc:specs/active/[task-id]/todo-list.md) and implementation artifacts
-- **Key Elements**: Todo-list generation, continuous execution, progress tracking
+For complex, high-risk, or multi-team features requiring comprehensive planning:
+
+#### Full Workflow: `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
+- **Use When**: Feature complexity high, multiple stakeholders, significant architectural impact
+- **Time Investment**: 4-6 hours upfront planning
+- **Output**: Complete documentation suite (research.md, spec.md, plan.md, tasks.md)
+
+## Decision Framework
+
+**Start with `/brief`** unless feature meets ANY of these criteria:
+- Multiple teams involved
+- Architectural changes required
+- High business risk/compliance needs
+- Uncertain technical approach
+- 3+ week development timeline
+
+**Upgrade from brief to full SDD** if complexity discovered during implementation
 
 ## File Organization
 
