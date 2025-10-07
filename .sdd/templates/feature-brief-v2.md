@@ -37,3 +37,16 @@
 **Total Planning Time**: ~30min | **Owner**: {{OWNER}} | {{DATE}}
 
 <!-- Living Document - Update as you code -->
+
+## 🔄 Implementation Tracking
+
+**CRITICAL**: Follow the todo-list systematically. Mark items as complete, document blockers, update progress.
+
+### Progress
+- [ ] Track completed items here
+- [ ] Update daily
+
+### Blockers
+- [ ] Document any blockers
+
+**See**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md) for detailed execution rules.

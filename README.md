@@ -931,6 +931,11 @@ We ❤️ contributions! Here's how you can help:
 - 📖 **Improve docs** - Help others learn SDD
 - ⭐ **Star this repo** - Show your support!
 
+### Recent Improvements
+- ✅ [Issue #1](https://github.com/madebyaris/spec-kit-command-cursor/issues/1): Token usage optimized (65-89% reduction)
+- ✅ SDD 2.5: Lightweight 30-minute planning approach
+- ✅ Living documentation with `/evolve` command
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.

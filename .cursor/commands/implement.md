@@ -31,12 +31,29 @@ Convert the technical plan into actionable todo-list and execute implementation 
 ```
 
 ## Implementation Rules
-- Create detailed todo-list before starting
-- Execute items systematically in dependency order
-- Prioritize reusing existing codebase patterns
-- Leave clarifying questions for batch resolution
-- Update progress.md continuously
-- Focus on continuous execution flow
+
+**CRITICAL - Todo-List Execution:**
+1. **Read entire todo-list** before starting
+2. **Execute todos in order** - follow dependencies
+3. **Mark completion** - Update checkboxes [x] as you finish
+4. **Document blockers** - Never skip silently
+5. **Update progress** - Track continuously
+6. **Ask before deviating** - Don't ignore plan
+
+**Todo Format:**
+```markdown
+- [ ] Task description (effort) - owner
+  Status: NOT_STARTED | IN_PROGRESS | BLOCKED | COMPLETE
+```
+
+**Execution Pattern:**
+- Pick next uncompleted task
+- Complete it fully
+- Mark [x] checkbox
+- Document any changes
+- Move to next task
+
+**See**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md) for comprehensive rules
 
 ## Output
 - Updates: `specs/active/[task-id]/todo-list.md`

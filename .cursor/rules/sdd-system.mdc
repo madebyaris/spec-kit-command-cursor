@@ -71,6 +71,27 @@ Each phase includes comprehensive review checklists and validation rules to ensu
 - Tasks are actionable and properly estimated
 - Documentation maintains consistency across the project
 
+## Implementation & Todo-List Execution
+
+**CRITICAL FOR AI ASSISTANTS:**  
+Todo-lists are NOT suggestions - they are executable checklists that MUST be followed systematically.
+
+### Todo Execution Rules
+1. **Read entire list** before starting
+2. **Execute in order** - respect dependencies
+3. **Mark completion**: `- [ ]` → `- [x]`
+4. **Document blockers** - never skip silently
+5. **Update progress** continuously
+
+### For AI Models (Cursor, ChatGPT, Claude)
+- Todo-list is your implementation roadmap
+- Each unchecked item is a required task
+- Check off items as you complete them
+- Document any deviations with rationale
+- Ask before skipping or changing approach
+
+**Reference**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md)
+
 ## Collaboration Support
 The system supports multi-developer workflows with:
 - Assignee tracking for features and tasks
