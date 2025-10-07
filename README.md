@@ -85,70 +85,32 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 
 </div>
 
-<table>
-<tr>
-<td width="33%">
-
-### **🚀 Perfect for SDD 2.5 (Brief)**
-**Quick Features & Iterations**
+### **🚀 Perfect for SDD 2.5 (Brief)** - Quick Features & Iterations
 
 🚀 **Scenario**: Adding user avatar upload to existing app
 
-**Why Perfect:**
-- Familiar technology and patterns
-- Single team development
-- Clear requirements
-- Low risk/complexity
+**Why Perfect:** Familiar technology, single team, clear requirements, low risk  
+**Brief Focus:** 30-minute planning → start coding immediately → evolve during development
 
-**Brief Focus:**
-- 30-minute planning
-- Essential decisions only
-- Start coding immediately
-- Evolve during development
+---
 
-</td>
-<td width="33%">
-
-### **✅ Also Great**
-**PRD + External Research**
+### **✅ Also Great** - PRD + External Research
 
 📋 **Scenario**: Have requirements, need implementation approach
 
-**Why Good:**
-- Product requirements defined
-- Research external solutions
-- Study competitor approaches  
-- Investigate best practices
+**Why Good:** Product requirements defined, research external solutions, study best practices  
+**Research Focus:** Industry analysis, competitor study, technology comparisons
 
-**Research Focus:**
-- Industry best practices
-- Competitor analysis
-- Technology comparisons
-- Pattern libraries & frameworks
+---
 
-</td>
-<td width="33%">
-
-### **🏗️ Needs Full SDD 2.0**
-**Complex & High-Risk Features**
+### **🏗️ Needs Full SDD 2.0** - Complex & High-Risk Features
 
 🏗️ **Scenario**: Payment processing with PCI compliance
 
-**Why Full SDD:**
-- Multiple teams coordination
-- Regulatory requirements
-- Architectural changes needed
-- High business risk
+**Why Full SDD:** Multiple teams, regulatory requirements, architectural changes, high business risk  
+**Full Workflow:** Comprehensive research → detailed specs → complete planning → structured tasks
 
-**Full Workflow:**
-- Comprehensive research
-- Detailed specifications
-- Complete technical planning
-- Structured task breakdown
-
-</td>
-</tr>
-</table>
+---
 
 <div align="center">
 
@@ -224,10 +186,6 @@ Transform any feature idea using the proven SDD workflow:
 
 > **"Good artists copy, great artists steal (and improve)"**
 
-<table>
-<tr>
-<td width="50%">
-
 **Purpose:** Investigate existing codebase patterns and gather comprehensive context before specification.
 
 **Usage:**
@@ -244,9 +202,6 @@ Transform any feature idea using the proven SDD workflow:
 /research payment-system Stripe vs PayPal integration patterns for subscription SaaS
 ```
 
-</td>
-<td width="50%">
-
 **🚀 What it creates:**
 - 📄 `specs/active/user-auth-system/feature-brief.md` (single document)
 - 🎯 Problem statement & success metrics
@@ -255,17 +210,9 @@ Transform any feature idea using the proven SDD workflow:
 - 🏗️ Implementation approach & next actions
 - ⏱️ **Ready to code in 30 minutes!**
 
-</td>
-</tr>
-</table>
-
 ### 🔄 `/evolve` - Living Documentation Updates
 
 > **"Keep specs aligned with reality as you code"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Update feature briefs continuously during development to maintain alignment between specs and implementation.
 
@@ -279,18 +226,11 @@ Transform any feature idea using the proven SDD workflow:
 /evolve user-auth-system Added password strength validation after security review
 ```
 
-</td>
-<td width="50%">
-
 **🔄 What it creates:**
 - 📝 Updates existing `feature-brief.md` with new information
 - 📋 Adds changelog entries with reasoning
 - 🎯 Maintains spec-implementation alignment
 - ⚡ **Takes 2-5 minutes during development**
-
-</td>
-</tr>
-</table>
 
 ## 🏗️ Advanced Mode: Full SDD 2.0 (20% of complex features)
 
@@ -299,10 +239,6 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 ### ⬆️ `/upgrade` - Brief to Full Planning
 
 > **"Seamlessly scale up when complexity emerges"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Convert lightweight brief to comprehensive SDD 2.0 planning when complexity is discovered.
 
@@ -316,26 +252,15 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 /upgrade checkout-flow Discovered PCI compliance and multi-payment provider needs
 ```
 
-</td>
-<td width="50%">
-
 **⬆️ What it creates:**
 - 🏗️ Expands brief into full SDD 2.0 suite
 - 📄 research.md, spec.md, plan.md, tasks.md
 - 🔄 Preserves all existing decisions
 - 📈 **Scales planning when needed**
 
-</td>
-</tr>
-</table>
-
 ### 🎯 `/specify` - Detailed Requirements (Advanced)
 
 > **"Comprehensive specifications for complex features"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Transform vague feature ideas into detailed, testable requirements.
 
@@ -349,9 +274,6 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 /specify user-auth-system Implement JWT-based authentication system with login/logout
 ```
 
-</td>
-<td width="50%">
-
 **✨ What it creates:**
 - 📄 `specs/active/user-auth-system/spec.md`
 - 📝 Comprehensive requirements document
@@ -359,17 +281,9 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 - 📊 Success metrics and edge cases
 - ✅ Quality assurance checklist
 
-</td>
-</tr>
-</table>
-
 ### 🏗️ `/plan` - Generate Technical Plans
 
 > **"Architecture is the foundation of great software"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Convert specifications into detailed technical implementation strategy.
 
@@ -385,9 +299,6 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 /plan user-auth-system
 ```
 
-</td>
-<td width="50%">
-
 **🚀 What it creates:**
 - 🏗️ `plan.md` with system architecture
 - ⚙️ Technology stack recommendations  
@@ -395,17 +306,9 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 - 🔒 Security and performance considerations
 - 🔗 Integration points and dependencies
 
-</td>
-</tr>
-</table>
-
 ### 📋 `/tasks` - Create Implementation Tasks
 
 > **"A journey of a thousand miles begins with a single step"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Break down technical plans into actionable development tasks.
 
@@ -421,9 +324,6 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 /tasks user-auth-system
 ```
 
-</td>
-<td width="50%">
-
 **📋 What it creates:**
 - ✅ `tasks.md` with prioritized task breakdown
 - 🔄 Implementation phases and dependencies
@@ -431,17 +331,9 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 - 📈 Progress tracking template
 - 🎯 Definition of done for each task
 
-</td>
-</tr>
-</table>
-
 ### ⚡ `/implement` - Execute Implementation
 
 > **"The best plan is worthless without execution"**
-
-<table>
-<tr>
-<td width="50%">
 
 **Purpose:** Execute the planned implementation with maximum efficiency and continuous flow.
 
@@ -457,19 +349,12 @@ For features requiring comprehensive planning (multiple teams, architectural cha
 /implement user-auth-system
 ```
 
-</td>
-<td width="50%">
-
 **⚡ What it creates:**
 - ✅ `todo-list.md` with comprehensive execution plan
 - 🔄 Continuous implementation flow
 - 📈 Progress tracking and updates
 - 🎯 Pattern reuse strategy
 - 💻 Implementation artifacts and code
-
-</td>
-</tr>
-</table>
 
 ## 📁 Project Structure
 
@@ -679,10 +564,6 @@ Follow the tasks in priority order, updating `progress.md` as you go:
 
 </div>
 
-<table>
-<tr>
-<td width="33%">
-
 ### 🎯 **For Specifications (`/specify`)**
 
 **🎨 Think User-First**
@@ -693,8 +574,7 @@ Follow the tasks in priority order, updating `progress.md` as you go:
 
 **✨ Pro Tip:** *Ask "What problem are we solving?" before writing code*
 
-</td>
-<td width="33%">
+---
 
 ### 🏗️ **For Plans (`/plan`)**
 
@@ -706,8 +586,7 @@ Follow the tasks in priority order, updating `progress.md` as you go:
 
 **✨ Pro Tip:** *Architecture decisions made now save hours later*
 
-</td>
-<td width="33%">
+---
 
 ### 📋 **For Tasks (`/tasks`)**
 
@@ -718,10 +597,6 @@ Follow the tasks in priority order, updating `progress.md` as you go:
 - Estimate effort realistically
 
 **✨ Pro Tip:** *Small tasks = big wins and faster feedback loops*
-
-</td>
-</tr>
-</table>
 
 <div align="center">
 
@@ -822,10 +697,6 @@ Track your SDD usage:
 
 </div>
 
-<table>
-<tr>
-<td width="50%">
-
 ### 📈 **Measurable Improvements**
 
 | Metric | Before SDD | After SDD | Improvement |
@@ -835,8 +706,7 @@ Track your SDD usage:
 | 🐛 **Bugs in Production** | High | Low | 🎯 **60% Fewer** |
 | 🤝 **Team Alignment** | Poor | Excellent | ⭐ **95% Satisfaction** |
 
-</td>
-<td width="50%">
+---
 
 ### 🏆 **Real-World Impact**
 
@@ -851,10 +721,6 @@ Track your SDD usage:
 - 📊 Better project visibility for stakeholders
 - 🎯 Reduced rework and technical debt
 - 🏆 Higher quality deliverables
-
-</td>
-</tr>
-</table>
 
 <div align="center">
 
