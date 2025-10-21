@@ -276,6 +276,147 @@ AI: "Updated plan with error handling user stories..."
 
 ---
 
+## 🗺️ Full Project Planning (NEW!)
+
+Plan entire applications and systems from A to Z with comprehensive roadmaps!
+
+### The All-in-One Planning Command
+
+Use `/sdd-full-plan` (or `/pecut-all-in-one`) to create complete project roadmaps with:
+
+```bash
+# Create full project roadmap
+/sdd-full-plan blog-platform Full-featured blog with CMS and analytics
+
+# Or use the memorable alias
+/pecut-all-in-one ecommerce-platform Multi-vendor marketplace
+```
+
+### What You Get
+
+**📊 Kanban Board Structure:**
+- To Do, In Progress, Review, Done columns
+- Epic-level organization
+- Task hierarchy (Epic → Task → Subtask)
+- Dependency management
+
+**🎯 Smart Complexity Detection:**
+- **Simple** (< 3 weeks): 3-5 tasks, Brief approach
+- **Medium** (3-8 weeks): 8-12 tasks, Mixed SDD
+- **Complex** (8-20 weeks): 15-20 tasks, Full SDD 2.0
+- **Enterprise** (20+ weeks): 20+ tasks, Multi-phase
+
+**🔗 SDD Integration:**
+- Each task maps to appropriate SDD command
+- Tasks link to `specs/active/` for implementation
+- Progress tracked in roadmap and specs
+- Execute tasks with `/execute-task`
+
+**🎨 VSCode Extension Ready:**
+- Compatible with Taskr Kanban
+- JSON format ready for custom extensions
+- Visual kanban board in markdown
+
+### Example: Building a Blog Platform
+
+```bash
+/sdd-full-plan blog-platform Full-featured blog with CMS, user management, comments, and analytics
+```
+
+**AI Creates:**
+```
+specs/todo-roadmap/blog-platform/
+├── roadmap.json          # Kanban board data
+├── roadmap.md            # Human-readable view
+├── tasks/
+│   ├── epic-001.json     # Research & Foundation
+│   ├── epic-002.json     # Core Blog Features
+│   ├── task-002-1.json   # User Authentication
+│   └── ...
+└── execution-log.md      # Execution tracking
+```
+
+**Roadmap Includes:**
+- 📋 5 Epics (Research, Core, Engagement, Admin, Deployment)
+- 🎯 20 Tasks organized by phase
+- ⏱️ 240 hour estimate
+- 📊 6-week timeline
+- 🔗 SDD command mappings
+
+### Executing Tasks
+
+```bash
+# Execute first epic
+/execute-task epic-001
+
+# AI automatically:
+# 1. Determines it's a research phase
+# 2. Runs: /research epic-001 [description]
+# 3. Creates: specs/active/epic-001/research.md
+# 4. Updates: roadmap.json status
+# 5. Logs: execution-log.md
+
+# Continue with next task
+/execute-task task-001-1
+```
+
+### Visual Roadmap (roadmap.md excerpt)
+
+```markdown
+## 📅 Kanban Board
+
+### 🔵 To Do (15)
+- Epic 1: Research & Foundation
+  - Task 1-1: Research CMS patterns (8h)
+  - Task 1-2: Define architecture (16h)
+  - Task 1-3: Create specification (16h)
+- Epic 2: Core Blog Features
+  - Task 2-1: User authentication (24h)
+  - Task 2-2: Post creation (32h)
+
+### 🟡 In Progress (3)
+- Task 1-1: Research CMS patterns
+
+### 🟣 Review (2)
+- Task 0-1: Initial setup
+
+### 🟢 Done (0)
+```
+
+### Benefits
+
+✅ **Complete Project View** - See entire project at a glance  
+✅ **Structured Planning** - Epic → Task → Subtask hierarchy  
+✅ **Dependency Management** - Automatic blocking and unblocking  
+✅ **Progress Tracking** - Visual kanban board  
+✅ **SDD Integration** - Each task uses appropriate SDD command  
+✅ **Team Coordination** - Assignee tracking and status updates  
+✅ **VSCode Ready** - Extension-compatible JSON format  
+
+### When to Use Full Planning
+
+**Use `/sdd-full-plan` when:**
+- 🏗️ Planning entire application or system
+- 📊 Need visual roadmap with kanban board
+- 👥 Managing multi-developer team
+- 🎯 Want structured task hierarchy
+- ⏱️ Timeline > 3 weeks
+- 🔄 Require dependency tracking
+
+**Use `/brief` when:**
+- ⚡ Quick feature addition
+- 👤 Single developer
+- 📝 Timeline < 3 weeks
+- 🎨 Well-understood scope
+
+### Learn More
+
+- **[Full Plan Command Docs](.cursor/commands/sdd-full-plan.md)** - Complete documentation
+- **[Roadmap Format Spec](.sdd/ROADMAP_FORMAT_SPEC.md)** - JSON schema and structure
+- **[Full Plan Examples](.sdd/FULL_PLAN_EXAMPLES.md)** - Detailed examples at all complexity levels
+
+---
+
 ## 🚀 Quick Start
 
 ### 1. Install the System
@@ -308,7 +449,7 @@ Transform any feature idea using the proven SDD workflow:
 
 > **🎊 That's it!** 30 minutes of planning → start building immediately!
 
-## 📋 SDD 2.5 Commands (Agile-Compatible)
+## 📋 SDD Commands
 
 <div align="center">
 
@@ -318,6 +459,14 @@ Transform any feature idea using the proven SDD workflow:
 |---------|---------|------|--------|
 | 🚀 `/brief` | Idea → 30min Plan | 30 min | Feature brief ready for coding |
 | 🔄 `/evolve` | Update during development | 2-5 min | Living documentation updates |
+
+### **📊 Full Project Planning (NEW)**
+
+| Command | Purpose | Time | Output |
+|---------|---------|------|--------|
+| 🗺️ `/sdd-full-plan` | Complete A-Z Roadmap | 15-60 min | Full project kanban board |
+| 🎯 `/pecut-all-in-one` | Alias for sdd-full-plan | 15-60 min | Complete roadmap |
+| ⚡ `/execute-task` | Run roadmap task | Variable | Execute with SDD commands |
 
 ### **🏗️ Advanced Workflow (20% of complex features)**
 

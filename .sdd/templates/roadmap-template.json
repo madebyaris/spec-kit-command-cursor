@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "{{PROJECT_ID}}",
+  "title": "{{PROJECT_TITLE}}",
+  "description": "{{PROJECT_DESCRIPTION}}",
+  "type": "{{PROJECT_TYPE}}",
+  "created": "{{CREATED_TIMESTAMP}}",
+  "updated": "{{UPDATED_TIMESTAMP}}",
+  "status": "planning",
+  "metadata": {
+    "sddVersion": "2.5",
+    "planMode": true,
+    "estimatedDuration": "{{ESTIMATED_DURATION}}",
+    "complexity": "{{COMPLEXITY}}",
+    "teamSize": {{TEAM_SIZE}},
+    "assignee": "{{ASSIGNEE}}",
+    "tags": {{TAGS_ARRAY}}
+  },
+  "columns": [
+    {
+      "id": "todo",
+      "title": "To Do",
+      "order": 0,
+      "tasks": []
+    },
+    {
+      "id": "in-progress",
+      "title": "In Progress",
+      "order": 1,
+      "tasks": []
+    },
+    {
+      "id": "review",
+      "title": "Review",
+      "order": 2,
+      "tasks": []
+    },
+    {
+      "id": "done",
+      "title": "Done",
+      "order": 3,
+      "tasks": []
+    }
+  ],
+  "tasks": {
+    "{{TASK_ID}}": {
+      "id": "{{TASK_ID}}",
+      "title": "{{TASK_TITLE}}",
+      "description": "{{TASK_DESCRIPTION}}",
+      "type": "epic",
+      "priority": "high",
+      "complexity": "medium",
+      "status": "todo",
+      "column": "todo",
+      "dependencies": [],
+      "subtasks": [],
+      "estimatedHours": 0,
+      "actualHours": 0,
+      "tags": [],
+      "sdd": {
+        "phase": "{{SDD_PHASE}}",
+        "commands": ["{{SDD_COMMANDS}}"],
+        "linkedSpec": null,
+        "executeCommand": "/execute-task {{TASK_ID}}",
+        "executedAt": null,
+        "completedAt": null
+      },
+      "markdown": "## {{TASK_TITLE}}\n\n**Objective:** {{TASK_DESCRIPTION}}\n\n### Details\n\nTBD",
+      "assignee": null,
+      "reporter": "{{REPORTER}}",
+      "created": "{{CREATED_TIMESTAMP}}",
+      "updated": "{{UPDATED_TIMESTAMP}}",
+      "startedAt": null,
+      "completedAt": null,
+      "blockers": [],
+      "comments": []
+    }
+  },
+  "statistics": {
+    "totalTasks": 0,
+    "todoTasks": 0,
+    "inProgressTasks": 0,
+    "reviewTasks": 0,
+    "doneTasks": 0,
+    "blockedTasks": 0,
+    "totalEstimatedHours": 0,
+    "totalActualHours": 0,
+    "completionPercentage": 0
+  },
+  "history": [
+    {
+      "timestamp": "{{CREATED_TIMESTAMP}}",
+      "action": "roadmap_created",
+      "description": "Roadmap created via /sdd-full-plan",
+      "user": "{{USER}}"
+    }
+  ]
+}
+

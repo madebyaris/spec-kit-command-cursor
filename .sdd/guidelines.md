@@ -140,6 +140,32 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
   - How does brief expand to full docs?
   - What additional planning is needed?
 
+### 9. Full Planning Phase (`/sdd-full-plan` / `/pecut-all-in-one`) - Complete Roadmap
+- **Purpose**: Create comprehensive A-to-Z project roadmap with kanban structure
+- **Focus**: Epic-level organization, task hierarchy, dependency management
+- **Output**: Full project roadmap in `specs/todo-roadmap/[project-id]/`
+  - `roadmap.json` - VSCode extension compatible kanban board
+  - `roadmap.md` - Human-readable markdown view
+  - `tasks/*.json` - Individual task details
+  - `execution-log.md` - Task execution tracking
+- **PLAN Mode**: Shows complete roadmap structure before creation
+- **Key Questions**:
+  - What's the project goal and scope?
+  - Who are the target users?
+  - Technology stack preferences?
+  - Timeline and team size?
+  - Must-have vs nice-to-have features?
+
+### 10. Task Execution Phase (`/execute-task`) - Orchestrated Execution
+- **Purpose**: Execute specific task from roadmap using appropriate SDD command
+- **Focus**: Automatic SDD command mapping, status tracking, dependency validation
+- **Output**: Specs created in `specs/active/[task-id]/` linked to roadmap
+- **PLAN Mode**: Shows execution strategy before running command
+- **Key Questions**:
+  - Any additional context needed?
+  - Should we modify the task approach?
+  - Are there blockers to address first?
+
 ## Directory Structure
 
 ```
@@ -152,6 +178,13 @@ specs/
 │       ├── tasks.md        # Implementation tasks
 │       ├── progress.md     # Development tracking
 │       └── reviews.md      # Code review notes
+├── todo-roadmap/           # Project roadmaps (NEW)
+│   ├── index.json          # Roadmap registry
+│   └── [project-id]/
+│       ├── roadmap.json    # Kanban board data
+│       ├── roadmap.md      # Human-readable view
+│       ├── tasks/          # Individual task JSON files
+│       └── execution-log.md # Execution history
 ├── completed/              # Delivered features
 ├── backlog/                # Future features
 └── index.md               # Navigation/status
@@ -159,11 +192,15 @@ specs/
 
 ## Collaboration Best Practices
 
-1. **Always start with `/specify`** - Don't skip to planning or tasks
+1. **Choose the right starting point:**
+   - `/brief` - For 80% of features (quick start)
+   - `/sdd-full-plan` - For full applications or major systems
+   - `/research` + `/specify` - For complex features needing deep analysis
 2. **Keep specs updated** - Maintain alignment with implementation
-3. **Use progress tracking** - Update progress.md regularly
+3. **Use progress tracking** - Update progress.md or roadmap.json regularly
 4. **Review and iterate** - Specs can evolve based on learnings
 5. **Cross-reference** - Link related features and dependencies
+6. **Leverage roadmaps** - Use kanban boards for project visibility
 
 ## Feature Naming Convention
 
@@ -210,3 +247,11 @@ specs/
 - Estimated effort/complexity
 - Dependencies and prerequisites
 - Definition of done criteria
+
+### Roadmaps Should Include:
+- Epic-level organization of work
+- Clear task hierarchy (epic → task → subtask)
+- Dependency mappings between tasks
+- Status tracking across kanban columns
+- Integration with SDD commands
+- VSCode extension compatibility
