@@ -43,6 +43,29 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 - 🤝 **Team collaboration** is enhanced through shared understanding
 - 🚀 **Delivery is faster** with fewer iterations and scope changes
 
+### 🎨 PLAN Mode Integration (New!)
+
+All SDD commands now integrate with **Cursor's PLAN mode** for enhanced control and visibility:
+
+```
+Every Command: User Request → Analysis → Present Plan → Approve → Execute
+```
+
+**What This Means:**
+- 👁️ **See before create** - Review what will be generated before any files are made
+- ✅ **Approve or modify** - Change the approach before execution
+- 🧠 **Learn the reasoning** - Understand AI's thinking and decisions
+- 🛡️ **Safety first** - No surprise file changes or modifications
+- 🎯 **Better quality** - More thoughtful, deliberate specifications
+
+**Example Flow:**
+1. You run `/brief checkout-flow Quick checkout for guest users`
+2. AI analyzes requirements and existing patterns
+3. AI presents a plan showing brief structure, research approach, and what will be created
+4. You review and approve (or request changes)
+5. AI executes, creating the feature brief as planned
+6. Result: `specs/active/checkout-flow/feature-brief.md` created with full visibility
+
 ## ✨ Key Features
 
 <table>
@@ -120,6 +143,138 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 **SDD 2.0** (Full): For 20% of complex features requiring comprehensive coordination
 
 </div>
+
+---
+
+## 🎨 PLAN Mode: Enhanced Workflow
+
+All SDD commands now use **Cursor's PLAN mode** - a deliberate, plan-approve-execute pattern that gives you full control.
+
+### How It Works
+
+Every command follows a 4-phase workflow:
+
+```mermaid
+graph LR
+    A[1. Analysis] --> B[2. Create Plan]
+    B --> C[3. User Approves]
+    C --> D[4. Execute]
+    D --> E[5. Document]
+```
+
+**Phase 1: Analysis (Readonly)**
+- AI reads relevant files and context
+- Asks clarifying questions if needed
+- No file modifications yet
+
+**Phase 2: Present Plan**
+- Shows what will be created/modified
+- Explains reasoning and approach
+- Previews structure and content
+- Waits for your approval
+
+**Phase 3: Execute**
+- Creates or modifies files as planned
+- Follows approved approach exactly
+- Maintains quality standards
+
+**Phase 4: Document**
+- Updates tracking files
+- Records decisions made
+- Sets up for next phase
+
+### Example: `/brief` with PLAN Mode
+
+**Traditional approach (old):**
+```bash
+/brief checkout-flow Quick checkout for guests
+→ Boom! feature-brief.md created immediately
+→ Hope it's what you wanted...
+```
+
+**With PLAN Mode (new):**
+```bash
+/brief checkout-flow Quick checkout for guests
+
+AI: "Let me analyze this..."
+→ Checks existing patterns
+→ Identifies missing info
+→ Asks: "Should guests be able to save cart for later?"
+
+AI: "Here's my plan:"
+→ Will create: specs/active/checkout-flow/feature-brief.md
+→ Structure: Problem, Users, Requirements, Approach, Next Actions
+→ Research: Will examine existing checkout patterns (15 min)
+→ Key requirements: Guest checkout, cart persistence, session handling
+
+You: "Looks good, but also add abandoned cart recovery"
+
+AI: "Updated plan, creating now..."
+→ Creates feature-brief.md with your additions
+→ Full visibility, full control
+```
+
+### Benefits by User Type
+
+**For Solo Developers:**
+- 🔍 Catch issues before implementation
+- 📚 Learn from AI's reasoning process
+- 🎯 Ensure requirements are understood correctly
+- ⚡ Modify approach before wasting time
+
+**For Teams:**
+- 👥 Review plans collaboratively before approval
+- 📋 Shared understanding of what will be created
+- 🛡️ Risk reduction through oversight
+- 📝 Clear audit trail of decisions
+
+**For Project Managers:**
+- 👁️ Visibility into planning approach
+- ✅ Approval gate before work begins
+- 📊 Better estimation through plan review
+- 🎯 Alignment with business goals
+
+### PLAN Mode Across All Commands
+
+| Command | What Plan Shows | Why It Matters |
+|---------|----------------|----------------|
+| `/brief` | Brief structure, research scope, requirements outline | Ensures 30-min planning is focused on right things |
+| `/evolve` | Before/after changes, changelog entry, impact | Prevents accidental overwrites of important context |
+| `/research` | Search strategy, areas to examine, time allocation | Focuses research on most valuable patterns |
+| `/specify` | Spec structure, requirements preview, user stories | Catches missing requirements early |
+| `/plan` | Architecture approach, tech decisions, design rationale | Validates technical direction before deep planning |
+| `/tasks` | Task breakdown strategy, effort estimates, dependencies | Ensures comprehensive coverage of all work |
+| `/implement` | Todo-list preview, execution order, file changes | Shows implementation roadmap before coding |
+| `/upgrade` | Brief expansion strategy, new documents, content mapping | Prevents information loss during escalation |
+
+### Customizing Plans
+
+You can modify any plan before approval:
+
+```bash
+AI: "Plan: I'll create 5 user stories focusing on happy path..."
+
+You: "Add error scenarios and edge cases too"
+
+AI: "Updated plan with error handling user stories..."
+→ Proceeds with enhanced plan
+```
+
+### Tips for Using PLAN Mode
+
+1. **Review plans thoroughly** - This is your chance to course-correct
+2. **Ask questions** - If plan is unclear, ask for clarification
+3. **Request changes** - Don't approve if something seems off
+4. **Learn from plans** - Understand AI reasoning for better collaboration
+5. **Use iteratively** - Plans get better as AI learns your preferences
+
+### 📚 Learn More About PLAN Mode
+
+- **[Quick Start Guide](.sdd/PLAN_MODE_QUICKSTART.md)** - Get started with PLAN mode in 5 minutes
+- **[Detailed Examples](.sdd/PLAN_MODE_EXAMPLES.md)** - Real scenarios and walkthroughs for each command
+- **[Implementation Summary](.sdd/PLAN_MODE_INTEGRATION_SUMMARY.md)** - Technical details of the integration
+
+---
 
 ## 🚀 Quick Start
 

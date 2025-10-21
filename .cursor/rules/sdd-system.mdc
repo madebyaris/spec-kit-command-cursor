@@ -13,6 +13,28 @@ Spec-Driven Development emphasizes creating detailed, executable specifications 
 - Development tasks are structured and manageable
 - Team collaboration is enhanced through shared understanding
 
+### PLAN Mode Integration
+All SDD commands now follow a **plan-approve-execute** workflow inspired by Cursor's PLAN mode:
+
+**Workflow Pattern:**
+```
+User Command → Analysis → Create Plan → User Approval → Execute → Document
+```
+
+**Key Principles:**
+- **Analysis First** - Read, understand, ask questions before planning
+- **Present Plans** - Show what will be created/modified before doing it
+- **User Control** - Wait for approval before any file changes
+- **Transparency** - Explain reasoning and approach in plans
+- **Thoughtful Execution** - Deliberate, well-considered actions
+
+**Benefits:**
+- **Visibility** - See what will happen before it happens
+- **Control** - Approve or modify plans before execution
+- **Quality** - More thoughtful specifications and plans
+- **Safety** - No surprise changes or modifications
+- **Learning** - Understand AI reasoning and approach
+
 ## SDD 2.5: Agile-Compatible Lightweight Workflow (Default)
 
 ### Primary Approach (80% of features)
