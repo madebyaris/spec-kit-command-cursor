@@ -43,6 +43,29 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 - 🤝 **Team collaboration** is enhanced through shared understanding
 - 🚀 **Delivery is faster** with fewer iterations and scope changes
 
+### 🎨 PLAN Mode Integration (New!)
+
+All SDD commands now integrate with **Cursor's PLAN mode** for enhanced control and visibility:
+
+```
+Every Command: User Request → Analysis → Present Plan → Approve → Execute
+```
+
+**What This Means:**
+- 👁️ **See before create** - Review what will be generated before any files are made
+- ✅ **Approve or modify** - Change the approach before execution
+- 🧠 **Learn the reasoning** - Understand AI's thinking and decisions
+- 🛡️ **Safety first** - No surprise file changes or modifications
+- 🎯 **Better quality** - More thoughtful, deliberate specifications
+
+**Example Flow:**
+1. You run `/brief checkout-flow Quick checkout for guest users`
+2. AI analyzes requirements and existing patterns
+3. AI presents a plan showing brief structure, research approach, and what will be created
+4. You review and approve (or request changes)
+5. AI executes, creating the feature brief as planned
+6. Result: `specs/active/checkout-flow/feature-brief.md` created with full visibility
+
 ## ✨ Key Features
 
 <table>
@@ -121,6 +144,279 @@ Spec-Driven Development is a revolutionary methodology that emphasizes creating 
 
 </div>
 
+---
+
+## 🎨 PLAN Mode: Enhanced Workflow
+
+All SDD commands now use **Cursor's PLAN mode** - a deliberate, plan-approve-execute pattern that gives you full control.
+
+### How It Works
+
+Every command follows a 4-phase workflow:
+
+```mermaid
+graph LR
+    A[1. Analysis] --> B[2. Create Plan]
+    B --> C[3. User Approves]
+    C --> D[4. Execute]
+    D --> E[5. Document]
+```
+
+**Phase 1: Analysis (Readonly)**
+- AI reads relevant files and context
+- Asks clarifying questions if needed
+- No file modifications yet
+
+**Phase 2: Present Plan**
+- Shows what will be created/modified
+- Explains reasoning and approach
+- Previews structure and content
+- Waits for your approval
+
+**Phase 3: Execute**
+- Creates or modifies files as planned
+- Follows approved approach exactly
+- Maintains quality standards
+
+**Phase 4: Document**
+- Updates tracking files
+- Records decisions made
+- Sets up for next phase
+
+### Example: `/brief` with PLAN Mode
+
+**Traditional approach (old):**
+```bash
+/brief checkout-flow Quick checkout for guests
+→ Boom! feature-brief.md created immediately
+→ Hope it's what you wanted...
+```
+
+**With PLAN Mode (new):**
+```bash
+/brief checkout-flow Quick checkout for guests
+
+AI: "Let me analyze this..."
+→ Checks existing patterns
+→ Identifies missing info
+→ Asks: "Should guests be able to save cart for later?"
+
+AI: "Here's my plan:"
+→ Will create: specs/active/checkout-flow/feature-brief.md
+→ Structure: Problem, Users, Requirements, Approach, Next Actions
+→ Research: Will examine existing checkout patterns (15 min)
+→ Key requirements: Guest checkout, cart persistence, session handling
+
+You: "Looks good, but also add abandoned cart recovery"
+
+AI: "Updated plan, creating now..."
+→ Creates feature-brief.md with your additions
+→ Full visibility, full control
+```
+
+### Benefits by User Type
+
+**For Solo Developers:**
+- 🔍 Catch issues before implementation
+- 📚 Learn from AI's reasoning process
+- 🎯 Ensure requirements are understood correctly
+- ⚡ Modify approach before wasting time
+
+**For Teams:**
+- 👥 Review plans collaboratively before approval
+- 📋 Shared understanding of what will be created
+- 🛡️ Risk reduction through oversight
+- 📝 Clear audit trail of decisions
+
+**For Project Managers:**
+- 👁️ Visibility into planning approach
+- ✅ Approval gate before work begins
+- 📊 Better estimation through plan review
+- 🎯 Alignment with business goals
+
+### PLAN Mode Across All Commands
+
+| Command | What Plan Shows | Why It Matters |
+|---------|----------------|----------------|
+| `/brief` | Brief structure, research scope, requirements outline | Ensures 30-min planning is focused on right things |
+| `/evolve` | Before/after changes, changelog entry, impact | Prevents accidental overwrites of important context |
+| `/research` | Search strategy, areas to examine, time allocation | Focuses research on most valuable patterns |
+| `/specify` | Spec structure, requirements preview, user stories | Catches missing requirements early |
+| `/plan` | Architecture approach, tech decisions, design rationale | Validates technical direction before deep planning |
+| `/tasks` | Task breakdown strategy, effort estimates, dependencies | Ensures comprehensive coverage of all work |
+| `/implement` | Todo-list preview, execution order, file changes | Shows implementation roadmap before coding |
+| `/upgrade` | Brief expansion strategy, new documents, content mapping | Prevents information loss during escalation |
+
+### Customizing Plans
+
+You can modify any plan before approval:
+
+```bash
+AI: "Plan: I'll create 5 user stories focusing on happy path..."
+
+You: "Add error scenarios and edge cases too"
+
+AI: "Updated plan with error handling user stories..."
+→ Proceeds with enhanced plan
+```
+
+### Tips for Using PLAN Mode
+
+1. **Review plans thoroughly** - This is your chance to course-correct
+2. **Ask questions** - If plan is unclear, ask for clarification
+3. **Request changes** - Don't approve if something seems off
+4. **Learn from plans** - Understand AI reasoning for better collaboration
+5. **Use iteratively** - Plans get better as AI learns your preferences
+
+### 📚 Learn More About PLAN Mode
+
+- **[Quick Start Guide](.sdd/PLAN_MODE_QUICKSTART.md)** - Get started with PLAN mode in 5 minutes
+- **[Detailed Examples](.sdd/PLAN_MODE_EXAMPLES.md)** - Real scenarios and walkthroughs for each command
+- **[Implementation Summary](.sdd/PLAN_MODE_INTEGRATION_SUMMARY.md)** - Technical details of the integration
+
+---
+
+## 🗺️ Full Project Planning (NEW!)
+
+Plan entire applications and systems from A to Z with comprehensive roadmaps!
+
+### The All-in-One Planning Command
+
+Use `/sdd-full-plan` (or `/pecut-all-in-one`) to create complete project roadmaps with:
+
+```bash
+# Create full project roadmap
+/sdd-full-plan blog-platform Full-featured blog with CMS and analytics
+
+# Or use the memorable alias
+/pecut-all-in-one ecommerce-platform Multi-vendor marketplace
+```
+
+### What You Get
+
+**📊 Kanban Board Structure:**
+- To Do, In Progress, Review, Done columns
+- Epic-level organization
+- Task hierarchy (Epic → Task → Subtask)
+- Dependency management
+
+**🎯 Smart Complexity Detection:**
+- **Simple** (< 3 weeks): 3-5 tasks, Brief approach
+- **Medium** (3-8 weeks): 8-12 tasks, Mixed SDD
+- **Complex** (8-20 weeks): 15-20 tasks, Full SDD 2.0
+- **Enterprise** (20+ weeks): 20+ tasks, Multi-phase
+
+**🔗 SDD Integration:**
+- Each task maps to appropriate SDD command
+- Tasks link to `specs/active/` for implementation
+- Progress tracked in roadmap and specs
+- Execute tasks with `/execute-task`
+
+**🎨 VSCode Extension Ready:**
+- Compatible with Taskr Kanban
+- JSON format ready for custom extensions
+- Visual kanban board in markdown
+
+### Example: Building a Blog Platform
+
+```bash
+/sdd-full-plan blog-platform Full-featured blog with CMS, user management, comments, and analytics
+```
+
+**AI Creates:**
+```
+specs/todo-roadmap/blog-platform/
+├── roadmap.json          # Kanban board data
+├── roadmap.md            # Human-readable view
+├── tasks/
+│   ├── epic-001.json     # Research & Foundation
+│   ├── epic-002.json     # Core Blog Features
+│   ├── task-002-1.json   # User Authentication
+│   └── ...
+└── execution-log.md      # Execution tracking
+```
+
+**Roadmap Includes:**
+- 📋 5 Epics (Research, Core, Engagement, Admin, Deployment)
+- 🎯 20 Tasks organized by phase
+- ⏱️ 240 hour estimate
+- 📊 6-week timeline
+- 🔗 SDD command mappings
+
+### Executing Tasks
+
+```bash
+# Execute first epic
+/execute-task epic-001
+
+# AI automatically:
+# 1. Determines it's a research phase
+# 2. Runs: /research epic-001 [description]
+# 3. Creates: specs/active/epic-001/research.md
+# 4. Updates: roadmap.json status
+# 5. Logs: execution-log.md
+
+# Continue with next task
+/execute-task task-001-1
+```
+
+### Visual Roadmap (roadmap.md excerpt)
+
+```markdown
+## 📅 Kanban Board
+
+### 🔵 To Do (15)
+- Epic 1: Research & Foundation
+  - Task 1-1: Research CMS patterns (8h)
+  - Task 1-2: Define architecture (16h)
+  - Task 1-3: Create specification (16h)
+- Epic 2: Core Blog Features
+  - Task 2-1: User authentication (24h)
+  - Task 2-2: Post creation (32h)
+
+### 🟡 In Progress (3)
+- Task 1-1: Research CMS patterns
+
+### 🟣 Review (2)
+- Task 0-1: Initial setup
+
+### 🟢 Done (0)
+```
+
+### Benefits
+
+✅ **Complete Project View** - See entire project at a glance  
+✅ **Structured Planning** - Epic → Task → Subtask hierarchy  
+✅ **Dependency Management** - Automatic blocking and unblocking  
+✅ **Progress Tracking** - Visual kanban board  
+✅ **SDD Integration** - Each task uses appropriate SDD command  
+✅ **Team Coordination** - Assignee tracking and status updates  
+✅ **VSCode Ready** - Extension-compatible JSON format  
+
+### When to Use Full Planning
+
+**Use `/sdd-full-plan` when:**
+- 🏗️ Planning entire application or system
+- 📊 Need visual roadmap with kanban board
+- 👥 Managing multi-developer team
+- 🎯 Want structured task hierarchy
+- ⏱️ Timeline > 3 weeks
+- 🔄 Require dependency tracking
+
+**Use `/brief` when:**
+- ⚡ Quick feature addition
+- 👤 Single developer
+- 📝 Timeline < 3 weeks
+- 🎨 Well-understood scope
+
+### Learn More
+
+- **[Full Plan Command Docs](.cursor/commands/sdd-full-plan.md)** - Complete documentation
+- **[Roadmap Format Spec](.sdd/ROADMAP_FORMAT_SPEC.md)** - JSON schema and structure
+- **[Full Plan Examples](.sdd/FULL_PLAN_EXAMPLES.md)** - Detailed examples at all complexity levels
+
+---
+
 ## 🚀 Quick Start
 
 ### 1. Install the System
@@ -153,7 +449,7 @@ Transform any feature idea using the proven SDD workflow:
 
 > **🎊 That's it!** 30 minutes of planning → start building immediately!
 
-## 📋 SDD 2.5 Commands (Agile-Compatible)
+## 📋 SDD Commands
 
 <div align="center">
 
@@ -163,6 +459,14 @@ Transform any feature idea using the proven SDD workflow:
 |---------|---------|------|--------|
 | 🚀 `/brief` | Idea → 30min Plan | 30 min | Feature brief ready for coding |
 | 🔄 `/evolve` | Update during development | 2-5 min | Living documentation updates |
+
+### **📊 Full Project Planning (NEW)**
+
+| Command | Purpose | Time | Output |
+|---------|---------|------|--------|
+| 🗺️ `/sdd-full-plan` | Complete A-Z Roadmap | 15-60 min | Full project kanban board |
+| 🎯 `/pecut-all-in-one` | Alias for sdd-full-plan | 15-60 min | Complete roadmap |
+| ⚡ `/execute-task` | Run roadmap task | Variable | Execute with SDD commands |
 
 ### **🏗️ Advanced Workflow (20% of complex features)**
 

@@ -13,6 +13,28 @@ Spec-Driven Development emphasizes creating detailed, executable specifications 
 - Development tasks are structured and manageable
 - Team collaboration is enhanced through shared understanding
 
+### PLAN Mode Integration
+All SDD commands now follow a **plan-approve-execute** workflow inspired by Cursor's PLAN mode:
+
+**Workflow Pattern:**
+```
+User Command → Analysis → Create Plan → User Approval → Execute → Document
+```
+
+**Key Principles:**
+- **Analysis First** - Read, understand, ask questions before planning
+- **Present Plans** - Show what will be created/modified before doing it
+- **User Control** - Wait for approval before any file changes
+- **Transparency** - Explain reasoning and approach in plans
+- **Thoughtful Execution** - Deliberate, well-considered actions
+
+**Benefits:**
+- **Visibility** - See what will happen before it happens
+- **Control** - Approve or modify plans before execution
+- **Quality** - More thoughtful specifications and plans
+- **Safety** - No surprise changes or modifications
+- **Learning** - Understand AI reasoning and approach
+
 ## SDD 2.5: Agile-Compatible Lightweight Workflow (Default)
 
 ### Primary Approach (80% of features)
@@ -50,11 +72,23 @@ For complex, high-risk, or multi-team features requiring comprehensive planning:
 
 **Upgrade from brief to full SDD** if complexity discovered during implementation
 
+**Use `/sdd-full-plan`** (or `/pecut-all-in-one`) when:
+- Planning entire application or major system
+- Need comprehensive roadmap with kanban structure
+- Want structured task hierarchy (epic → task → subtask)
+- Require VSCode extension integration
+- Managing multi-phase projects
+
 ## File Organization
 
 The system uses a context-engineering approach with:
 - **Active tasks**: [specs/active/[task-id]/](mdc:specs/active/) - Tasks currently in development
 - **Task artifacts**: research.md, spec.md, plan.md, tasks.md, todo-list.md, progress.md
+- **Roadmap registry**: [specs/todo-roadmap/](mdc:specs/todo-roadmap/) - Project roadmaps with kanban structure
+  - **roadmap.json**: VSCode extension compatible kanban board
+  - **roadmap.md**: Human-readable markdown view
+  - **tasks/**: Individual task JSON files
+  - **execution-log.md**: Task execution history
 - **Templates**: [.sdd/templates/](mdc:.sdd/templates/) - Reusable document templates  
 - **Configuration**: [.sdd/config.json](mdc:.sdd/config.json) - System settings and preferences
 - **Guidelines**: [.sdd/guidelines.md](mdc:.sdd/guidelines.md) - Development methodology guide
@@ -92,9 +126,54 @@ Todo-lists are NOT suggestions - they are executable checklists that MUST be fol
 
 **Reference**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md)
 
+## Full Project Planning (NEW)
+
+### `/sdd-full-plan` & `/pecut-all-in-one` Commands
+Create comprehensive project roadmaps from A to Z with:
+- **Epic-level organization** - Main phases and milestones
+- **Task hierarchy** - Epics → Tasks → Subtasks
+- **Kanban board structure** - To Do, In Progress, Review, Done columns
+- **Dependency management** - Automatic blocking and unblocking
+- **SDD command integration** - Each task maps to appropriate SDD command
+- **VSCode extension ready** - Compatible with Taskr Kanban and custom extensions
+
+### Command Usage
+```bash
+# Create full project roadmap
+/sdd-full-plan [project-id] [description]
+/pecut-all-in-one [project-id] [description]
+
+# Execute specific task from roadmap
+/execute-task [task-id]
+```
+
+### Complexity Detection
+- **Simple** (< 3 weeks): 3-5 tasks, Brief approach
+- **Medium** (3-8 weeks): 8-12 tasks, Mixed SDD
+- **Complex** (8-20 weeks): 15-20 tasks, Full SDD 2.0
+- **Enterprise** (20+ weeks): 20+ tasks, Multi-phase approach
+
+### Output Structure
+```
+specs/todo-roadmap/[project-id]/
+├── roadmap.json          # Kanban data
+├── roadmap.md            # Human-readable view
+├── tasks/                # Task details
+└── execution-log.md      # Execution tracking
+```
+
+### Integration with Existing SDD
+- Roadmaps link to `specs/active/` for implementation
+- Tasks execute via existing SDD commands (`/brief`, `/implement`, etc.)
+- Progress tracked in both roadmap and individual specs
+- Bidirectional linking maintained
+
+**See**: [.sdd/ROADMAP_FORMAT_SPEC.md](mdc:.sdd/ROADMAP_FORMAT_SPEC.md) for complete specification
+
 ## Collaboration Support
 The system supports multi-developer workflows with:
 - Assignee tracking for features and tasks
 - Progress monitoring through status updates
+- Kanban board management with roadmaps
 - Review workflows with feedback integration
 - Audit trails for change management
