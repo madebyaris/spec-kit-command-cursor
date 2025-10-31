@@ -99,6 +99,39 @@ Approve this plan?
 Approved! Let's go.
 ```
 
+### Execution Mode Selection
+
+**AI asks:**
+```
+How would you like to proceed with task creation?
+
+Option A: One-by-One Processing (Recommended for learning)
+- Review and approve each task as it's created
+- Understand each phase before moving forward
+- Interactive, step-by-step learning about your project
+- Best for: New projects, learning, thorough review
+
+Option B: Immediate Execution
+- Generate all tasks at once after roadmap approval
+- Fast, automated task creation
+- Quick setup for experienced users
+- Best for: Well-understood projects, experienced teams
+
+Which mode would you prefer? (A/B or 'one-by-one'/'immediate')
+```
+
+**User Response - One-by-One Mode:**
+```
+Option A - One-by-One
+I want to learn about each phase as we go.
+```
+
+**User Response - Immediate Mode:**
+```
+Option B - Immediate
+I understand the project well, create everything at once.
+```
+
 ### Generated Roadmap (roadmap.json excerpt)
 
 ```json
@@ -574,6 +607,96 @@ Approve this plan?
 
 ---
 
+## Execution Mode Examples
+
+### One-by-One Mode Walkthrough
+
+**User chooses Option A:**
+
+```
+AI: How would you like to proceed?
+    - Option A: One-by-One Processing
+    - Option B: Immediate Execution
+
+User: Option A - I want to learn step-by-step
+
+AI: Perfect! Let's create tasks one epic at a time.
+
+📋 Epic 1 of 5: Research & Foundation
+
+This epic includes:
+- Task 1-1: Research CMS patterns (8h)
+- Task 1-2: Define architecture (16h)
+- Task 1-3: Create specification (16h)
+
+Total: 3 tasks, 40 hours
+SDD Phase: Research → Specification
+
+Create this epic? (Yes/No/Skip)
+
+User: Yes
+
+AI: ✅ Epic 1 created!
+    - Added 3 tasks to roadmap.json
+    - Created task JSON files
+    - Updated roadmap.md
+
+    Progress: 1/5 epics (20%)
+    Tasks: 3/20 created
+    Hours: 40/240 estimated
+
+    Ready for Epic 2: Core Blog Features?
+
+User: Yes, continue
+
+AI: 📋 Epic 2 of 5: Core Blog Features
+    ...
+```
+
+**Benefits shown:**
+- Learn each phase before it's created
+- Adjust approach as you learn
+- Review progress incrementally
+- Switch to immediate mode anytime
+
+### Immediate Mode Walkthrough
+
+**User chooses Option B:**
+
+```
+AI: How would you like to proceed?
+    - Option A: One-by-One Processing
+    - Option B: Immediate Execution
+
+User: Option B - Create everything at once
+
+AI: Generating complete roadmap...
+
+✅ Roadmap created!
+
+Total epics: 5
+Total tasks: 20
+Total subtasks: 45
+Estimated duration: 6 weeks
+Estimated effort: 240 hours
+
+Created files:
+- roadmap.json (all tasks included)
+- roadmap.md (complete view)
+- tasks/epic-001.json through epic-005.json
+- tasks/task-001-1.json through task-020.json
+- execution-log.md (template)
+
+All tasks ready for execution!
+Start with: /execute-task epic-001
+```
+
+**Benefits shown:**
+- Complete roadmap immediately
+- All tasks visible from start
+- Fast setup for experienced users
+- Ready for team collaboration
+
 ## Task Execution Flow
 
 ### Example: Executing a Research Task
@@ -648,6 +771,24 @@ Available tasks:
 ---
 
 ## Tips and Best Practices
+
+### 0. Choosing Execution Mode
+
+**Choose One-by-One when:**
+- ✅ Learning about your project structure
+- ✅ Want to understand each phase before it's created
+- ✅ Need to adjust approach as you learn
+- ✅ First time using full planning
+- ✅ Complex or unfamiliar project domain
+
+**Choose Immediate when:**
+- ✅ Well-understood project
+- ✅ Experienced with SDD workflow
+- ✅ Need fast setup
+- ✅ Ready to collaborate with team
+- ✅ Want complete roadmap immediately
+
+**Remember:** You can switch modes mid-process if needed!
 
 ### 1. Choosing the Right Complexity
 

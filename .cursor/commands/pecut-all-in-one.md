@@ -43,10 +43,26 @@ Choose the one that feels natural to you!
 ## What This Command Does
 
 1. **Analyzes** your project description
-2. **Creates** comprehensive roadmap with kanban structure
-3. **Organizes** tasks into epics, phases, and subtasks
-4. **Maps** to SDD commands for execution
-5. **Generates** VSCode-compatible JSON files
+2. **Presents** roadmap plan for approval
+3. **Asks** your execution preference (One-by-One or Immediate)
+4. **Creates** comprehensive roadmap with kanban structure
+5. **Organizes** tasks into epics, phases, and subtasks
+6. **Maps** to SDD commands for execution
+7. **Generates** VSCode-compatible JSON files
+
+### Execution Modes
+
+**One-by-One Mode:**
+- Review each task/epic before it's created
+- Learn about your project step-by-step
+- Interactive, educational experience
+- Best for: New projects, learning, detailed review
+
+**Immediate Mode:**
+- All tasks created at once after roadmap approval
+- Fast, automated setup
+- Complete roadmap ready immediately
+- Best for: Experienced users, well-understood projects
 
 ## Output
 
