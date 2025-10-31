@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "id": "{{TASK_ID}}",
+  "title": "{{TASK_TITLE}}",
+  "description": "{{TASK_DESCRIPTION}}",
+  "type": "{{TASK_TYPE}}",
+  "parentId": "{{PARENT_ID}}",
+  "priority": "{{PRIORITY}}",
+  "complexity": "{{COMPLEXITY}}",
+  "status": "{{STATUS}}",
+  "column": "{{COLUMN}}",
+  "dependencies": [],
+  "subtasks": [],
+  "estimatedHours": {{ESTIMATED_HOURS}},
+  "actualHours": {{ACTUAL_HOURS}},
+  "tags": [],
+  "sdd": {
+    "phase": "{{SDD_PHASE}}",
+    "commands": ["{{SDD_COMMANDS}}"],
+    "linkedSpec": null,
+    "executeCommand": "/execute-task {{TASK_ID}}",
+    "executedAt": null,
+    "completedAt": null,
+    "executedBy": null
+  },
+  "markdown": "### {{TASK_TITLE}}\n\n**Description:**\n{{TASK_DESCRIPTION}}\n\n**Type:** {{TASK_TYPE}}\n**Priority:** {{PRIORITY}}\n**Complexity:** {{COMPLEXITY}}\n\n**Estimated Effort:** {{ESTIMATED_HOURS}}h\n\n#### Objectives\n\n- [ ] {{OBJECTIVE_1}}\n- [ ] {{OBJECTIVE_2}}\n- [ ] {{OBJECTIVE_3}}\n\n#### Acceptance Criteria\n\n1. {{CRITERIA_1}}\n2. {{CRITERIA_2}}\n3. {{CRITERIA_3}}\n\n#### Implementation Notes\n\n{{IMPLEMENTATION_NOTES}}\n\n#### Dependencies\n\n{{DEPENDENCIES}}\n\n#### Resources\n\n- [Related Spec]({{SPEC_LINK}})\n- [Parent Task]({{PARENT_LINK}})\n",
+  "assignee": "{{ASSIGNEE}}",
+  "reporter": "{{REPORTER}}",
+  "created": "{{CREATED_TIMESTAMP}}",
+  "updated": "{{UPDATED_TIMESTAMP}}",
+  "startedAt": null,
+  "completedAt": null,
+  "dueDate": "{{DUE_DATE}}",
+  "blockers": [],
+  "comments": [],
+  "attachments": [],
+  "history": [
+    {
+      "timestamp": "{{CREATED_TIMESTAMP}}",
+      "action": "task_created",
+      "description": "Task created as part of roadmap",
+      "user": "{{USER}}"
+    }
+  ]
+}
+
