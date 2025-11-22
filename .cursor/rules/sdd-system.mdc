@@ -35,6 +35,49 @@ User Command → Analysis → Create Plan → User Approval → Execute → Docu
 - **Safety** - No surprise changes or modifications
 - **Learning** - Understand AI reasoning and approach
 
+### Cursor 2.1 Enhancements
+
+**Interactive Question UI:**
+- Questions appear automatically in interactive interface
+- Answer directly in UI for faster workflow
+- Better UX and mobile-friendly
+
+**Plan Search (⌘+F):**
+- Search within generated plans
+- Navigate large plans efficiently
+- Find specific sections quickly
+
+**AI Code Reviews:**
+- Automatic code review after implementation
+- Issues appear in sidepanel
+- Fix bugs directly in editor
+- Integrated into `/implement` workflow
+
+**Instant Grep:**
+- All codebase searches are instant
+- Faster `/research` command
+- Multiple parallel searches possible
+
+**Background Planning:**
+- Create plans in background while working
+- Useful for complex `/sdd-full-plan` projects
+- Compare multiple plan options
+
+**Multi-Agents:**
+- Execute up to 8 tasks in parallel
+- Independent tasks run simultaneously
+- No file conflicts (isolated environments)
+
+**Team Commands:**
+- Define SDD commands in dashboard
+- Share with entire team
+- Centralized management
+
+**Voice Mode:**
+- Control SDD commands with voice
+- Hands-free workflow
+- Accessibility improvement
+
 ## SDD 2.5: Agile-Compatible Lightweight Workflow (Default)
 
 ### Primary Approach (80% of features)

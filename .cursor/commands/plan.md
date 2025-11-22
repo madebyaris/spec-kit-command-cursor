@@ -38,6 +38,11 @@ This command follows a **plan-approve-execute** pattern for meta-planning - plan
 - What are the performance requirements and constraints?
 - Are there budget or timeline constraints affecting tech choices?
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **Background Planning:** For complex projects, you can create plan in background and continue working
+- **Plan Search:** Use ⌘+F to search within generated plans
+
 **Read relevant files:**
 - Existing `specs/active/[task-id]/spec.md` (required)
 - Existing `specs/active/[task-id]/research.md` (if available)
@@ -178,9 +183,11 @@ Creates: `specs/active/feat-XXX-[name]/plan.md` or `specs/active/[task-id]/plan.
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing planning approach (meta!)
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
 - **Read spec thoroughly** - every requirement must be addressed
-- **Search codebase** for existing patterns to follow
+- **Search codebase** for existing patterns to follow (Instant Grep makes this fast!)
 - **Justify all tech decisions** - no assumptions without reasoning
 - **Wait for approval** before creating plan file
 - **Be comprehensive** - this guides all implementation
 - **Stay consistent** with existing project architecture
+- **Note plan search** - Users can ⌘+F to search within planning documents

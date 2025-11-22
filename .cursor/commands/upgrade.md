@@ -32,6 +32,8 @@ This command follows a **plan-approve-execute** pattern to ensure smooth escalat
 - Are there additional technical constraints to consider?
 - What level of detail is needed for each SDD document?
 
+**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow.
+
 **Read relevant files:**
 - Existing `specs/active/[task-id]/feature-brief.md` (required)
 - Any implementation code already created
@@ -201,9 +203,11 @@ This command follows a **plan-approve-execute** pattern to ensure smooth escalat
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing upgrade strategy
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
 - **Show content mapping** - how brief expands to full SDD
 - **Preserve everything** - no information should be lost
 - **Explain escalation** - why full SDD is now needed
 - **Wait for approval** before creating documents
 - **Be comprehensive** - justify the additional planning depth
 - **Link documents** - maintain traceability to original brief
+- **Note plan search** - Users can ⌘+F to search within upgrade plans

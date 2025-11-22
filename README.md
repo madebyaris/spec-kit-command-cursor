@@ -58,13 +58,25 @@ Every Command: User Request → Analysis → Present Plan → Approve → Execut
 - 🛡️ **Safety first** - No surprise file changes or modifications
 - 🎯 **Better quality** - More thoughtful, deliberate specifications
 
+**Cursor 2.1 Enhancements:**
+- 🎯 **Interactive Questions** - Questions appear in interactive UI (faster workflow)
+- 🔍 **Plan Search** - Use ⌘+F to search within generated plans
+- 🐛 **AI Code Reviews** - Automatic code review after implementation (issues in sidepanel)
+- ⚡ **Instant Grep** - All codebase searches are instant (faster research)
+- 🔄 **Background Planning** - Create plans in background while working
+- 👥 **Multi-Agents** - Execute up to 8 tasks in parallel
+- 🎤 **Voice Mode** - Control commands with your voice
+
 **Example Flow:**
 1. You run `/brief checkout-flow Quick checkout for guest users`
 2. AI analyzes requirements and existing patterns
 3. AI presents a plan showing brief structure, research approach, and what will be created
-4. You review and approve (or request changes)
-5. AI executes, creating the feature brief as planned
-6. Result: `specs/active/checkout-flow/feature-brief.md` created with full visibility
+4. **Questions appear in interactive UI** (Cursor 2.1+) - answer directly
+5. You review plan (use ⌘+F to search if needed)
+6. You approve (or request changes)
+7. AI executes, creating the feature brief as planned
+8. **AI Code Review** automatically checks code (Cursor 2.1+)
+9. Result: `specs/active/checkout-flow/feature-brief.md` created with full visibility
 
 ## ✨ Key Features
 
@@ -273,6 +285,8 @@ AI: "Updated plan with error handling user stories..."
 - **[Quick Start Guide](.sdd/PLAN_MODE_QUICKSTART.md)** - Get started with PLAN mode in 5 minutes
 - **[Detailed Examples](.sdd/PLAN_MODE_EXAMPLES.md)** - Real scenarios and walkthroughs for each command
 - **[Implementation Summary](.sdd/PLAN_MODE_INTEGRATION_SUMMARY.md)** - Technical details of the integration
+- **[Cursor 2.1 Enhancements](.sdd/CURSOR_2.1_ENHANCEMENTS.md)** - New features and improvements
+- **[Team Setup Guide](.sdd/TEAM_SETUP_GUIDE.md)** - Set up SDD commands for your team
 
 ---
 
@@ -414,6 +428,197 @@ specs/todo-roadmap/blog-platform/
 - **[Full Plan Command Docs](.cursor/commands/sdd-full-plan.md)** - Complete documentation
 - **[Roadmap Format Spec](.sdd/ROADMAP_FORMAT_SPEC.md)** - JSON schema and structure
 - **[Full Plan Examples](.sdd/FULL_PLAN_EXAMPLES.md)** - Detailed examples at all complexity levels
+- **[Cursor 2.1 Features](.sdd/CURSOR_2.1_ENHANCEMENTS.md)** - Leverage latest Cursor features
+- **[Team Commands](.sdd/TEAM_SETUP_GUIDE.md)** - Set up team-wide SDD commands
+
+---
+
+## 🚀 Cursor 2.1 Features
+
+SDD system now leverages powerful Cursor 2.1 capabilities:
+
+### 🎯 Interactive Question UI
+
+**What It Does:**
+Questions appear in interactive interface instead of text chat.
+
+**SDD Benefits:**
+- ⚡ Faster question answering
+- 🎨 Better UX
+- 📱 Mobile-friendly
+- 🎯 Clear question visibility
+
+**Usage:**
+When running any SDD command, questions appear automatically in interactive UI. Answer directly for faster workflow.
+
+### 🔍 Plan Search (⌘+F)
+
+**What It Does:**
+Search within generated plans using ⌘+F (Cmd+F / Ctrl+F).
+
+**SDD Benefits:**
+- 🔍 Fast navigation in large plans
+- 📋 Find specific sections quickly
+- ⏱️ Save time reviewing plans
+- 📖 Better plan readability
+
+**Usage:**
+1. Generate plan with any SDD command
+2. Press ⌘+F
+3. Search for keywords, file paths, or sections
+4. Navigate efficiently
+
+**Pro Tips:**
+- Search for "What will be created" to see file changes
+- Search for file paths to find specific files
+- Use regex for advanced searches
+
+### 🐛 AI Code Reviews
+
+**What It Does:**
+Automatically reviews code changes and shows issues in sidepanel.
+
+**SDD Integration:**
+- Integrated into `/implement` workflow
+- Automatic review after implementation
+- Fix bugs directly in editor
+- Security and performance checks
+
+**Workflow:**
+```
+/implement user-auth-system
+→ Code implemented
+→ AI automatically reviews
+→ Issues appear in sidepanel
+→ Click to review and fix
+→ Apply fixes directly
+```
+
+**Review Checklist:**
+- [ ] All requirements met
+- [ ] Code follows project patterns
+- [ ] No security vulnerabilities
+- [ ] Performance optimized
+- [ ] Tests included
+
+### ⚡ Instant Grep
+
+**What It Does:**
+All grep commands are now instant.
+
+**SDD Benefits:**
+- ⚡ Faster `/research` command
+- 🔍 Real-time pattern discovery
+- 📊 Better research efficiency
+- 🎯 Multiple parallel searches
+
+**Usage:**
+The `/research` command now leverages instant grep for faster codebase exploration.
+
+### 🔄 Background Planning
+
+**What It Does:**
+Create plans in background while continuing to work.
+
+**SDD Integration:**
+- Useful for complex `/sdd-full-plan` projects
+- Don't wait for plan generation
+- Compare multiple plan options
+- Better for enterprise projects
+
+**Usage:**
+Enable background planning in Cursor settings. Plans generate while you work, notification when ready.
+
+### 👥 Multi-Agents (8 Parallel)
+
+**What It Does:**
+Execute up to 8 agents in parallel on single prompt.
+
+**SDD Integration:**
+- Execute multiple independent roadmap tasks simultaneously
+- Faster completion
+- No file conflicts (isolated environments)
+- Better team utilization
+
+**Usage:**
+```bash
+# Execute 3 independent tasks in parallel
+/execute-task task-001  # Agent 1
+/execute-task task-002  # Agent 2
+/execute-task task-003  # Agent 3
+```
+
+**Safety:**
+- Each agent has isolated copy
+- No file conflicts
+- Merge results when complete
+
+### 👥 Team Commands
+
+**What It Does:**
+Define custom commands in dashboard, shared across team.
+
+**SDD Integration:**
+- SDD commands can be team-wide
+- Consistent workflow
+- Centralized management
+- Easy onboarding
+
+**Setup:**
+1. Go to Cursor dashboard
+2. Define SDD commands
+3. Share with team
+4. Commands available to all automatically
+
+**Benefits:**
+- 👥 Team-wide consistency
+- 📋 Centralized updates
+- 🎯 Standardized workflow
+- 🚀 Easy onboarding
+
+See [Team Setup Guide](.sdd/TEAM_SETUP_GUIDE.md) for complete instructions.
+
+### 🎤 Voice Mode
+
+**What It Does:**
+Control Agent with your voice.
+
+**SDD Integration:**
+- Voice control for all SDD commands
+- Hands-free workflow
+- Accessibility improvement
+
+**Usage:**
+```
+Voice: "Create a brief for user notifications"
+AI: [Runs /brief command]
+
+Voice: "Execute task epic-001"
+AI: [Runs /execute-task epic-001]
+```
+
+---
+
+## 📖 Documentation
+
+### Getting Started
+- **[Quick Start](#-quick-start)** - Install and start using
+- **[PLAN Mode Quick Start](.sdd/PLAN_MODE_QUICKSTART.md)** - PLAN mode in 5 minutes
+
+### Commands
+- **[Command Reference](#-sdd-commands)** - All SDD commands
+- **[Full Planning](.cursor/commands/sdd-full-plan.md)** - Complete roadmaps
+
+### Advanced
+- **[PLAN Mode Examples](.sdd/PLAN_MODE_EXAMPLES.md)** - Detailed walkthroughs
+- **[Cursor 2.1 Features](.sdd/CURSOR_2.1_ENHANCEMENTS.md)** - Latest enhancements
+- **[Team Setup](.sdd/TEAM_SETUP_GUIDE.md)** - Team command setup
+- **[Roadmap Format](.sdd/ROADMAP_FORMAT_SPEC.md)** - JSON schema
+- **[Full Plan Examples](.sdd/FULL_PLAN_EXAMPLES.md)** - Complexity examples
+
+### Methodology
+- **[SDD Guidelines](.sdd/guidelines.md)** - Complete methodology
+- **[Implementation Guide](.sdd/IMPLEMENTATION_GUIDE.md)** - Execution rules
 
 ---
 

@@ -48,6 +48,10 @@ This command follows a **plan-approve-execute** pattern to ensure systematic imp
 - Should we focus on backend, frontend, or full-stack?
 - Are there existing examples to follow for similar features?
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **AI Code Reviews:** After implementation, Cursor will automatically review code and show issues in sidepanel
+
 **Read relevant files:**
 - All specification documents in task directory
 - Existing codebase files that will be modified
@@ -155,7 +159,28 @@ This command follows a **plan-approve-execute** pattern to ensure systematic imp
    - Document any discoveries or changes
    - Note any deviations from plan
 
-### Phase 4: Documentation
+### Phase 4: Code Review (Cursor 2.1+)
+
+**AI Code Review Integration:**
+- Cursor automatically analyzes code changes
+- Issues appear in sidepanel for review
+- Review and fix bugs directly in editor
+- Address security, performance, and quality issues
+
+**Review Checklist:**
+- [ ] All requirements met
+- [ ] Code follows project patterns
+- [ ] No security vulnerabilities
+- [ ] Performance considerations addressed
+- [ ] Tests included and passing
+- [ ] Documentation updated
+
+**Fix Issues:**
+- Click issues in sidepanel to review
+- Apply suggested fixes directly
+- Re-review until all issues resolved
+
+### Phase 5: Documentation
 
 **Finalize implementation:**
 - Ensure all todos marked complete
@@ -163,6 +188,7 @@ This command follows a **plan-approve-execute** pattern to ensure systematic imp
 - Document any plan deviations
 - Note learnings for future features
 - Suggest `/evolve` updates if discoveries made
+- Record code review findings
 
 ---
 
@@ -204,6 +230,7 @@ This command follows a **plan-approve-execute** pattern to ensure systematic imp
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing implementation strategy
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
 - **Show todo preview** in the plan (5-10 key items)
 - **Explain execution order** and why
 - **Wait for approval** before creating todo-list
@@ -212,3 +239,5 @@ This command follows a **plan-approve-execute** pattern to ensure systematic imp
 - **Document everything** - discoveries, blockers, changes
 - **Go for flow** - implement continuously without interruption
 - **Quality matters** - don't rush, write good code
+- **After implementation:** Remind users about AI Code Review in sidepanel
+- **Note plan search** - Users can ⌘+F to search within implementation plans

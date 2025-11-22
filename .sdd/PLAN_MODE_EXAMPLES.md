@@ -11,6 +11,23 @@ User Command → Analysis → Create Plan → User Approval → Execute → Docu
 
 These examples show what you can expect when using each command with PLAN mode enabled.
 
+### Cursor 2.1 Enhancements
+
+**Interactive Question UI:**
+- Questions now appear in an interactive interface
+- Answer directly in the UI for faster workflow
+- Skip questions if information is already clear
+
+**Plan Search (⌘+F):**
+- Search within generated plans using ⌘+F
+- Quickly find specific sections or keywords
+- Navigate large plans efficiently
+
+**AI Code Reviews:**
+- Automatic code review after implementation
+- Issues appear in sidepanel
+- Fix bugs directly in editor
+
 ---
 
 ## Example 1: `/brief` - Feature Brief Creation

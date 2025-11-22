@@ -38,6 +38,10 @@ This command follows a **plan-approve-execute** pattern to ensure thoughtful tas
 - What's the testing strategy (affects test task creation)?
 - Are there deployment constraints to consider?
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **Multi-Agents:** With 8 parallel agents, you can execute multiple independent tasks simultaneously
+
 **Read relevant files:**
 - Existing `specs/active/[task-id]/spec.md` (required)
 - Existing `specs/active/[task-id]/plan.md` (required)
@@ -191,9 +195,11 @@ Creates: `specs/active/feat-XXX-[name]/tasks.md` or `specs/active/[task-id]/task
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing breakdown strategy
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
 - **Show task examples** in the plan to set expectations
 - **Map every plan section** to specific tasks
 - **Include testing tasks** - don't forget quality assurance
 - **Wait for approval** before creating tasks file
 - **Be comprehensive** - missing tasks lead to scope creep
 - **Size appropriately** - too large = hard to track, too small = overhead
+- **Note parallel execution** - Independent tasks can run simultaneously with multi-agents

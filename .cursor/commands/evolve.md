@@ -31,6 +31,8 @@ This command follows a **plan-approve-execute** pattern to ensure deliberate doc
 - Should this trigger an upgrade to full SDD?
 - What's the reasoning/rationale for this change?
 
+**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow.
+
 **Read relevant files:**
 - Current `specs/active/[task-id]/feature-brief.md`
 - Related implementation files if referenced
