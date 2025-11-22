@@ -607,6 +607,7 @@ AI: [Runs /execute-task epic-001]
 
 ### Commands
 - **[Command Reference](#-sdd-commands)** - All SDD commands
+- **[Generate Rules](.cursor/commands/generate-rules.md)** - Auto-generate coding rules
 - **[Full Planning](.cursor/commands/sdd-full-plan.md)** - Complete roadmaps
 
 ### Advanced
@@ -688,6 +689,12 @@ Transform any feature idea using the proven SDD workflow:
 | Command | Purpose | When | Output |
 |---------|---------|------|--------|
 | ⬆️ `/upgrade` | Brief → Full SDD | Complexity discovered | Complete planning suite |
+
+### **⚙️ Rule Generation**
+
+| Command | Purpose | Time | Output |
+|---------|---------|------|--------|
+| 📝 `/generate-rules` | Auto-generate coding rules | 5-10 min | Comprehensive rule files |
 
 </div>
 

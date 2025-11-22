@@ -1,0 +1,374 @@
+---
+alwaysApply: true
+---
+
+# React Coding Rules
+
+Best practices for React development with hooks, components, and modern patterns.
+
+## Core Principles
+
+- **Functional Components:** Use function components with hooks
+- **DRY:** Extract reusable logic to custom hooks
+- **KISS:** Keep components simple and focused
+- **Modular:** One component per file, clear separation
+
+---
+
+## Component Structure
+
+### Functional Components
+
+**Use function components:**
+```jsx
+// ✅ GOOD: Function component
+function UserCard({ user }) {
+  return (
+    <div className="user-card">
+      <h2>{user.name}</h2>
+      <p>{user.email}</p>
+    </div>
+  );
+}
+
+// ❌ BAD: Class component (unless needed)
+class UserCard extends React.Component {
+  render() {
+    return <div>{this.props.user.name}</div>;
+  }
+}
+```
+
+### Component Organization
+
+**One component per file:**
+```jsx
+// ✅ GOOD: UserCard.jsx
+export function UserCard({ user }) {
+  // Component code
+}
+
+// ✅ GOOD: index.js for convenience
+export { UserCard } from './UserCard';
+```
+
+---
+
+## Hooks
+
+### useState
+
+**Use useState for local state:**
+```jsx
+// ✅ GOOD: useState
+function Counter() {
+  const [count, setCount] = useState(0);
+  
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+```
+
+**Functional updates:**
+```jsx
+// ✅ GOOD: Functional update when needed
+setCount(prev => prev + 1);
+```
+
+### useEffect
+
+**Use useEffect for side effects:**
+```jsx
+// ✅ GOOD: useEffect with cleanup
+useEffect(() => {
+  const subscription = subscribe();
+  return () => {
+    subscription.unsubscribe();
+  };
+}, [dependencies]);
+```
+
+**Dependency array:**
+```jsx
+// ✅ GOOD: Include all dependencies
+useEffect(() => {
+  fetchData(userId);
+}, [userId]); // Include userId
+
+// ❌ BAD: Missing dependencies
+useEffect(() => {
+  fetchData(userId);
+}, []); // Missing userId
+```
+
+### Custom Hooks
+
+**Extract reusable logic:**
+```jsx
+// ✅ GOOD: Custom hook
+function useUser(userId) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchUser(userId).then(setUser).finally(() => setLoading(false));
+  }, [userId]);
+  
+  return { user, loading };
+}
+
+// Usage
+function UserProfile({ userId }) {
+  const { user, loading } = useUser(userId);
+  // ...
+}
+```
+
+---
+
+## Props
+
+### Prop Types
+
+**Use TypeScript or PropTypes:**
+```tsx
+// ✅ GOOD: TypeScript
+interface UserCardProps {
+  user: User;
+  onEdit?: (user: User) => void;
+}
+
+function UserCard({ user, onEdit }: UserCardProps) {
+  // ...
+}
+```
+
+**Or PropTypes:**
+```jsx
+// ✅ GOOD: PropTypes
+import PropTypes from 'prop-types';
+
+UserCard.propTypes = {
+  user: PropTypes.object.isRequired,
+  onEdit: PropTypes.func,
+};
+```
+
+### Destructuring Props
+
+**Destructure props:**
+```jsx
+// ✅ GOOD: Destructured props
+function UserCard({ user, onEdit }) {
+  // ...
+}
+
+// ❌ BAD: Access via props object
+function UserCard(props) {
+  return <div>{props.user.name}</div>;
+}
+```
+
+---
+
+## State Management
+
+### Local State First
+
+**Use local state when possible:**
+```jsx
+// ✅ GOOD: Local state
+function Form() {
+  const [value, setValue] = useState('');
+  // ...
+}
+```
+
+### Lifting State Up
+
+**Lift state when needed:**
+```jsx
+// ✅ GOOD: Shared state in parent
+function Parent() {
+  const [sharedState, setSharedState] = useState(null);
+  
+  return (
+    <>
+      <Child1 state={sharedState} />
+      <Child2 state={sharedState} />
+    </>
+  );
+}
+```
+
+### Context for Global State
+
+**Use Context for deeply nested state:**
+```jsx
+// ✅ GOOD: Context
+const UserContext = createContext();
+
+function UserProvider({ children }) {
+  const [user, setUser] = useState(null);
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+}
+```
+
+---
+
+## Performance
+
+### Memoization
+
+**Use memo/useMemo/useCallback when needed:**
+```jsx
+// ✅ GOOD: Memo for expensive components
+const ExpensiveComponent = memo(function ExpensiveComponent({ data }) {
+  // Expensive rendering
+});
+
+// ✅ GOOD: useMemo for expensive calculations
+const expensiveValue = useMemo(() => {
+  return computeExpensiveValue(data);
+}, [data]);
+
+// ✅ GOOD: useCallback for stable function references
+const handleClick = useCallback(() => {
+  doSomething(id);
+}, [id]);
+```
+
+**Don't overuse:**
+```jsx
+// ❌ BAD: Unnecessary memoization
+const SimpleComponent = memo(function SimpleComponent({ name }) {
+  return <div>{name}</div>; // Too simple to memoize
+});
+```
+
+### Code Splitting
+
+**Lazy load components:**
+```jsx
+// ✅ GOOD: Lazy loading
+const HeavyComponent = lazy(() => import('./HeavyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+---
+
+## Event Handlers
+
+### Naming
+
+**Use handle prefix:**
+```jsx
+// ✅ GOOD: handle prefix
+function Button({ onClick }) {
+  const handleClick = () => {
+    onClick();
+  };
+  
+  return <button onClick={handleClick}>Click</button>;
+}
+```
+
+### Event Handling
+
+**Extract handlers:**
+```jsx
+// ✅ GOOD: Extracted handler
+function Form() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Submit logic
+  };
+  
+  return <form onSubmit={handleSubmit}>...</form>;
+}
+```
+
+---
+
+## Conditional Rendering
+
+### Clear Conditionals
+
+**Use clear conditional rendering:**
+```jsx
+// ✅ GOOD: Clear conditionals
+function UserProfile({ user }) {
+  if (!user) return <div>Loading...</div>;
+  
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      {user.isAdmin && <AdminPanel />}
+      {user.email && <p>{user.email}</p>}
+    </div>
+  );
+}
+```
+
+**Avoid complex ternaries:**
+```jsx
+// ❌ BAD: Complex ternary
+{condition1 ? (condition2 ? <A /> : <B />) : (condition3 ? <C /> : <D />)}
+
+// ✅ GOOD: Extract to function or use if/else
+```
+
+---
+
+## Lists and Keys
+
+### Keys
+
+**Use stable, unique keys:**
+```jsx
+// ✅ GOOD: Unique key
+{users.map(user => (
+  <UserCard key={user.id} user={user} />
+))}
+
+// ❌ BAD: Index as key (unless list is static)
+{users.map((user, index) => (
+  <UserCard key={index} user={user} />
+))}
+```
+
+---
+
+## Best Practices Summary
+
+1. **Functional Components** - Use hooks, not classes
+2. **Custom Hooks** - Extract reusable logic
+3. **Proper Dependencies** - Include all useEffect dependencies
+4. **Memoization** - When performance matters
+5. **Code Splitting** - Lazy load heavy components
+6. **Type Safety** - Use TypeScript or PropTypes
+7. **Clear Props** - Destructure and type props
+8. **State Management** - Local state first, lift when needed
+9. **Event Handlers** - Extract and name clearly
+10. **Keys** - Use stable, unique keys for lists
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

@@ -1,0 +1,368 @@
+---
+alwaysApply: true
+---
+
+# Security Rules
+
+Security best practices for all applications and languages.
+
+## Core Principles
+
+- **Never Trust Input:** Validate and sanitize all input
+- **Least Privilege:** Grant minimum necessary permissions
+- **Defense in Depth:** Multiple security layers
+- **Security by Design:** Build security in from start
+
+---
+
+## Input Validation
+
+### Validate All Input
+
+**Never trust user input:**
+```javascript
+// ✅ GOOD: Validate input
+function processUserInput(input) {
+  if (typeof input !== 'string' || input.length === 0) {
+    throw new ValidationError('Invalid input');
+  }
+  
+  // Sanitize
+  const sanitized = input.trim().replace(/[<>]/g, '');
+  
+  return sanitized;
+}
+
+// ❌ BAD: Trust input
+function processUserInput(input) {
+  return input; // Dangerous!
+}
+```
+
+### Type Validation
+
+**Check types:**
+```javascript
+// ✅ GOOD: Type checking
+function calculateTotal(items) {
+  if (!Array.isArray(items)) {
+    throw new TypeError('Items must be an array');
+  }
+  
+  return items.reduce((sum, item) => {
+    if (typeof item.price !== 'number' || item.price < 0) {
+      throw new ValidationError('Invalid price');
+    }
+    return sum + item.price;
+  }, 0);
+}
+```
+
+### Sanitization
+
+**Sanitize before use:**
+```javascript
+// ✅ GOOD: Sanitize HTML
+function sanitizeHtml(input) {
+  return input
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+```
+
+---
+
+## Authentication
+
+### Secure Authentication
+
+**Use proven authentication methods:**
+```javascript
+// ✅ GOOD: Use secure libraries
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+async function authenticateUser(email, password) {
+  const user = await findUserByEmail(email);
+  if (!user) throw new Error('Invalid credentials');
+  
+  const isValid = await bcrypt.compare(password, user.passwordHash);
+  if (!isValid) throw new Error('Invalid credentials');
+  
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+    expiresIn: '1h'
+  });
+  
+  return token;
+}
+```
+
+### Password Security
+
+**Hash passwords properly:**
+```javascript
+// ✅ GOOD: Hash passwords
+const saltRounds = 10;
+const passwordHash = await bcrypt.hash(password, saltRounds);
+
+// ❌ BAD: Plain text or weak hashing
+const passwordHash = password; // Never!
+const passwordHash = md5(password); // Too weak!
+```
+
+### Token Security
+
+**Secure token storage:**
+```javascript
+// ✅ GOOD: HttpOnly cookies
+res.cookie('token', token, {
+  httpOnly: true, // Not accessible via JavaScript
+  secure: true,   // HTTPS only
+  sameSite: 'strict'
+});
+
+// ❌ BAD: localStorage (XSS vulnerable)
+localStorage.setItem('token', token);
+```
+
+---
+
+## Authorization
+
+### Check Permissions
+
+**Always verify permissions:**
+```javascript
+// ✅ GOOD: Check permissions
+async function deleteUser(userId, requesterId) {
+  const requester = await getUser(requesterId);
+  
+  if (!requester.isAdmin && requester.id !== userId) {
+    throw new AuthorizationError('Not authorized');
+  }
+  
+  await deleteUserById(userId);
+}
+
+// ❌ BAD: No permission check
+async function deleteUser(userId) {
+  await deleteUserById(userId); // Anyone can delete!
+}
+```
+
+### Least Privilege
+
+**Grant minimum permissions:**
+```javascript
+// ✅ GOOD: Minimal permissions
+const permissions = {
+  read: user.role === 'user' || user.role === 'admin',
+  write: user.role === 'admin',
+  delete: user.role === 'admin'
+};
+
+// ❌ BAD: Over-permissive
+const permissions = {
+  read: true,
+  write: true,
+  delete: true // Too permissive!
+};
+```
+
+---
+
+## SQL Injection Prevention
+
+### Parameterized Queries
+
+**Use parameterized queries:**
+```javascript
+// ✅ GOOD: Parameterized query
+const query = 'SELECT * FROM users WHERE id = ?';
+const user = await db.query(query, [userId]);
+
+// ❌ BAD: String concatenation
+const query = `SELECT * FROM users WHERE id = ${userId}`; // Vulnerable!
+```
+
+### ORM Usage
+
+**Use ORM when possible:**
+```javascript
+// ✅ GOOD: ORM (safe)
+const user = await User.findById(userId);
+
+// ✅ GOOD: Query builder
+const user = await db('users').where('id', userId).first();
+```
+
+---
+
+## XSS Prevention
+
+### Escape Output
+
+**Escape user-generated content:**
+```javascript
+// ✅ GOOD: Escape output
+function renderUserContent(content) {
+  const escaped = content
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+  
+  return escaped;
+}
+```
+
+### Content Security Policy
+
+**Use CSP headers:**
+```javascript
+// ✅ GOOD: CSP headers
+app.use((req, res, next) => {
+  res.setHeader('Content-Security-Policy', 
+    "default-src 'self'; script-src 'self'");
+  next();
+});
+```
+
+---
+
+## CSRF Protection
+
+### CSRF Tokens
+
+**Use CSRF tokens:**
+```javascript
+// ✅ GOOD: CSRF protection
+import csrf from 'csurf';
+
+app.use(csrf());
+
+app.post('/api/users', (req, res) => {
+  // CSRF token validated automatically
+  // ...
+});
+```
+
+---
+
+## Secrets Management
+
+### Environment Variables
+
+**Never commit secrets:**
+```javascript
+// ✅ GOOD: Environment variables
+const dbPassword = process.env.DB_PASSWORD;
+const apiKey = process.env.API_KEY;
+
+// ❌ BAD: Hardcoded secrets
+const dbPassword = 'mysecretpassword'; // Never!
+const apiKey = 'sk-1234567890'; // Never!
+```
+
+### Secret Storage
+
+**Use secure secret storage:**
+- Environment variables (development)
+- Secret management services (production)
+- Encrypted configuration files
+- Never in version control
+
+---
+
+## HTTPS
+
+### Always Use HTTPS
+
+**Force HTTPS in production:**
+```javascript
+// ✅ GOOD: HTTPS redirect
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+```
+
+---
+
+## Dependency Security
+
+### Update Dependencies
+
+**Keep dependencies updated:**
+```bash
+# Check for vulnerabilities
+npm audit
+
+# Fix vulnerabilities
+npm audit fix
+
+# Update dependencies
+npm update
+```
+
+### Review Dependencies
+
+**Review before adding:**
+- Check package popularity
+- Review security history
+- Check maintenance status
+- Review source code if possible
+
+---
+
+## Error Handling
+
+### Don't Expose Internals
+
+**Generic error messages:**
+```javascript
+// ✅ GOOD: Generic errors
+try {
+  await authenticateUser(email, password);
+} catch (error) {
+  // Log full error internally
+  logger.error('Authentication failed', error);
+  
+  // Generic message to user
+  throw new Error('Invalid credentials');
+}
+
+// ❌ BAD: Expose internals
+catch (error) {
+  throw new Error(`Database error: ${error.message}`); // Exposes DB!
+}
+```
+
+---
+
+## Best Practices Summary
+
+1. **Validate Input** - Never trust user input
+2. **Secure Auth** - Use proven methods
+3. **Check Permissions** - Always verify authorization
+4. **Parameterized Queries** - Prevent SQL injection
+5. **Escape Output** - Prevent XSS
+6. **CSRF Protection** - Use tokens
+7. **Secrets Management** - Never commit secrets
+8. **HTTPS** - Always in production
+9. **Update Dependencies** - Keep secure
+10. **Generic Errors** - Don't expose internals
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

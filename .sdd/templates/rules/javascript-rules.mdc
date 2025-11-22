@@ -1,0 +1,442 @@
+---
+alwaysApply: true
+---
+
+# JavaScript Coding Rules
+
+Best practices and conventions for JavaScript development following 10X dev principles.
+
+## Language Version
+
+**Target:** ES6+ (ES2015 and later)  
+**Use Modern Features:** Prefer modern JavaScript features
+
+---
+
+## Core Principles
+
+- **DRY:** Extract common logic, reuse functions
+- **KISS:** Prefer simple, readable solutions
+- **Modular:** Use modules, avoid global scope
+
+---
+
+## Modern JavaScript Features
+
+### Use ES6+ Syntax
+
+**Prefer:**
+- `const` and `let` over `var`
+- Arrow functions for callbacks
+- Template literals over string concatenation
+- Destructuring for object/array access
+- Spread operator for arrays/objects
+- Default parameters
+- Rest parameters
+
+**Examples:**
+```javascript
+// ✅ GOOD: Modern syntax
+const user = { name: 'John', age: 30 };
+const { name, age } = user; // Destructuring
+const greet = (name = 'Guest') => `Hello, ${name}!`; // Arrow + default + template
+
+// ❌ BAD: Old syntax
+var user = { name: 'John', age: 30 };
+var name = user.name;
+var age = user.age;
+function greet(name) {
+  if (!name) name = 'Guest';
+  return 'Hello, ' + name + '!';
+}
+```
+
+### Async/Await
+
+**Prefer async/await over Promises:**
+```javascript
+// ✅ GOOD: async/await
+async function fetchUser(id) {
+  try {
+    const response = await fetch(`/api/users/${id}`);
+    const user = await response.json();
+    return user;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    throw error;
+  }
+}
+
+// ❌ BAD: Promise chains
+function fetchUser(id) {
+  return fetch(`/api/users/${id}`)
+    .then(response => response.json())
+    .then(user => user)
+    .catch(error => {
+      console.error('Failed to fetch user:', error);
+      throw error;
+    });
+}
+```
+
+---
+
+## Code Organization
+
+### File Structure
+
+**Organize by feature or type:**
+```
+src/
+├── components/     # UI components
+├── utils/         # Utility functions
+├── services/       # API/services
+├── hooks/          # Custom hooks (if React)
+├── constants/      # Constants
+└── types/          # Type definitions (if TypeScript)
+```
+
+### Imports/Exports
+
+**Use ES6 modules:**
+```javascript
+// ✅ GOOD: Named exports
+export function calculateTotal(items) { }
+export const TAX_RATE = 0.1;
+
+// Import
+import { calculateTotal, TAX_RATE } from './utils';
+
+// ✅ GOOD: Default export (for main export)
+export default class UserService { }
+
+// Import
+import UserService from './services/UserService';
+```
+
+**Organize imports:**
+```javascript
+// 1. External dependencies
+import React from 'react';
+import axios from 'axios';
+
+// 2. Internal modules
+import { calculateTotal } from './utils';
+import UserService from './services/UserService';
+
+// 3. Types (if TypeScript)
+import type { User } from './types';
+```
+
+---
+
+## Naming Conventions
+
+### Variables and Functions
+
+**camelCase for variables and functions:**
+```javascript
+const userName = 'John';
+const isActive = true;
+function calculateTotal() { }
+```
+
+**PascalCase for classes and constructors:**
+```javascript
+class UserService { }
+function User(name) { this.name = name; }
+```
+
+**UPPER_SNAKE_CASE for constants:**
+```javascript
+const MAX_RETRIES = 3;
+const API_BASE_URL = 'https://api.example.com';
+```
+
+**Descriptive names:**
+```javascript
+// ✅ GOOD: Descriptive
+const userAccountBalance = 1000;
+function calculateOrderTotal(orderItems) { }
+
+// ❌ BAD: Unclear
+const bal = 1000;
+function calc(items) { }
+```
+
+---
+
+## Functions
+
+### Function Design
+
+**Small, focused functions:**
+```javascript
+// ✅ GOOD: Single responsibility
+function calculateItemTotal(item) {
+  return item.price * item.quantity;
+}
+
+function calculateOrderTotal(items) {
+  return items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+}
+
+// ❌ BAD: Does too much
+function processOrder(order) {
+  // Validates, calculates, saves, sends email, logs...
+}
+```
+
+**Pure functions when possible:**
+```javascript
+// ✅ GOOD: Pure function
+function add(a, b) {
+  return a + b;
+}
+
+// ✅ GOOD: Side effect isolated
+function logMessage(message) {
+  console.log(message); // Side effect, but isolated
+}
+```
+
+### Arrow Functions
+
+**Use arrow functions for callbacks:**
+```javascript
+// ✅ GOOD: Arrow functions
+const numbers = [1, 2, 3];
+const doubled = numbers.map(n => n * 2);
+const filtered = numbers.filter(n => n > 1);
+
+// ❌ BAD: Function expressions
+const doubled = numbers.map(function(n) { return n * 2; });
+```
+
+**Use regular functions for methods:**
+```javascript
+// ✅ GOOD: Regular function for methods
+const obj = {
+  name: 'John',
+  greet() {
+    return `Hello, ${this.name}`;
+  }
+};
+```
+
+---
+
+## Objects and Arrays
+
+### Object Creation
+
+**Use object literals:**
+```javascript
+// ✅ GOOD: Object literal
+const user = {
+  name: 'John',
+  age: 30,
+  email: 'john@example.com'
+};
+
+// ❌ BAD: Object constructor
+const user = new Object();
+user.name = 'John';
+```
+
+**Use object spread:**
+```javascript
+// ✅ GOOD: Spread operator
+const updatedUser = { ...user, age: 31 };
+
+// ❌ BAD: Object.assign
+const updatedUser = Object.assign({}, user, { age: 31 });
+```
+
+### Array Methods
+
+**Prefer functional array methods:**
+```javascript
+// ✅ GOOD: map, filter, reduce
+const doubled = numbers.map(n => n * 2);
+const evens = numbers.filter(n => n % 2 === 0);
+const sum = numbers.reduce((acc, n) => acc + n, 0);
+
+// ❌ BAD: Loops when functional methods work
+const doubled = [];
+for (let i = 0; i < numbers.length; i++) {
+  doubled.push(numbers[i] * 2);
+}
+```
+
+---
+
+## Error Handling
+
+### Try-Catch
+
+**Always handle errors:**
+```javascript
+// ✅ GOOD: Error handling
+async function fetchData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to fetch data:', error);
+    throw error; // Re-throw or handle appropriately
+  }
+}
+```
+
+**Don't ignore errors:**
+```javascript
+// ❌ BAD: Silent failure
+try {
+  riskyOperation();
+} catch (error) {
+  // Ignored - BAD!
+}
+```
+
+### Error Types
+
+**Use appropriate error types:**
+```javascript
+// ✅ GOOD: Specific errors
+if (!user) {
+  throw new Error('User not found');
+}
+
+if (invalidInput) {
+  throw new TypeError('Invalid input type');
+}
+```
+
+---
+
+## Performance
+
+### Optimization
+
+**Avoid premature optimization, but:**
+- Use appropriate data structures
+- Avoid unnecessary computations
+- Cache expensive operations
+- Lazy load when possible
+
+**Examples:**
+```javascript
+// ✅ GOOD: Memoization for expensive operations
+const memoized = (() => {
+  const cache = {};
+  return function expensiveOperation(input) {
+    if (cache[input]) return cache[input];
+    const result = /* expensive computation */;
+    cache[input] = result;
+    return result;
+  };
+})();
+```
+
+---
+
+## Security
+
+### Input Validation
+
+**Always validate input:**
+```javascript
+// ✅ GOOD: Validate input
+function processUserInput(input) {
+  if (typeof input !== 'string' || input.length === 0) {
+    throw new Error('Invalid input');
+  }
+  // Sanitize if needed
+  return input.trim();
+}
+```
+
+### Avoid Eval
+
+**Never use eval:**
+```javascript
+// ❌ BAD: eval is dangerous
+eval(userInput);
+
+// ✅ GOOD: Safe alternatives
+JSON.parse(userInput); // If JSON
+// Or proper parsing/validation
+```
+
+---
+
+## Testing
+
+### Test Structure
+
+**Organize tests clearly:**
+```javascript
+describe('calculateTotal', () => {
+  it('should calculate total for multiple items', () => {
+    const items = [
+      { price: 10, quantity: 2 },
+      { price: 5, quantity: 3 }
+    ];
+    expect(calculateTotal(items)).toBe(35);
+  });
+
+  it('should return 0 for empty array', () => {
+    expect(calculateTotal([])).toBe(0);
+  });
+});
+```
+
+---
+
+## Code Style
+
+### Formatting
+
+**Follow project style guide:**
+- Use consistent indentation (2 spaces recommended)
+- Use semicolons consistently
+- Max line length: 100-120 characters
+- Trailing commas in arrays/objects
+
+### Comments
+
+**Comment why, not what:**
+```javascript
+// ✅ GOOD: Explains why
+// Using debounce to avoid excessive API calls on rapid input
+const debouncedSearch = debounce(handleSearch, 300);
+
+// ❌ BAD: Explains what (code already does this)
+// This function calculates the total
+function calculateTotal(items) { }
+```
+
+---
+
+## Best Practices Summary
+
+1. **Use Modern JavaScript** - ES6+ features
+2. **Prefer const/let** - Avoid var
+3. **Use async/await** - Over Promise chains
+4. **Small Functions** - Single responsibility
+5. **Descriptive Names** - Clear intent
+6. **Handle Errors** - Always catch and handle
+7. **Validate Input** - Never trust user input
+8. **Test Your Code** - Write tests
+9. **Document Complex Logic** - Comment why
+10. **Follow Project Style** - Consistency matters
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

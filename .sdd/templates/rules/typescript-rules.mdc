@@ -1,0 +1,331 @@
+---
+alwaysApply: true
+---
+
+# TypeScript Coding Rules
+
+Best practices for TypeScript development with strong typing and modern features.
+
+## TypeScript Configuration
+
+**Strict Mode:** Enable strict mode in `tsconfig.json`
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true
+  }
+}
+```
+
+---
+
+## Core Principles
+
+- **Type Safety:** Leverage TypeScript's type system
+- **DRY:** Use types/interfaces to avoid duplication
+- **KISS:** Keep types simple and clear
+- **Modular:** Organize types logically
+
+---
+
+## Type Definitions
+
+### Use Interfaces for Objects
+
+**Prefer interfaces over type aliases for objects:**
+```typescript
+// ✅ GOOD: Interface for object shapes
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  age?: number; // Optional
+}
+
+// ✅ GOOD: Type for unions/primitives
+type Status = 'active' | 'inactive' | 'pending';
+type ID = string | number;
+```
+
+### Explicit Types
+
+**Use explicit types for function parameters and returns:**
+```typescript
+// ✅ GOOD: Explicit types
+function calculateTotal(items: Item[]): number {
+  return items.reduce((sum, item) => sum + item.price, 0);
+}
+
+// ❌ BAD: Implicit any
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + item.price, 0);
+}
+```
+
+### Avoid `any`
+
+**Minimize use of `any`:**
+```typescript
+// ❌ BAD: Using any
+function processData(data: any) { }
+
+// ✅ GOOD: Use unknown or proper type
+function processData(data: unknown) {
+  if (typeof data === 'string') {
+    // TypeScript knows data is string here
+  }
+}
+
+// ✅ GOOD: Proper type
+function processData(data: UserData) { }
+```
+
+---
+
+## Type Inference
+
+### Let TypeScript Infer When Clear
+
+**Type inference is fine for simple cases:**
+```typescript
+// ✅ GOOD: Type inference
+const name = 'John'; // TypeScript infers string
+const count = 42; // TypeScript infers number
+const items = [1, 2, 3]; // TypeScript infers number[]
+
+// ✅ GOOD: Explicit when needed
+const user: User = { id: '1', name: 'John' };
+```
+
+### Return Type Inference
+
+**Let TypeScript infer return types when clear:**
+```typescript
+// ✅ GOOD: Inferred return type
+function add(a: number, b: number) {
+  return a + b; // TypeScript infers number
+}
+
+// ✅ GOOD: Explicit for complex cases
+function processItems(items: Item[]): ProcessedItem[] {
+  // Complex logic
+  return processed;
+}
+```
+
+---
+
+## Interfaces and Types
+
+### Interface vs Type
+
+**Use interfaces for:**
+- Object shapes
+- Extending/merging
+- Public APIs
+
+**Use types for:**
+- Unions
+- Intersections
+- Primitives
+- Complex type operations
+
+**Examples:**
+```typescript
+// ✅ GOOD: Interface for object
+interface User {
+  id: string;
+  name: string;
+}
+
+// ✅ GOOD: Type for union
+type Status = 'active' | 'inactive';
+
+// ✅ GOOD: Interface extension
+interface AdminUser extends User {
+  permissions: string[];
+}
+```
+
+---
+
+## Generics
+
+### Use Generics for Reusability
+
+**Create reusable, type-safe functions:**
+```typescript
+// ✅ GOOD: Generic function
+function getById<T>(items: T[], id: string): T | undefined {
+  return items.find(item => (item as any).id === id);
+}
+
+// Usage
+const users = getById<User>(userList, '123');
+const products = getById<Product>(productList, '456');
+```
+
+**Generic constraints:**
+```typescript
+// ✅ GOOD: Constrained generic
+interface HasId {
+  id: string;
+}
+
+function getById<T extends HasId>(items: T[], id: string): T | undefined {
+  return items.find(item => item.id === id);
+}
+```
+
+---
+
+## Enums
+
+### Use Enums for Constants
+
+**String enums preferred:**
+```typescript
+// ✅ GOOD: String enum
+enum Status {
+  Active = 'active',
+  Inactive = 'inactive',
+  Pending = 'pending'
+}
+
+// ✅ GOOD: Const enum for performance
+const enum Direction {
+  Up = 'up',
+  Down = 'down'
+}
+```
+
+**Union types as alternative:**
+```typescript
+// ✅ GOOD: Union type (simpler)
+type Status = 'active' | 'inactive' | 'pending';
+```
+
+---
+
+## Classes
+
+### Class Design
+
+**Use classes when needed:**
+```typescript
+// ✅ GOOD: Class with types
+class UserService {
+  private users: User[] = [];
+
+  constructor(private apiClient: ApiClient) {}
+
+  async getUser(id: string): Promise<User | null> {
+    // Implementation
+  }
+}
+```
+
+**Access modifiers:**
+- `public` - Default, accessible everywhere
+- `private` - Only within class
+- `protected` - Within class and subclasses
+- `readonly` - Cannot be reassigned
+
+---
+
+## Utility Types
+
+### Use Built-in Utility Types
+
+**Leverage TypeScript utility types:**
+```typescript
+// Partial - Make all properties optional
+type PartialUser = Partial<User>;
+
+// Pick - Select specific properties
+type UserPreview = Pick<User, 'id' | 'name'>;
+
+// Omit - Exclude specific properties
+type UserWithoutEmail = Omit<User, 'email'>;
+
+// Record - Object with specific key/value types
+type UserMap = Record<string, User>;
+```
+
+---
+
+## Error Handling
+
+### Typed Errors
+
+**Type your errors:**
+```typescript
+// ✅ GOOD: Typed error
+class ValidationError extends Error {
+  constructor(
+    public field: string,
+    public message: string
+  ) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}
+
+function validateUser(user: User): void {
+  if (!user.email) {
+    throw new ValidationError('email', 'Email is required');
+  }
+}
+```
+
+---
+
+## Async/Await
+
+### Typed Async Functions
+
+**Type async functions properly:**
+```typescript
+// ✅ GOOD: Typed async function
+async function fetchUser(id: string): Promise<User> {
+  const response = await fetch(`/api/users/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
+  }
+  return response.json();
+}
+
+// ✅ GOOD: Typed error handling
+async function safeFetchUser(id: string): Promise<User | null> {
+  try {
+    return await fetchUser(id);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    return null;
+  }
+}
+```
+
+---
+
+## Best Practices Summary
+
+1. **Enable Strict Mode** - Catch errors early
+2. **Explicit Types** - For function parameters/returns
+3. **Avoid `any`** - Use `unknown` or proper types
+4. **Use Interfaces** - For object shapes
+5. **Leverage Generics** - For reusable code
+6. **Type Inference** - When types are clear
+7. **Utility Types** - Use built-in utilities
+8. **Typed Errors** - Type your error classes
+9. **Async Types** - Type Promise returns
+10. **Document Complex Types** - Comment complex type logic
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

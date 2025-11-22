@@ -1,0 +1,290 @@
+---
+alwaysApply: true
+---
+
+# Performance Rules
+
+Performance optimization best practices for all applications.
+
+## Core Principles
+
+- **Measure First:** Profile before optimizing
+- **Optimize When Needed:** Don't premature optimize
+- **Efficient Algorithms:** Choose appropriate algorithms
+- **Resource Awareness:** Be mindful of memory, CPU, network
+
+---
+
+## Code Optimization
+
+### Algorithm Choice
+
+**Choose efficient algorithms:**
+```javascript
+// ✅ GOOD: Efficient algorithm
+function findUser(users, userId) {
+  const userMap = new Map(users.map(u => [u.id, u]));
+  return userMap.get(userId); // O(1) lookup
+}
+
+// ❌ BAD: Inefficient algorithm
+function findUser(users, userId) {
+  return users.find(u => u.id === userId); // O(n) lookup
+}
+```
+
+### Avoid Unnecessary Work
+
+**Don't compute what you don't need:**
+```javascript
+// ✅ GOOD: Lazy evaluation
+function getExpensiveValue() {
+  if (!needed) return null;
+  return computeExpensiveValue();
+}
+
+// ❌ BAD: Always compute
+function getExpensiveValue() {
+  return computeExpensiveValue(); // Computed even if not needed
+}
+```
+
+---
+
+## Caching
+
+### Cache Expensive Operations
+
+**Cache when appropriate:**
+```javascript
+// ✅ GOOD: Memoization
+const memoized = (() => {
+  const cache = new Map();
+  return function expensiveOperation(input) {
+    if (cache.has(input)) {
+      return cache.get(input);
+    }
+    const result = computeExpensive(input);
+    cache.set(input, result);
+    return result;
+  };
+})();
+```
+
+### Cache Invalidation
+
+**Invalidate cache properly:**
+```javascript
+// ✅ GOOD: Cache with TTL
+class Cache {
+  constructor(ttl = 3600000) {
+    this.cache = new Map();
+    this.ttl = ttl;
+  }
+  
+  get(key) {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    
+    if (Date.now() - item.timestamp > this.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return item.value;
+  }
+}
+```
+
+---
+
+## Database Optimization
+
+### Efficient Queries
+
+**Optimize database queries:**
+```javascript
+// ✅ GOOD: Select only needed fields
+const users = await db.select('id', 'name', 'email')
+  .from('users')
+  .where('active', true);
+
+// ❌ BAD: Select all fields
+const users = await db.select('*')
+  .from('users')
+  .where('active', true);
+```
+
+### Use Indexes
+
+**Index frequently queried fields:**
+```sql
+-- ✅ GOOD: Index on queried field
+CREATE INDEX idx_user_email ON users(email);
+
+-- Query uses index
+SELECT * FROM users WHERE email = 'user@example.com';
+```
+
+### Avoid N+1 Queries
+
+**Use joins or batch loading:**
+```javascript
+// ❌ BAD: N+1 queries
+const orders = await getOrders();
+for (const order of orders) {
+  order.user = await getUser(order.userId); // N queries!
+}
+
+// ✅ GOOD: Batch loading
+const orders = await getOrders();
+const userIds = [...new Set(orders.map(o => o.userId))];
+const users = await getUsersByIds(userIds);
+const userMap = new Map(users.map(u => [u.id, u]));
+orders.forEach(order => {
+  order.user = userMap.get(order.userId);
+});
+```
+
+---
+
+## Frontend Performance
+
+### Code Splitting
+
+**Split code for lazy loading:**
+```javascript
+// ✅ GOOD: Code splitting
+const HeavyComponent = lazy(() => import('./HeavyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HeavyComponent />
+    </Suspense>
+  );
+}
+```
+
+### Image Optimization
+
+**Optimize images:**
+- Use appropriate formats (WebP, AVIF)
+- Lazy load images
+- Use responsive images
+- Compress images
+
+### Bundle Size
+
+**Keep bundles small:**
+- Tree shake unused code
+- Use dynamic imports
+- Avoid large dependencies
+- Monitor bundle size
+
+---
+
+## Memory Management
+
+### Avoid Memory Leaks
+
+**Clean up resources:**
+```javascript
+// ✅ GOOD: Cleanup
+useEffect(() => {
+  const subscription = subscribe();
+  return () => {
+    subscription.unsubscribe(); // Cleanup
+  };
+}, []);
+```
+
+### Efficient Data Structures
+
+**Choose appropriate data structures:**
+```javascript
+// ✅ GOOD: Set for uniqueness
+const uniqueIds = new Set(ids);
+
+// ✅ GOOD: Map for key-value lookups
+const userMap = new Map(users.map(u => [u.id, u]));
+
+// ❌ BAD: Array for lookups
+const user = users.find(u => u.id === userId); // O(n)
+```
+
+---
+
+## Network Optimization
+
+### Minimize Requests
+
+**Batch requests when possible:**
+```javascript
+// ❌ BAD: Multiple requests
+for (const id of userIds) {
+  await fetchUser(id); // N requests
+}
+
+// ✅ GOOD: Batch request
+await fetchUsers(userIds); // 1 request
+```
+
+### Compression
+
+**Use compression:**
+```javascript
+// ✅ GOOD: Enable compression
+import compression from 'compression';
+app.use(compression());
+```
+
+### CDN Usage
+
+**Use CDN for static assets:**
+- Faster delivery
+- Reduced server load
+- Better caching
+
+---
+
+## Monitoring
+
+### Performance Metrics
+
+**Track key metrics:**
+- Response time
+- Throughput
+- Error rate
+- Resource usage
+
+### Profiling
+
+**Profile before optimizing:**
+```javascript
+// ✅ GOOD: Profile
+console.time('operation');
+await expensiveOperation();
+console.timeEnd('operation');
+```
+
+---
+
+## Best Practices Summary
+
+1. **Measure First** - Profile before optimizing
+2. **Efficient Algorithms** - Choose appropriate algorithms
+3. **Cache Wisely** - Cache expensive operations
+4. **Optimize Queries** - Efficient database queries
+5. **Code Splitting** - Lazy load when possible
+6. **Memory Management** - Avoid leaks, clean up
+7. **Minimize Requests** - Batch when possible
+8. **Use Compression** - Reduce payload size
+9. **Monitor Performance** - Track metrics
+10. **Optimize When Needed** - Don't premature optimize
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

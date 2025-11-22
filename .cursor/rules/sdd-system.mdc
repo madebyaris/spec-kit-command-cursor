@@ -171,6 +171,18 @@ Todo-lists are NOT suggestions - they are executable checklists that MUST be fol
 
 ## Full Project Planning (NEW)
 
+### `/generate-rules` Command
+Automatically generate comprehensive coding rules based on technology stack detection and codebase analysis:
+- **Technology Detection:** Auto-detects languages and frameworks from package files
+- **Codebase Analysis:** Analyzes patterns and project complexity
+- **Rule Generation:** Creates hierarchical rule files following 10X dev principles
+- **Best Practices:** Includes language/framework-specific best practices
+- **Project-Specific:** Extracts patterns from your codebase
+
+**Output:** Rule files in `.cursor/rules/` organized by language, framework, and category.
+
+**See:** [Generate Rules Guide](../../.sdd/GENERATE_RULES_GUIDE.md) for complete documentation.
+
 ### `/sdd-full-plan` & `/pecut-all-in-one` Commands
 Create comprehensive project roadmaps from A to Z with:
 - **Epic-level organization** - Main phases and milestones
