@@ -1,8 +1,17 @@
 # Roadmap Format Specification
 
 **Version:** 1.0.0  
-**Compatible With:** SDD 2.5, Taskr Kanban, VSCode Extensions  
+**Compatible With:** SDD 2.5, Taskr Kanban, VSCode Extensions, Cursor 2.1+  
 **Last Updated:** 2025-10-21
+
+## Cursor 2.1 Integration
+
+This format works seamlessly with Cursor 2.1 features:
+
+- **Multi-Agent Execution** - Execute multiple tasks in parallel
+- **Background Planning** - Generate roadmaps while working
+- **Team Commands** - Share roadmaps via team commands
+- **Interactive UI** - Better question handling during roadmap creation
 
 ---
 
@@ -397,6 +406,36 @@ Future VSCode extensions can:
 5. **Execute tasks** - Run `/execute-task` via command
 6. **Update status** - Sync changes back to JSON
 7. **Track progress** - Calculate completion percentage
+
+### Cursor 2.1 Multi-Agent Support
+
+**Parallel Execution:**
+- Execute multiple independent tasks simultaneously
+- Up to 8 agents can run in parallel
+- Each agent operates in isolated environment
+- No file conflicts between parallel executions
+
+**Task Independence Detection:**
+```typescript
+function canExecuteInParallel(task1: Task, task2: Task): boolean {
+  // Check if tasks have dependencies
+  if (task1.dependencies.includes(task2.id)) return false;
+  if (task2.dependencies.includes(task1.id)) return false;
+  
+  // Check if they modify same files
+  if (hasFileOverlap(task1, task2)) return false;
+  
+  return true;
+}
+```
+
+**Usage:**
+```bash
+# Execute 3 independent tasks in parallel
+/execute-task task-001  # Agent 1
+/execute-task task-002  # Agent 2
+/execute-task task-003  # Agent 3
+```
 
 ### Extension Development
 

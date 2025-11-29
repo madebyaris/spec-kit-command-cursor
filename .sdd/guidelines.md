@@ -31,6 +31,8 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
 - Explain reasoning and approach
 - Show structure and content preview
 - Wait for user approval
+- **Cursor 2.1+:** Questions appear in interactive UI
+- **Cursor 2.1+:** Users can ⌘+F to search within plans
 
 **Phase 3: Execution (After Approval)**
 - Create or modify files as planned
@@ -125,6 +127,7 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
 - **Focus**: Todo-list generation and continuous execution
 - **Output**: `todo-list.md`, code artifacts, progress tracking
 - **PLAN Mode**: Shows implementation strategy before todo creation
+- **Cursor 2.1+:** AI Code Review automatically analyzes code after implementation
 - **Key Questions**:
   - What's the execution order?
   - What patterns can we reuse?

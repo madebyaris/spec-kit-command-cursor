@@ -33,6 +33,8 @@ This command follows a **plan-approve-execute** pattern to ensure comprehensive 
 - Are there compliance or security requirements?
 - What's the expected user flow?
 
+**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow.
+
 **Read relevant files:**
 - Check for `specs/active/[task-id]/research.md` if it exists
 - Review similar specs in `specs/active/*/spec.md`
@@ -145,8 +147,10 @@ Creates: `specs/active/feat-XXX-[name]/spec.md` or `specs/active/[task-id]/spec.
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing spec structure
+- **Use interactive question UI (Cursor 2.1+)** - Questions appear automatically
 - **Ask questions early** - specifications require clarity
 - **Show requirement examples** in the plan
 - **Wait for approval** before creating files
 - **Be comprehensive but focused** - depth matters but avoid bloat
 - **Make requirements testable** - each should be verifiable
+- **Note plan search** - Users can ⌘+F to search within specification plans

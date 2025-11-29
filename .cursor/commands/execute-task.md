@@ -37,6 +37,10 @@ This command follows a **plan-approve-execute** pattern for task execution.
 - Are there blockers to address first?
 - Any specific requirements or constraints?
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **Multi-Agents:** Independent tasks can run in parallel (up to 8 agents simultaneously)
+
 **Read relevant files:**
 - Roadmap JSON at `specs/todo-roadmap/[project-id]/roadmap.json`
 - Task details at `specs/todo-roadmap/[project-id]/tasks/[task-id].json`
@@ -255,12 +259,41 @@ Error: Task task-001 status = done
 Each SDD command runs with full PLAN mode:
 
 1. **Analysis phase** - Command analyzes task
-2. **Planning phase** - Presents plan to user
+2. **Planning phase** - Presents plan to user (Cursor 2.1+ interactive UI)
 3. **User approval** - Wait for confirmation
 4. **Execution phase** - Creates specs/files
-5. **Documentation** - Updates tracking
+5. **Code review** - AI code review (Cursor 2.1+) if implementation task
+6. **Documentation** - Updates tracking
 
 This means `/execute-task` triggers a full SDD workflow for that specific task.
+
+## Parallel Task Execution (Cursor 2.1+)
+
+**Multi-Agent Support:**
+- Execute multiple independent tasks simultaneously
+- Up to 8 agents can run in parallel
+- Each agent operates in isolated environment (git worktree or remote machine)
+- No file conflicts between parallel executions
+
+**When to Use:**
+- Tasks have no dependencies between them
+- Multiple developers available
+- Want faster completion
+- Independent work streams
+
+**Example:**
+```bash
+# Execute 3 independent tasks in parallel
+/execute-task task-001  # Agent 1 - Research phase
+/execute-task task-002  # Agent 2 - Specification phase  
+/execute-task task-003  # Agent 3 - Planning phase
+```
+
+**Safety:**
+- Each agent has isolated copy of codebase
+- No file conflicts possible
+- Merge results when tasks complete
+- Track progress independently
 
 ## Output
 
@@ -317,12 +350,15 @@ This means `/execute-task` triggers a full SDD workflow for that specific task.
 
 - **Always validate dependencies** before execution
 - **Check task status** ensure it's ready to run
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
 - **Map command correctly** based on task.sdd.phase
 - **Update roadmap atomically** prevent inconsistencies
 - **Log everything** comprehensive execution tracking
 - **Handle errors gracefully** provide clear error messages
 - **Update parent tasks** when subtasks complete
 - **Check blocked tasks** unblock when dependencies met
+- **Note parallel execution** - Independent tasks can run simultaneously
+- **After implementation tasks:** Remind about AI Code Review
 
 ## See Also
 

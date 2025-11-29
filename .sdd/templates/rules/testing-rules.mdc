@@ -1,0 +1,320 @@
+---
+alwaysApply: true
+---
+
+# Testing Rules
+
+Best practices for writing and maintaining tests across all languages and frameworks.
+
+## Core Principles
+
+- **Test Behavior:** Test what code does, not how
+- **DRY:** Extract test utilities and helpers
+- **KISS:** Keep tests simple and readable
+- **Modular:** One test per behavior/requirement
+
+---
+
+## Test Structure
+
+### AAA Pattern
+
+**Arrange, Act, Assert:**
+```javascript
+// ✅ GOOD: AAA pattern
+test('should calculate total correctly', () => {
+  // Arrange
+  const items = [
+    { price: 10, quantity: 2 },
+    { price: 5, quantity: 3 }
+  ];
+  
+  // Act
+  const total = calculateTotal(items);
+  
+  // Assert
+  expect(total).toBe(35);
+});
+```
+
+### Test Naming
+
+**Descriptive test names:**
+```javascript
+// ✅ GOOD: Descriptive names
+test('should return null when user not found')
+test('should throw error when input is invalid')
+test('should calculate discount for premium users')
+
+// ❌ BAD: Vague names
+test('test calculate')
+test('user test')
+test('works')
+```
+
+---
+
+## Test Organization
+
+### Group Related Tests
+
+**Use describe blocks:**
+```javascript
+// ✅ GOOD: Grouped tests
+describe('UserService', () => {
+  describe('getUser', () => {
+    test('should return user when found', () => { });
+    test('should return null when not found', () => { });
+  });
+  
+  describe('createUser', () => {
+    test('should create user with valid data', () => { });
+    test('should throw error with invalid data', () => { });
+  });
+});
+```
+
+### One Test Per Behavior
+
+**Test one thing per test:**
+```javascript
+// ✅ GOOD: One behavior per test
+test('should return user when found', () => {
+  const user = getUser(1);
+  expect(user).toBeDefined();
+});
+
+test('should return null when not found', () => {
+  const user = getUser(999);
+  expect(user).toBeNull();
+});
+
+// ❌ BAD: Multiple behaviors
+test('should handle user operations', () => {
+  expect(getUser(1)).toBeDefined();
+  expect(getUser(999)).toBeNull();
+  expect(createUser({})).toThrow();
+});
+```
+
+---
+
+## Test Data
+
+### Test Fixtures
+
+**Use fixtures for test data:**
+```javascript
+// ✅ GOOD: Test fixtures
+const createMockUser = (overrides = {}) => ({
+  id: 1,
+  name: 'John Doe',
+  email: 'john@example.com',
+  ...overrides
+});
+
+test('should update user', () => {
+  const user = createMockUser({ name: 'Jane Doe' });
+  // ...
+});
+```
+
+### Isolated Test Data
+
+**Don't share mutable state:**
+```javascript
+// ❌ BAD: Shared state
+const user = { id: 1, name: 'John' };
+
+test('test 1', () => {
+  user.name = 'Jane'; // Affects other tests
+});
+
+// ✅ GOOD: Isolated data
+test('test 1', () => {
+  const user = { id: 1, name: 'John' };
+  user.name = 'Jane'; // Only affects this test
+});
+```
+
+---
+
+## Assertions
+
+### Clear Assertions
+
+**Use descriptive assertions:**
+```javascript
+// ✅ GOOD: Clear assertions
+expect(result).toBe(expected);
+expect(array).toHaveLength(3);
+expect(user).toHaveProperty('email');
+expect(function).toThrow('Error message');
+
+// ❌ BAD: Unclear assertions
+expect(result).toBeTruthy();
+expect(array.length).toBe(3);
+```
+
+### Test Edge Cases
+
+**Test boundaries and edge cases:**
+```javascript
+// ✅ GOOD: Edge cases
+test('should handle empty array', () => {
+  expect(calculateTotal([])).toBe(0);
+});
+
+test('should handle zero values', () => {
+  expect(calculateTotal([{ price: 0, quantity: 1 }])).toBe(0);
+});
+
+test('should handle negative numbers', () => {
+  expect(() => calculateTotal([{ price: -10, quantity: 1 }]))
+    .toThrow();
+});
+```
+
+---
+
+## Mocking
+
+### Mock External Dependencies
+
+**Mock API calls, databases, etc:**
+```javascript
+// ✅ GOOD: Mock external dependencies
+jest.mock('./api');
+
+test('should fetch user', async () => {
+  const mockFetch = jest.fn().mockResolvedValue({ id: 1, name: 'John' });
+  api.fetchUser = mockFetch;
+  
+  const user = await getUser(1);
+  
+  expect(mockFetch).toHaveBeenCalledWith(1);
+  expect(user.name).toBe('John');
+});
+```
+
+### Don't Over-Mock
+
+**Test real behavior when possible:**
+```javascript
+// ❌ BAD: Over-mocking
+test('should calculate total', () => {
+  const mockAdd = jest.fn();
+  mockAdd.mockReturnValue(10);
+  // Testing mocks, not real code
+
+// ✅ GOOD: Test real code
+test('should calculate total', () => {
+  const total = calculateTotal(items);
+  expect(total).toBe(35);
+});
+```
+
+---
+
+## Test Coverage
+
+### Cover Critical Paths
+
+**Test important functionality:**
+- Happy paths
+- Error cases
+- Edge cases
+- Boundary conditions
+
+### Don't Obsess Over 100%
+
+**Focus on meaningful coverage:**
+- Critical business logic: High coverage
+- Simple utilities: Basic coverage
+- Generated code: May skip
+
+---
+
+## Integration Tests
+
+### Test Component Integration
+
+**Test components working together:**
+```javascript
+// ✅ GOOD: Integration test
+test('should submit form and update user', async () => {
+  render(<UserForm userId={1} />);
+  
+  fireEvent.change(screen.getByLabelText('Name'), {
+    target: { value: 'Jane' }
+  });
+  fireEvent.click(screen.getByText('Save'));
+  
+  await waitFor(() => {
+    expect(screen.getByText('User updated')).toBeInTheDocument();
+  });
+});
+```
+
+---
+
+## E2E Tests
+
+### Test User Flows
+
+**Test complete user journeys:**
+```javascript
+// ✅ GOOD: E2E test
+test('user can complete checkout flow', async () => {
+  await page.goto('/products');
+  await page.click('[data-testid="product-1"]');
+  await page.click('[data-testid="add-to-cart"]');
+  await page.goto('/cart');
+  await page.click('[data-testid="checkout"]');
+  await page.fill('[name="email"]', 'user@example.com');
+  await page.click('[data-testid="submit"]');
+  
+  await expect(page.locator('[data-testid="success"]')).toBeVisible();
+});
+```
+
+---
+
+## Test Performance
+
+### Fast Tests
+
+**Keep tests fast:**
+- Use mocks for slow operations
+- Avoid real network calls
+- Use in-memory databases
+- Parallelize when possible
+
+### Test Isolation
+
+**Tests should be independent:**
+- No shared state between tests
+- Each test can run alone
+- Order shouldn't matter
+- Clean up after tests
+
+---
+
+## Best Practices Summary
+
+1. **AAA Pattern** - Arrange, Act, Assert
+2. **Descriptive Names** - Clear test names
+3. **One Behavior** - One test per behavior
+4. **Test Fixtures** - Reusable test data
+5. **Isolated Data** - No shared mutable state
+6. **Clear Assertions** - Descriptive expectations
+7. **Edge Cases** - Test boundaries
+8. **Mock Wisely** - Mock external, test real
+9. **Meaningful Coverage** - Focus on critical paths
+10. **Fast & Isolated** - Independent, fast tests
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

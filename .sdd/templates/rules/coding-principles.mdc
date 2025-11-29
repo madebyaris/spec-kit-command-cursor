@@ -1,0 +1,377 @@
+---
+alwaysApply: true
+---
+
+# Core Coding Principles (10X Dev)
+
+These principles apply to all code regardless of language or framework. Follow them to write maintainable, scalable, and efficient code.
+
+## DRY (Don't Repeat Yourself)
+
+**Principle:** Every piece of knowledge must have a single, unambiguous representation within a system.
+
+**Rules:**
+- **Extract Common Logic:** If you write the same code twice, extract it to a function/component
+- **Reuse Components:** Don't duplicate UI components - create reusable ones
+- **Centralize Configuration:** Store constants, configs, and settings in one place
+- **Avoid Copy-Paste:** Refactor instead of copying code blocks
+- **Create Utilities:** Build utility functions for repeated operations
+
+**Examples:**
+```javascript
+// ❌ BAD: Repeated logic
+function calculateTotal(items) {
+  let total = 0;
+  for (let item of items) {
+    total += item.price * item.quantity;
+  }
+  return total;
+}
+
+function calculateSubtotal(items) {
+  let total = 0;
+  for (let item of items) {
+    total += item.price * item.quantity;
+  }
+  return total;
+}
+
+// ✅ GOOD: Extracted common logic
+function calculateItemTotal(item) {
+  return item.price * item.quantity;
+}
+
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + calculateItemTotal(item), 0);
+}
+
+function calculateSubtotal(items) {
+  return calculateTotal(items); // Reuse
+}
+```
+
+**When to Extract:**
+- Code appears 3+ times → Extract to function
+- Similar logic with slight variations → Use parameters
+- Repeated patterns → Create abstraction
+
+---
+
+## KISS (Keep It Simple, Stupid)
+
+**Principle:** Simplicity should be a key goal in design, and unnecessary complexity should be avoided.
+
+**Rules:**
+- **Prefer Simple Solutions:** Choose the simplest solution that works
+- **Avoid Over-Engineering:** Don't add complexity "just in case"
+- **Clear Over Clever:** Write code that's easy to understand
+- **Minimal Abstractions:** Only abstract when it provides clear value
+- **Readable First:** Code is read more than written - prioritize readability
+
+**Examples:**
+```javascript
+// ❌ BAD: Over-engineered
+class AbstractFactoryPattern {
+  createStrategy(type) {
+    const strategies = {
+      simple: new SimpleStrategyFactory(),
+      complex: new ComplexStrategyFactory()
+    };
+    return strategies[type]?.create();
+  }
+}
+
+// ✅ GOOD: Simple and clear
+function calculate(operation, a, b) {
+  if (operation === 'add') return a + b;
+  if (operation === 'subtract') return a - b;
+  if (operation === 'multiply') return a * b;
+  return a / b;
+}
+```
+
+**Complexity Guidelines:**
+- Can a junior developer understand it? → Good
+- Requires deep framework knowledge? → Simplify
+- More than 3 levels of nesting? → Refactor
+- Function > 50 lines? → Break down
+
+---
+
+## Modular Design
+
+**Principle:** Break code into independent, reusable modules with clear responsibilities.
+
+### Single Responsibility Principle (SRP)
+
+**Rules:**
+- **One Reason to Change:** Each module should have one reason to change
+- **Clear Purpose:** Function/component should do one thing well
+- **Focused Modules:** Keep modules focused on single concern
+
+**Examples:**
+```javascript
+// ❌ BAD: Multiple responsibilities
+class User {
+  save() { /* database logic */ }
+  sendEmail() { /* email logic */ }
+  validate() { /* validation logic */ }
+  formatDisplay() { /* formatting logic */ }
+}
+
+// ✅ GOOD: Single responsibility
+class User {
+  validate() { /* validation only */ }
+}
+
+class UserRepository {
+  save(user) { /* database only */ }
+}
+
+class EmailService {
+  send(user) { /* email only */ }
+}
+
+class UserFormatter {
+  format(user) { /* formatting only */ }
+}
+```
+
+### Separation of Concerns
+
+**Rules:**
+- **Layers:** Separate data, business logic, and presentation
+- **Independence:** Modules should work independently
+- **Clear Boundaries:** Define clear interfaces between modules
+- **No Cross-Cutting:** Avoid mixing concerns
+
+**Layers:**
+- **Data Layer:** Database, APIs, storage
+- **Business Layer:** Logic, rules, calculations
+- **Presentation Layer:** UI, formatting, display
+- **Infrastructure:** Logging, monitoring, config
+
+### Loose Coupling
+
+**Rules:**
+- **Depend on Interfaces:** Not concrete implementations
+- **Minimize Dependencies:** Fewer dependencies = easier changes
+- **Dependency Injection:** Pass dependencies, don't create them
+- **Event-Driven:** Use events for communication when possible
+
+**Examples:**
+```javascript
+// ❌ BAD: Tight coupling
+class OrderService {
+  constructor() {
+    this.emailService = new EmailService(); // Tight coupling
+  }
+}
+
+// ✅ GOOD: Loose coupling
+class OrderService {
+  constructor(emailService) { // Dependency injection
+    this.emailService = emailService;
+  }
+}
+```
+
+### High Cohesion
+
+**Rules:**
+- **Related Functionality Together:** Group related functions
+- **Logical Grouping:** Functions in module should work together
+- **Clear Module Purpose:** Each module has clear, focused purpose
+
+---
+
+## SOLID Principles
+
+### Single Responsibility Principle
+- Each class/function should have one reason to change
+- One responsibility per module
+
+### Open/Closed Principle
+- Open for extension, closed for modification
+- Use inheritance/composition instead of modifying
+
+### Liskov Substitution Principle
+- Subtypes must be substitutable for their base types
+- Derived classes must not break base class contracts
+
+### Interface Segregation Principle
+- Clients shouldn't depend on interfaces they don't use
+- Create specific interfaces, not large general ones
+
+### Dependency Inversion Principle
+- Depend on abstractions, not concretions
+- High-level modules shouldn't depend on low-level modules
+
+---
+
+## Clean Code Principles
+
+### Meaningful Names
+- **Descriptive:** Names should reveal intent
+- **Pronounceable:** Use words, not abbreviations
+- **Searchable:** Avoid single-letter names
+- **Consistent:** Use same word for same concept
+
+### Functions
+- **Small:** Functions should be small
+- **Do One Thing:** Single responsibility
+- **Descriptive Names:** Function name describes what it does
+- **Few Arguments:** 0-2 arguments ideal, 3+ consider object
+- **No Side Effects:** Functions should do what name says
+
+### Comments
+- **Explain Why:** Not what (code explains what)
+- **Clarify Intent:** When code can't be self-explanatory
+- **Avoid Redundancy:** Don't repeat what code says
+- **Keep Updated:** Outdated comments are worse than none
+
+### Error Handling
+- **Fail Fast:** Detect errors early
+- **Don't Ignore:** Always handle errors
+- **Provide Context:** Error messages should be helpful
+- **Use Exceptions:** Don't return error codes
+
+### Formatting
+- **Consistent:** Follow project style guide
+- **Vertical Density:** Related code together
+- **Horizontal Distance:** Related code close horizontally
+- **Team Standards:** Use team's formatting rules
+
+---
+
+## Code Organization
+
+### File Structure
+- **Logical Grouping:** Group related files
+- **Clear Hierarchy:** Flat structure preferred (max 3-4 levels)
+- **Consistent Naming:** Follow naming conventions
+- **Separation:** Separate by feature/domain when appropriate
+
+### Imports/Exports
+- **Explicit:** Use explicit imports/exports
+- **Organized:** Group imports logically
+- **Minimal:** Only import what you need
+- **Consistent:** Follow project import style
+
+### Dependencies
+- **Minimal:** Keep dependencies minimal
+- **Up-to-Date:** Keep dependencies updated
+- **Secure:** Check for vulnerabilities
+- **Documented:** Document why dependencies are needed
+
+---
+
+## Performance Considerations
+
+### Efficiency
+- **Optimize When Needed:** Don't premature optimize, but optimize when needed
+- **Measure First:** Profile before optimizing
+- **Algorithm Choice:** Choose appropriate algorithms
+- **Resource Usage:** Be mindful of memory, CPU, network
+
+### Scalability
+- **Design for Scale:** Consider growth from start
+- **Avoid Bottlenecks:** Identify and address bottlenecks
+- **Caching:** Use caching appropriately
+- **Lazy Loading:** Load resources when needed
+
+---
+
+## Security Principles
+
+### Input Validation
+- **Validate All Input:** Never trust user input
+- **Sanitize:** Clean input before use
+- **Type Checking:** Verify types
+- **Bounds Checking:** Check ranges and limits
+
+### Authentication & Authorization
+- **Secure Auth:** Use proven authentication methods
+- **Least Privilege:** Grant minimum necessary permissions
+- **Session Management:** Secure session handling
+- **Token Security:** Secure token storage and transmission
+
+### Data Protection
+- **Encrypt Sensitive Data:** Encrypt at rest and in transit
+- **No Secrets in Code:** Use environment variables
+- **Secure Storage:** Protect database credentials
+- **HTTPS:** Always use HTTPS in production
+
+---
+
+## Testing Principles
+
+### Test Coverage
+- **Test Critical Paths:** Test important functionality
+- **Test Edge Cases:** Test boundaries and errors
+- **Test Integration:** Test component interactions
+- **Maintain Tests:** Keep tests updated with code
+
+### Test Quality
+- **Fast:** Tests should run quickly
+- **Independent:** Tests shouldn't depend on each other
+- **Repeatable:** Tests should produce same results
+- **Self-Validating:** Tests should pass or fail clearly
+
+---
+
+## Documentation Principles
+
+### Code Documentation
+- **Self-Documenting:** Code should explain itself
+- **Comments When Needed:** Comment complex logic
+- **API Documentation:** Document public APIs
+- **Examples:** Include usage examples
+
+### Project Documentation
+- **README:** Clear project overview
+- **Setup Guide:** How to get started
+- **Architecture:** System design documentation
+- **Changelog:** Track changes over time
+
+---
+
+## Version Control
+
+### Commit Messages
+- **Descriptive:** Clear what changed and why
+- **Conventional:** Follow conventional commits
+- **Atomic:** One logical change per commit
+- **Reference Issues:** Link to issues/tickets
+
+### Branching
+- **Clear Naming:** Use consistent branch names
+- **Feature Branches:** One feature per branch
+- **Keep Updated:** Regularly merge main/master
+- **Clean History:** Keep commit history clean
+
+---
+
+## Summary
+
+**Always Remember:**
+1. **DRY** - Don't repeat yourself
+2. **KISS** - Keep it simple
+3. **Modular** - Single responsibility, separation of concerns
+4. **Clean** - Readable, maintainable code
+5. **Secure** - Security by design
+6. **Tested** - Test your code
+7. **Documented** - Document when needed
+
+**Apply these principles to:**
+- Function design
+- Component structure
+- Module organization
+- System architecture
+- Team collaboration
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

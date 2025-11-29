@@ -9,8 +9,21 @@ This document provides comprehensive examples of using `/sdd-full-plan` and `/pe
 1. [Simple Feature Example](#example-1-simple-feature---user-notifications)
 2. [Medium Application Example](#example-2-medium-application---blog-platform)
 3. [Complex System Example](#example-3-complex-system---e-commerce-marketplace)
-4. [Task Execution Flow](#task-execution-flow)
-5. [Tips and Best Practices](#tips-and-best-practices)
+4. [Execution Mode Examples](#execution-mode-examples)
+5. [Task Execution Flow](#task-execution-flow)
+6. [Tips and Best Practices](#tips-and-best-practices)
+
+## Cursor 2.1 Features
+
+This guide leverages Cursor 2.1 enhancements:
+
+- **Interactive Questions** - Questions appear in UI (faster workflow)
+- **Plan Search** - Use ⌘+F to search within plans
+- **AI Code Reviews** - Automatic review after implementation
+- **Instant Grep** - Faster codebase searches
+- **Background Planning** - Create plans while working
+- **Multi-Agents** - Parallel task execution
+- **Team Commands** - Shared team-wide commands
 
 ---
 

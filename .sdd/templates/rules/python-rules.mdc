@@ -1,0 +1,370 @@
+---
+alwaysApply: true
+---
+
+# Python Coding Rules
+
+Best practices for Python development following PEP 8 and 10X dev principles.
+
+## Python Version
+
+**Target:** Python 3.8+  
+**Use Modern Features:** f-strings, type hints, dataclasses
+
+---
+
+## Core Principles
+
+- **PEP 8:** Follow Python style guide
+- **DRY:** Use functions, classes, modules
+- **KISS:** Pythonic simplicity
+- **Modular:** Clear module organization
+
+---
+
+## Code Style (PEP 8)
+
+### Naming Conventions
+
+**snake_case for variables and functions:**
+```python
+# ✅ GOOD: snake_case
+user_name = 'John'
+is_active = True
+
+def calculate_total():
+    pass
+```
+
+**PascalCase for classes:**
+```python
+# ✅ GOOD: PascalCase for classes
+class UserService:
+    pass
+```
+
+**UPPER_SNAKE_CASE for constants:**
+```python
+# ✅ GOOD: Constants
+MAX_RETRIES = 3
+API_BASE_URL = 'https://api.example.com'
+```
+
+**Private with leading underscore:**
+```python
+# ✅ GOOD: Private members
+class User:
+    def __init__(self):
+        self._internal_data = {}  # Protected
+        self.__private_data = {}  # Name mangled
+```
+
+### Indentation
+
+**4 spaces (never tabs):**
+```python
+# ✅ GOOD: 4 spaces
+def process_data():
+    if condition:
+        do_something()
+```
+
+### Line Length
+
+**Max 100 characters (PEP 8 recommends 79, but 100 is common):**
+```python
+# ✅ GOOD: Break long lines
+result = some_function(
+    param1,
+    param2,
+    param3
+)
+```
+
+---
+
+## Type Hints
+
+### Use Type Hints
+
+**Add type hints to functions:**
+```python
+# ✅ GOOD: Type hints
+def calculate_total(items: list[Item]) -> float:
+    return sum(item.price for item in items)
+
+def get_user(user_id: int) -> User | None:
+    # Python 3.10+ union syntax
+    pass
+```
+
+**Type hints for variables:**
+```python
+# ✅ GOOD: Variable type hints
+user_name: str = 'John'
+user_count: int = 0
+is_active: bool = True
+```
+
+### Type Aliases
+
+**Use type aliases for complex types:**
+```python
+# ✅ GOOD: Type aliases
+from typing import Dict, List, Optional
+
+UserId = int
+UserDict = Dict[str, Any]
+UserList = List[User]
+
+def get_users() -> UserList:
+    pass
+```
+
+---
+
+## Modern Python Features
+
+### f-Strings
+
+**Use f-strings for string formatting:**
+```python
+# ✅ GOOD: f-strings
+name = 'John'
+message = f'Hello, {name}!'
+
+# ❌ BAD: Old style
+message = 'Hello, %s!' % name
+message = 'Hello, {}!'.format(name)
+```
+
+### List/Dict Comprehensions
+
+**Use comprehensions when appropriate:**
+```python
+# ✅ GOOD: List comprehension
+numbers = [1, 2, 3, 4, 5]
+squared = [n ** 2 for n in numbers]
+evens = [n for n in numbers if n % 2 == 0]
+
+# ✅ GOOD: Dict comprehension
+user_dict = {user.id: user for user in users}
+```
+
+**Don't overuse:**
+```python
+# ❌ BAD: Complex comprehension (hard to read)
+result = [x for x in [y for y in data if y > 0] if x % 2 == 0]
+
+# ✅ GOOD: Break it down
+positive = [y for y in data if y > 0]
+result = [x for x in positive if x % 2 == 0]
+```
+
+### Walrus Operator (Python 3.8+)
+
+**Use when it improves readability:**
+```python
+# ✅ GOOD: Walrus operator
+if (n := len(items)) > 10:
+    print(f'Processing {n} items')
+```
+
+---
+
+## Functions
+
+### Function Design
+
+**Small, focused functions:**
+```python
+# ✅ GOOD: Single responsibility
+def calculate_item_total(item: Item) -> float:
+    return item.price * item.quantity
+
+def calculate_order_total(items: list[Item]) -> float:
+    return sum(calculate_item_total(item) for item in items)
+```
+
+**Default arguments:**
+```python
+# ✅ GOOD: Default arguments
+def greet(name: str, greeting: str = 'Hello') -> str:
+    return f'{greeting}, {name}!'
+```
+
+**Keyword-only arguments:**
+```python
+# ✅ GOOD: Keyword-only for clarity
+def create_user(name: str, *, email: str, age: int) -> User:
+    # email and age must be keyword arguments
+    pass
+```
+
+---
+
+## Error Handling
+
+### Exception Handling
+
+**Use specific exceptions:**
+```python
+# ✅ GOOD: Specific exceptions
+try:
+    user = get_user(user_id)
+except UserNotFoundError:
+    return None
+except DatabaseError as e:
+    logger.error(f'Database error: {e}')
+    raise
+```
+
+**Don't catch all exceptions:**
+```python
+# ❌ BAD: Catching everything
+try:
+    risky_operation()
+except:  # Too broad!
+    pass
+
+# ✅ GOOD: Specific exception
+try:
+    risky_operation()
+except SpecificError:
+    handle_error()
+```
+
+### Custom Exceptions
+
+**Create custom exceptions:**
+```python
+# ✅ GOOD: Custom exception
+class ValidationError(Exception):
+    def __init__(self, field: str, message: str):
+        self.field = field
+        self.message = message
+        super().__init__(f'{field}: {message}')
+```
+
+---
+
+## Classes
+
+### Class Design
+
+**Use dataclasses for simple data:**
+```python
+# ✅ GOOD: Dataclass (Python 3.7+)
+from dataclasses import dataclass
+
+@dataclass
+class User:
+    id: int
+    name: str
+    email: str
+    age: int = 0
+```
+
+**Use classes for behavior:**
+```python
+# ✅ GOOD: Class with behavior
+class UserService:
+    def __init__(self, db: Database):
+        self.db = db
+    
+    def get_user(self, user_id: int) -> User | None:
+        return self.db.find_user(user_id)
+```
+
+---
+
+## Modules and Packages
+
+### Module Organization
+
+**Organize by feature:**
+```
+project/
+├── users/
+│   ├── __init__.py
+│   ├── models.py
+│   ├── services.py
+│   └── views.py
+├── orders/
+│   ├── __init__.py
+│   └── ...
+└── utils/
+    └── ...
+```
+
+### Imports
+
+**Organize imports:**
+```python
+# 1. Standard library
+import os
+import sys
+from typing import List, Dict
+
+# 2. Third-party
+import requests
+from django import forms
+
+# 3. Local
+from users.models import User
+from utils.helpers import calculate_total
+```
+
+**Use absolute imports:**
+```python
+# ✅ GOOD: Absolute imports
+from users.services import UserService
+
+# ❌ BAD: Relative imports (when avoidable)
+from ..services import UserService
+```
+
+---
+
+## Testing
+
+### Test Structure
+
+**Use pytest:**
+```python
+# ✅ GOOD: pytest structure
+import pytest
+from users.services import UserService
+
+def test_get_user_success():
+    service = UserService(mock_db)
+    user = service.get_user(1)
+    assert user is not None
+    assert user.id == 1
+
+def test_get_user_not_found():
+    service = UserService(mock_db)
+    user = service.get_user(999)
+    assert user is None
+```
+
+---
+
+## Best Practices Summary
+
+1. **Follow PEP 8** - Python style guide
+2. **Use Type Hints** - Add type information
+3. **f-Strings** - Modern string formatting
+4. **Comprehensions** - When readable
+5. **Specific Exceptions** - Catch specific errors
+6. **Dataclasses** - For simple data structures
+7. **Small Functions** - Single responsibility
+8. **Module Organization** - Clear structure
+9. **Absolute Imports** - Prefer absolute
+10. **Test Everything** - Write tests
+
+---
+
+**Generated by:** `/generate-rules` command  
+**Last Updated:** {{DATE}}  
+**Project Complexity:** {{COMPLEXITY}}

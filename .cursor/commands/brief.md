@@ -31,6 +31,8 @@ This command follows a **plan-approve-execute** pattern to ensure deliberate, th
 - What does success look like for this feature?
 - Are there existing patterns we should follow?
 
+**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow. You can skip questions if the information is already clear from your description.
+
 **Read relevant files:**
 - Existing task briefs in `specs/active/*/feature-brief.md` for patterns
 - Project overview at `specs/00-overview.md` for context
@@ -121,7 +123,9 @@ Creates: `specs/active/[task-id]/feature-brief.md`
 ## Notes for AI Assistants
 
 - **Always present a plan first** using the create_plan tool
+- **Use interactive question UI (Cursor 2.1+)** - Questions appear automatically in interactive interface
 - **Ask questions early** if feature description is vague
 - **Show your thinking** in the plan about structure and approach
 - **Wait for approval** before creating any files
 - **Execute completely** once approved - don't leave partial work
+- **Note plan search capability** - Users can ⌘+F to search within plans

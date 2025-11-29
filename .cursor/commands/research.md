@@ -31,6 +31,10 @@ This command follows a **plan-approve-execute** pattern to ensure systematic res
 - Are there specific technical constraints to consider?
 - What's the primary goal: understand existing code or explore new approaches?
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **Instant Grep:** All codebase searches are now instant! Leverage multiple parallel searches for faster pattern discovery
+
 **Initial exploration (readonly):**
 - Scan codebase for similar feature patterns
 - Check existing specs for related features
@@ -139,8 +143,11 @@ Creates: `specs/active/[task-id]/research.md`
 ## Notes for AI Assistants
 
 - **Always present a plan first** showing research strategy
+- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
+- **Leverage Instant Grep (Cursor 2.1+)** - All searches are instant, use multiple parallel searches
 - **Be specific about what you'll search for** in the plan
 - **Show your research methodology** - where you'll look and why
 - **Wait for approval** before conducting research
 - **Document comprehensively** but stay focused on research questions
 - **Balance depth with time** - ~60 minutes total research time
+- **Note plan search** - Users can ⌘+F to search within research plans

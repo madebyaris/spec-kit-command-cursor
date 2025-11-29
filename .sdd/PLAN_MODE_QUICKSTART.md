@@ -6,6 +6,23 @@ Welcome to the enhanced SDD system with PLAN mode integration! This guide will h
 
 PLAN mode is an enhanced workflow where AI assistants present plans for your approval **before** executing any file changes. This gives you full control and visibility.
 
+### Cursor 2.1 Improvements
+
+**Interactive Questions:**
+- Questions appear in interactive UI (not just text)
+- Answer directly in the interface
+- Faster workflow
+
+**Plan Search:**
+- Use ⌘+F to search within plans
+- Find sections quickly
+- Navigate large plans easily
+
+**AI Code Reviews:**
+- Automatic code review after implementation
+- Issues shown in sidepanel
+- Fix bugs directly in editor
+
 ## The Magic Formula
 
 ```
@@ -223,8 +240,11 @@ Q: Which notification types?
 A: All of them
 ```
 
+**Note (Cursor 2.1+):** Questions appear in interactive UI - answer directly in the interface for faster workflow.
+
 ### 3. Review Plans Carefully
 - Read the entire plan
+- Use ⌘+F to search for specific sections (Cursor 2.1+)
 - Check file paths are correct
 - Verify structure makes sense
 - Ensure requirements are captured
@@ -335,15 +355,22 @@ More context = fewer questions = faster to approval!
 
 ### "Plan is too detailed / not detailed enough"
 → Request adjustment: "Simplify this" or "Add more detail"
+→ Use ⌘+F to search within plan and find specific sections (Cursor 2.1+)
 
 ### "AI keeps asking questions"
 → This is good! It ensures understanding. Answer thoroughly.
+→ Questions appear in interactive UI - answer directly for faster workflow (Cursor 2.1+)
 
 ### "Plan takes too long to generate"
 → Be patient - thoughtful planning takes time but saves more later
+→ For complex projects, use background planning (Cursor 2.1+)
 
 ### "I approved but want to change something"
 → Use `/evolve` to update after creation
+
+### "How do I find something in a large plan?"
+→ Use ⌘+F to search within the plan (Cursor 2.1+)
+→ Search for keywords, file paths, or section names
 
 ## Next Steps
 

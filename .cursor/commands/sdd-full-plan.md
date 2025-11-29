@@ -67,6 +67,11 @@ After presenting the roadmap plan, **always ask**:
 
 **Wait for user choice before proceeding.**
 
+**Note (Cursor 2.1+):** 
+- Questions appear in interactive UI - answer directly for faster workflow
+- **Background Planning:** For very complex projects, you can create plan in background and continue working
+- **Plan Search:** Use ⌘+F to search within generated roadmap plans
+
 **Read relevant files:**
 - Existing roadmaps in `specs/todo-roadmap/`
 - Project overview at `specs/00-overview.md`
@@ -299,6 +304,20 @@ Would you like to:
 - Pause and review what we have so far
 ```
 
+#### Background Planning (Cursor 2.1+)
+
+**For very complex projects:**
+- Create plan in background while you continue working
+- Plan generates with one model, you can build with another
+- Get notification when plan is ready
+- Review plan when convenient
+
+**Usage:**
+- Enable in Cursor settings
+- Plan generates while you work
+- Multiple plan options can be created in parallel
+- Compare approaches and choose best plan
+
 ### Phase 4: Documentation
 
 **For One-by-One Mode:**
@@ -516,11 +535,14 @@ System automatically:
 - **Generate VSCode-compatible JSON** following Taskr Kanban format
 - **Wait for approval AND mode selection** before creating any files
 - **Respect user preference** - don't skip the execution mode question
+- **Use interactive question UI (Cursor 2.1+)** - Questions appear automatically
+- **Consider background planning** for very complex projects
 - **Link to SDD commands** for each task execution
 - **Track progress** meticulously in execution log
 - **Validate dependencies** ensure logical task ordering
 - **Estimate realistically** use historical data when possible
 - **Document thoroughly** all decisions and rationale
+- **Note plan search** - Users can ⌘+F to search within roadmap plans
 
 ## Integration with VSCode Extensions
 
