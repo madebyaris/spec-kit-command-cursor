@@ -4,6 +4,8 @@ Create a comprehensive project roadmap from A to Z with kanban-style task organi
 
 **Aliases:** `/pecut-all-in-one`
 
+**Supports `--until-finish` flag** for automated execution of the entire project after roadmap creation.
+
 ---
 
 ## IMPORTANT: This is Full Project Planning Mode
@@ -17,15 +19,17 @@ Create a comprehensive project roadmap from A to Z with kanban-style task organi
 - Manage dependencies between tasks
 - Generate VSCode-compatible kanban JSON
 - Map tasks to appropriate SDD commands
+- **With `--until-finish`:** After roadmap creation, execute ALL tasks automatically
 
 **Mode boundaries (What you will NOT do):**
-- Write implementation code
-- Execute any tasks
+- Write implementation code (until execution phase with `--until-finish`)
+- Execute any tasks (unless `--until-finish` flag is provided)
 - Skip complexity analysis
 - Create roadmaps without user approval
-- Skip the execution mode selection question
+- Skip the execution mode selection question (unless `--until-finish`)
+- **With `--until-finish`:** Continue past errors without fixing them first
 
-**Recommended Cursor Mode:** Plan
+**Recommended Cursor Mode:** Plan → Agent (when `--until-finish` triggers execution)
 (Use `Cmd+.` to switch modes if needed)
 
 ---
@@ -68,15 +72,39 @@ Implementation: BLOCKED - I will plan the entire project, not implement it
 ## Usage
 
 ```
-/sdd-full-plan [project-id] [description]
-/pecut-all-in-one [project-id] [description]
+/sdd-full-plan [project-id] [description] [--until-finish]
+/pecut-all-in-one [project-id] [description] [--until-finish]
 ```
 
 **Examples:**
 ```
+# Create roadmap only (manual execution)
 /sdd-full-plan blog-platform Full-featured blog with CMS and analytics
-/sdd-full-plan ecommerce-app Multi-vendor marketplace with payments
 /pecut-all-in-one saas-dashboard Admin dashboard for SaaS product
+
+# Create roadmap AND execute everything automatically
+/sdd-full-plan ecommerce-app Multi-vendor marketplace --until-finish
+/pecut-all-in-one blog-platform Full blog with CMS --until-finish
+```
+
+### The `--until-finish` Flag
+
+When `--until-finish` is provided:
+1. **Creates the roadmap** as usual (Phase 1-3)
+2. **Skips execution mode question** - assumes "Immediate Execution"
+3. **Automatically starts executing ALL tasks** in dependency order
+4. **No user intervention needed** - runs until complete or error
+5. **Stops on error** - reports issue and waits for fix before continuing
+
+**This is the "fire and forget" mode** - start it and come back when it's done!
+
+**Flow:**
+```
+/sdd-full-plan project --until-finish
+    ↓
+Create Roadmap → Execute Epic 1 → Execute Epic 2 → ... → 🎉 Project Complete!
+                      ↓
+                 ❌ Error → STOP → Report → Fix → Resume
 ```
 
 ---
@@ -414,7 +442,151 @@ Before final output, verify:
 
 ---
 
+### Phase 5: Automated Execution (Only with `--until-finish`)
+
+**If `--until-finish` flag was provided, continue to automated execution:**
+
+#### Step 1: Pre-Execution Summary
+
+```
+✅ Roadmap created: `specs/todo-roadmap/[project-id]/`
+
+**Summary:**
+- Epics: [Count]
+- Tasks: [Count]
+- Estimated duration: [X weeks]
+
+🚀 **Starting Automated Execution (--until-finish)**
+
+**Execution Queue:**
+| Order | Epic/Task | Phase | Command |
+|-------|-----------|-------|---------|
+| 1 | epic-001 | - | - |
+| 1.1 | task-001-1 | brief | /brief |
+| 1.2 | task-001-2 | implementation | /implement |
+| 2 | epic-002 | - | - |
+| 2.1 | task-002-1 | brief | /brief |
+[...]
+
+**Total tasks to execute:** [N]
+**Estimated time:** [X hours]
+
+Beginning execution...
+```
+
+#### Step 2: Execute All Tasks
+
+Follow the `/execute-task --until-finish` workflow for each epic:
+
+```python
+for epic in roadmap.epics:
+    print(f"📦 Starting Epic: {epic.id} - {epic.title}")
+    
+    for task in epic.tasks:
+        # Execute each task
+        result = execute_task(task)
+        
+        if result.success:
+            print(f"✅ [{current}/{total}] {task.id} completed")
+        else:
+            # STOP on error
+            print(f"❌ Error in {task.id}")
+            print("Fix the error, then resume with:")
+            print(f"/execute-task {task.id} --until-finish")
+            return  # Exit
+    
+    print(f"✅ Epic {epic.id} complete!")
+
+print("🎉 All epics complete! Project finished!")
+```
+
+#### Step 3: Progress Updates
+
+After each task:
+```
+✅ [5/23] task-001-2 completed
+   Epic: epic-001 (3/5 tasks done)
+   Command: /implement | Duration: 12m
+   
+   Continuing...
+```
+
+After each epic:
+```
+📦 Epic epic-001 complete! (5/5 tasks)
+   Duration: 45m
+   Files created: 12
+   
+   Starting next epic: epic-002...
+```
+
+#### Step 4: Error Handling
+
+If any task fails:
+
+```
+❌ **Execution Stopped - Error in task-002-3**
+
+**Progress so far:**
+- ✅ Epic 1: Complete (5/5 tasks)
+- 🔄 Epic 2: Partial (2/4 tasks)
+  - ✅ task-002-1
+  - ✅ task-002-2
+  - ❌ task-002-3 (FAILED)
+  - ⏸️ task-002-4 (pending)
+
+**Error details:**
+[Error description]
+
+**To fix and continue:**
+1. Fix the error
+2. Resume: `/execute-task task-002-3 --until-finish`
+
+**To skip this task:**
+1. Mark as blocked in roadmap.json
+2. Resume: `/execute-task task-002-4 --until-finish`
+```
+
+#### Step 5: Final Completion
+
+When all tasks complete:
+
+```
+🎉 **PROJECT COMPLETE!**
+
+**Project:** [project-id] - [Project Title]
+**Total Duration:** [X hours Y minutes]
+**Tasks Executed:** [N]
+
+**Epic Summary:**
+| Epic | Tasks | Duration | Status |
+|------|-------|----------|--------|
+| epic-001 | 5 | 45m | ✅ Complete |
+| epic-002 | 4 | 1h 20m | ✅ Complete |
+| epic-003 | 3 | 30m | ✅ Complete |
+
+**Files Created:**
+- Specs: [N] files in `specs/active/`
+- Code: [M] files in `src/`
+- Docs: [P] files
+
+**Roadmap Status:**
+- All tasks: done
+- Completion: 100%
+
+**What's next:**
+- Review the code: `src/`
+- Run tests: `npm test`
+- Deploy: Your choice!
+
+*Full execution log: `specs/todo-roadmap/[project-id]/execution-log.md`*
+```
+
+---
+
 ## Output (REQUIRED)
+
+### Standard Output (without `--until-finish`)
 
 **Your response MUST end with:**
 
@@ -443,9 +615,18 @@ Before final output, verify:
 /execute-task epic-001
 ```
 
+**Or execute everything automatically:**
+```bash
+/execute-task epic-001 --until-finish
+```
+
 **View roadmap:**
 Open `specs/todo-roadmap/[project-id]/roadmap.md`
 ```
+
+### Output with `--until-finish`
+
+See Phase 5 above for the complete execution output format.
 
 ---
 
@@ -493,7 +674,8 @@ Open `specs/todo-roadmap/[project-id]/roadmap.md`
 
 ## Related Commands
 
-- `/execute-task [task-id]` - Execute a task from the roadmap
+- `/execute-task [task-id] --until-finish` - Execute task/epic until complete
 - `/brief [task-id]` - Quick feature planning
 - `/research [task-id]` - Deep research phase
 - `/implement [task-id]` - Implementation phase
+- `/audit [task-id]` - Spec-driven audit

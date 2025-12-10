@@ -85,6 +85,25 @@ Auto-generate Cursor rules based on tech stack detection.
 
 **Use `/sdd-full-plan`** for full project roadmaps with kanban structure.
 
+## Automated Execution: `--until-finish`
+
+Add `--until-finish` to execute tasks automatically without stopping:
+
+```bash
+# Execute entire epic automatically
+/execute-task epic-001 --until-finish
+
+# Create roadmap AND execute everything
+/sdd-full-plan project-id Description --until-finish
+/pecut-all-in-one project-id Description --until-finish
+```
+
+**Behavior:**
+- Executes all tasks in dependency order
+- No user approval between tasks
+- **Stops on error** - fix and resume with same command
+- Continues until complete
+
 ## Cursor Mode Mapping
 
 | SDD Command | Cursor Mode | Purpose |
@@ -118,6 +137,7 @@ Auto-generate Cursor rules based on tech stack detection.
 | `/generate-rules` | Create coding rules | .cursor/rules/*.mdc |
 | `/sdd-full-plan` | Full project roadmap | Kanban + tasks |
 | `/execute-task` | Execute roadmap task | Varies by task |
+| `--until-finish` | Flag: automated execution | Runs until complete |
 
 ## CRITICAL FOR AI ASSISTANTS
 

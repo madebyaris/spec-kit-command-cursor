@@ -2,6 +2,8 @@
 
 Execute a specific task from a project roadmap, automatically determining the appropriate SDD command and updating roadmap status.
 
+**Supports `--until-finish` flag** for automated sequential execution of all tasks in an epic.
+
 ---
 
 ## IMPORTANT: This is Task Execution Mode
@@ -15,12 +17,14 @@ Execute a specific task from a project roadmap, automatically determining the ap
 - Execute the command with task context
 - Update roadmap status after completion
 - Log execution in execution-log.md
+- **With `--until-finish`:** Automatically continue to next task until epic is complete
 
 **Mode boundaries (What you will NOT do):**
 - Execute tasks with incomplete dependencies
 - Skip dependency validation
 - Forget to update roadmap status
-- Execute without showing the plan first
+- Execute without showing the plan first (unless `--until-finish`)
+- **With `--until-finish`:** Continue past errors without fixing them first
 
 **Recommended Cursor Mode:** Agent (for implementation tasks) or Plan (for planning tasks)
 (Use `Cmd+.` to switch modes if needed)
@@ -65,7 +69,7 @@ Implementation: DETERMINED BY TASK TYPE
 ## Usage
 
 ```
-/execute-task [task-id]
+/execute-task [task-id] [--until-finish]
 ```
 
 **Examples:**
@@ -73,6 +77,26 @@ Implementation: DETERMINED BY TASK TYPE
 /execute-task epic-001
 /execute-task task-001-1
 /execute-task task-002-3
+
+# Automated execution - complete entire epic without stopping
+/execute-task epic-001 --until-finish
+/execute-task task-001-1 --until-finish
+```
+
+### The `--until-finish` Flag
+
+When `--until-finish` is provided:
+- **For an epic:** Executes the epic and ALL its subtasks sequentially
+- **For a task:** Executes the task and continues with remaining tasks in the same epic
+- **No user approval needed** between tasks - fully automated
+- **Stops on error:** If any task fails, stops and reports the error for fixing
+- **Auto-marks done:** After successful execution, marks task as "done" (not "review")
+
+**Flow with `--until-finish`:**
+```
+Start → Execute Task 1 → ✅ Done → Execute Task 2 → ✅ Done → ... → All Complete!
+                              ↓
+                         ❌ Error → STOP → Report Error → Wait for Fix → Resume
 ```
 
 ---
@@ -271,6 +295,8 @@ Before final output, verify:
 
 ## Output (REQUIRED)
 
+### Standard Output (without `--until-finish`)
+
 **Your response MUST end with:**
 
 ```
@@ -298,6 +324,179 @@ Before final output, verify:
 
 **Progress:** [Completed]/[Total] tasks ([Percentage]%)
 ```
+
+### Output with `--until-finish` (Per Task)
+
+After each task in the sequence:
+
+```
+✅ [N/Total] Task completed: [task-id]
+   Command: /[command] | Duration: [time] | Status: done
+   
+   Continuing to next task...
+```
+
+### Final Output with `--until-finish`
+
+When all tasks are complete:
+
+```
+🎉 **All Tasks Complete!**
+
+**Epic:** [epic-id] - [Epic Title]
+**Total tasks executed:** [N]
+**Total duration:** [time]
+
+**Execution Summary:**
+| # | Task | Command | Duration | Status |
+|---|------|---------|----------|--------|
+| 1 | [task-001-1] | /brief | 5m | ✅ done |
+| 2 | [task-001-2] | /implement | 15m | ✅ done |
+| 3 | [task-001-3] | /implement | 10m | ✅ done |
+
+**Files created:**
+- `specs/active/[task-id]/feature-brief.md`
+- `src/components/[Component].tsx`
+- [...]
+
+**Roadmap updated:**
+- Epic status: done
+- All subtasks: done
+- Progress: [X]/[Total] ([Y]%)
+
+**What's next:**
+- Start next epic: `/execute-task epic-002 --until-finish`
+- Or review: Open `specs/todo-roadmap/[project]/roadmap.md`
+```
+
+### Error Output with `--until-finish`
+
+If a task fails during automated execution:
+
+```
+❌ **Execution Stopped - Error in Task [task-id]**
+
+**Completed before error:** [N] tasks
+**Failed task:** [task-id] - [Title]
+
+**Error:**
+[Description of what went wrong]
+
+**Current state:**
+- Tasks 1-[N]: ✅ done
+- Task [N+1]: ❌ failed (status: in-progress)
+- Tasks [N+2]-[Total]: ⏸️ pending
+
+**To fix and continue:**
+1. Fix the error in [task-id]
+2. Resume: `/execute-task [task-id] --until-finish`
+
+**Or to skip and continue:**
+- Mark as blocked: Update status to "blocked" in roadmap.json
+- Continue: `/execute-task [next-task-id] --until-finish`
+```
+
+---
+
+## `--until-finish` Workflow
+
+When the `--until-finish` flag is provided, follow this automated workflow:
+
+### Step 1: Identify All Tasks to Execute
+
+**If starting from an epic:**
+```
+1. Read the epic and find all subtasks
+2. Sort by dependency order (tasks with no dependencies first)
+3. Create execution queue
+```
+
+**If starting from a task:**
+```
+1. Find the parent epic
+2. Get all sibling tasks in the epic
+3. Filter to: current task + all tasks after it (by order)
+4. Create execution queue
+```
+
+### Step 2: Pre-flight Check
+
+Before starting automated execution:
+
+```
+**Automated Execution Mode: --until-finish**
+
+**Epic:** [epic-id] - [Epic Title]
+**Tasks to execute:** [N]
+
+| Order | Task | Phase | Command | Est. Time |
+|-------|------|-------|---------|-----------|
+| 1 | [task-001-1] | brief | /brief | ~30m |
+| 2 | [task-001-2] | implementation | /implement | ~2h |
+| 3 | [task-001-3] | implementation | /implement | ~1h |
+
+**Total estimated time:** [X hours]
+
+⚠️ **This will run without stopping until complete or error.**
+
+Starting automated execution...
+```
+
+### Step 3: Execute Each Task Sequentially
+
+For each task in the queue:
+
+```python
+for task in execution_queue:
+    # 1. Check dependencies
+    if not all_dependencies_complete(task):
+        # Execute dependencies first (they should be earlier in queue)
+        continue
+    
+    # 2. Update status to in-progress
+    update_status(task, "in-progress")
+    
+    # 3. Execute the appropriate SDD command
+    result = execute_sdd_command(task)
+    
+    # 4. Check result
+    if result.success:
+        # Mark as done (not review - we're automating)
+        update_status(task, "done")
+        log_execution(task, result)
+        print(f"✅ [{current}/{total}] {task.id} completed")
+    else:
+        # STOP - report error
+        print(f"❌ Error in {task.id}: {result.error}")
+        print("Execution stopped. Fix the error and resume.")
+        return  # Exit the loop
+    
+    # 5. Continue to next task
+```
+
+### Step 4: Handle Errors
+
+When an error occurs:
+
+1. **STOP immediately** - do not continue to next task
+2. **Keep current task status as "in-progress"** - indicates where we stopped
+3. **Report the error clearly** with context
+4. **Provide fix instructions** and resume command
+5. **Wait for user to fix** before continuing
+
+**Error recovery:**
+```
+User fixes the issue → Runs `/execute-task [failed-task] --until-finish` → Continues from where it stopped
+```
+
+### Step 5: Completion
+
+When all tasks complete successfully:
+
+1. Update epic status to "done"
+2. Generate summary report
+3. Log total execution time
+4. Suggest next epic or completion message
 
 ---
 
@@ -369,8 +568,8 @@ When a task completes, automatically:
 
 ## Related Commands
 
-- `/sdd-full-plan [project-id]` - Create project roadmap
+- `/sdd-full-plan [project-id] --until-finish` - Create roadmap AND execute all tasks
 - `/brief [task-id]` - Quick feature brief
 - `/research [task-id]` - Research phase
 - `/implement [task-id]` - Implementation phase
-- `/debug [task-id]` - Debug issues
+- `/audit [task-id]` - Spec-driven audit

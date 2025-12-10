@@ -122,6 +122,8 @@ User Command → AI Analyzes → Shows Plan → You Approve → AI Executes → 
 | `/execute-task` | Run task from roadmap | Executes with appropriate SDD command |
 | `/generate-prd` | PRD via Socratic questions | `full-prd.md` + `quick-prd.md` |
 
+**🚀 NEW: `--until-finish` flag** - Add to any command above for automated execution!
+
 ### 🏗️ Advanced Workflow (20% of complex features)
 
 | Command | Purpose | Output |
@@ -372,6 +374,40 @@ To fix: "Fix #1" or "Fix all critical"
 
 ---
 
+## 🚀 The `--until-finish` Flag
+
+**Automated execution mode** - run entire projects without stopping!
+
+```bash
+# Execute an entire epic automatically
+/execute-task epic-001 --until-finish
+
+# Create roadmap AND execute everything
+/sdd-full-plan my-project Complete app with auth --until-finish
+/pecut-all-in-one my-project Full SaaS dashboard --until-finish
+```
+
+**What it does:**
+1. Executes all tasks in dependency order
+2. No user approval needed between tasks
+3. **Stops on error** - reports issue for you to fix
+4. Resume with same command after fixing
+5. Continues until complete
+
+**Flow:**
+```
+Start → Task 1 ✅ → Task 2 ✅ → Task 3 ❌ Error → STOP → Fix → Resume → Task 3 ✅ → Done! 🎉
+```
+
+**Scope:**
+- `/execute-task [epic-id] --until-finish` - Executes that epic and all its subtasks
+- `/execute-task [task-id] --until-finish` - Executes from that task to end of epic
+- `/sdd-full-plan --until-finish` - Creates roadmap AND executes ALL tasks
+
+This is **"fire and forget"** mode - start it and come back when your project is built!
+
+---
+
 ## 📝 The /generate-prd Command
 
 Create PRDs through guided Socratic questioning:
@@ -406,7 +442,8 @@ We ❤️ contributions!
 
 - ✅ v3.0: Agentic-first template rewrite
 - ✅ New commands: `/generate-prd`, `/audit`, `/refine`
-- ✅ Cursor mode integration
+- ✅ **NEW: `--until-finish` flag** - Automated execution mode
+- ✅ Cursor mode integration (including Debug Mode)
 - ✅ Self-correction protocols
 - ✅ Shared agent protocols (`_shared/`)
 
