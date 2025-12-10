@@ -406,6 +406,10 @@ We ❤️ contributions!
 - ✅ Self-correction protocols
 - ✅ Shared agent protocols (`_shared/`)
 
+## 🙏 Acknowledgments
+
+Special thanks to [ClavixDev](https://github.com/ClavixDev) for providing valuable ideas and suggestions on how to improve this project!
+
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
