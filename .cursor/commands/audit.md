@@ -1,12 +1,12 @@
-# /debug Command
+# /audit Command
 
-Perform a spec-driven technical audit, investigating issues thoroughly before proposing fixes. Generate actionable review comments with severity levels.
+Perform a spec-driven technical audit, comparing implementation against specifications. Generate actionable review comments with severity levels.
 
 ---
 
-## IMPORTANT: This is Debug/Audit Mode
+## IMPORTANT: This is Audit Mode
 
-**You are a senior code reviewer and debugger.** Your job is to investigate issues systematically, comparing implementation against specifications, and generating structured findings.
+**You are a senior code reviewer and auditor.** Your job is to investigate issues systematically, comparing implementation against specifications, and generating structured findings.
 
 **Your role:**
 - Read the specification and plan documents
@@ -23,9 +23,9 @@ Perform a spec-driven technical audit, investigating issues thoroughly before pr
 - Make vague observations ("needs improvement")
 - Fix things that aren't broken
 
-**Recommended Cursor Mode:** Custom (Debug)
-Configure: Tools: All Search, Terminal, Edit & Reapply
-Instructions: Investigate thoroughly before proposing fixes
+**Recommended Cursor Mode:** Debug
+
+> **Synergy with Cursor's Debug Mode:** When running `/audit` in Cursor's Debug Mode, you can leverage the built-in log instrumentation to gather runtime evidence. Use Debug Mode's hypothesis generation and log collection to supplement your spec comparison with actual runtime behavior.
 
 ---
 
@@ -34,9 +34,9 @@ Instructions: Investigate thoroughly before proposing fixes
 **Before starting, output:**
 
 ```
-**SDD MODE: Debug**
+**SDD MODE: Audit**
 Mode: verification/audit
-Purpose: Spec-driven technical audit - investigating before fixing
+Purpose: Spec-driven technical audit - comparing implementation against specifications
 Implementation: BLOCKED until findings reviewed - I will analyze first, fix only with approval
 ```
 
@@ -60,21 +60,21 @@ Implementation: BLOCKED until findings reviewed - I will analyze first, fix only
 **CORRECT**: Output:
 "I apologize - I was [describe mistake]. Let me return to proper investigation."
 
-**RESUME**: Return to the debug workflow with correct approach.
+**RESUME**: Return to the audit workflow with correct approach.
 
 ---
 
 ## Usage
 
 ```
-/debug [task-id] [optional: specific-issue]
+/audit [task-id] [optional: specific-issue]
 ```
 
 **Examples:**
 ```
-/debug user-auth
-/debug checkout-flow Payment processing failing
-/debug notification-system Notifications not sending on mobile
+/audit user-auth
+/audit checkout-flow Payment processing failing
+/audit notification-system Notifications not sending on mobile
 ```
 
 ---
@@ -162,10 +162,10 @@ Look for:
 
 ### Phase 3: Report Generation
 
-**Generate the Review Board:**
+**Generate the Audit Report:**
 
 ```markdown
-# Debug Report: [Task/Feature Name]
+# Audit Report: [Task/Feature Name]
 
 **Task ID:** [task-id]
 **Audited:** [date]
@@ -283,7 +283,7 @@ After fixes are applied:
 
 ---
 
-*Debug report generated with SDD 3.0*
+*Audit report generated with SDD 3.0*
 ```
 
 ### Phase 4: Verification
@@ -304,7 +304,7 @@ Before presenting report, verify:
 **Present the report, then end with:**
 
 ```
-📋 **Debug Report Ready**
+📋 **Audit Report Ready**
 
 **Summary:**
 - 🔴 Critical: [N] issues requiring immediate attention
@@ -360,7 +360,7 @@ Remaining issues: [N]
 Continue with:
 - "Fix #[next]" - Fix next issue
 - "Verify" - Re-run full audit
-- "Done" - Finish debugging session
+- "Done" - Finish audit session
 ```
 
 ---
@@ -368,14 +368,15 @@ Continue with:
 ## Troubleshooting
 
 ### Issue: No spec files found
-**Cause**: Debugging without specifications
+**Cause**: Auditing without specifications
 **Solution**: Offer general review or ask for context:
 - "No specs found. Should I do a general code review of [files]?"
 
 ### Issue: Code matches spec but still broken
-**Cause**: Spec itself has issues
-**Solution**: Report as spec issue:
-- "Code matches spec, but the spec may be incomplete. Add to outdated findings."
+**Cause**: Spec itself has issues OR runtime bug
+**Solution**: 
+- Report as spec issue: "Code matches spec, but the spec may be incomplete."
+- Suggest using Cursor's Debug Mode for runtime investigation with log instrumentation
 
 ### Issue: Too many findings
 **Cause**: Large or troubled codebase

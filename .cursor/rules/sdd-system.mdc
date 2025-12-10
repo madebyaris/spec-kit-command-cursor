@@ -66,8 +66,8 @@ For complex, high-risk, or multi-team features.
 ### `/generate-prd` - PRD Generation
 Create Product Requirements Documents through Socratic questioning.
 
-### `/debug` - Spec-Driven Audit
-Investigate issues by comparing code against specs. Propose fixes after investigation.
+### `/audit` - Spec-Driven Audit
+Compare code against specs. Propose fixes after investigation. Use with Cursor's Debug Mode for runtime evidence.
 
 ### `/generate-rules` - Coding Rules
 Auto-generate Cursor rules based on tech stack detection.
@@ -92,7 +92,7 @@ Auto-generate Cursor rules based on tech stack detection.
 | `/brief`, `/specify`, `/plan`, `/tasks` | Plan | Planning without code changes |
 | `/research` | Ask | Read-only exploration |
 | `/implement`, `/execute-task` | Agent | Multi-file implementation |
-| `/debug` | Custom (Debug) | Investigate before fixing |
+| `/audit` | Debug | Spec-driven audit with runtime evidence |
 
 ## File Organization
 
@@ -114,7 +114,7 @@ Auto-generate Cursor rules based on tech stack detection.
 | `/upgrade` | Expand to full SDD 2.0 | All SDD 2.0 docs |
 | `/refine` | Iterate on specs | Refined spec |
 | `/generate-prd` | Create PRD | full-prd.md, quick-prd.md |
-| `/debug` | Spec-driven audit | Debug report |
+| `/audit` | Spec-driven audit | Audit report |
 | `/generate-rules` | Create coding rules | .cursor/rules/*.mdc |
 | `/sdd-full-plan` | Full project roadmap | Kanban + tasks |
 | `/execute-task` | Execute roadmap task | Varies by task |

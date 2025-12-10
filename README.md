@@ -34,7 +34,7 @@ SDD v3.0 transforms templates from descriptions into **direct agent instructions
 | Command | Purpose |
 |---------|---------|
 | `/generate-prd` | Create PRDs through Socratic questioning |
-| `/debug` | Spec-driven technical audit (investigate before fixing) |
+| `/audit` | Spec-driven technical audit (compare code against specs) |
 | `/refine` | Iterate on specs through discussion |
 
 ### Cursor Mode Integration
@@ -46,7 +46,7 @@ Each command now maps to the optimal Cursor mode:
 | `/brief`, `/specify`, `/plan`, `/tasks` | Plan |
 | `/research` | Ask (read-only) |
 | `/implement`, `/execute-task` | Agent |
-| `/debug` | Custom (Debug) |
+| `/audit` | Debug |
 
 ---
 
@@ -90,8 +90,8 @@ cd spec-kit-command-cursor
 # Create PRD through questions
 /generate-prd mobile-app
 
-# Debug issues systematically
-/debug user-auth Login failures on mobile
+# Audit code against specs
+/audit user-auth Login failures on mobile
 ```
 
 ### 3. Understand the Workflow
@@ -137,7 +137,7 @@ User Command → AI Analyzes → Shows Plan → You Approve → AI Executes → 
 | Command | Purpose | Output |
 |---------|---------|--------|
 | `/upgrade` | Brief → Full SDD 2.0 | Complete planning suite |
-| `/debug` | Spec-driven technical audit | Debug report with fixes |
+| `/audit` | Spec-driven technical audit | Audit report with fixes |
 | `/generate-rules` | Auto-generate coding rules | `.cursor/rules/*.mdc` |
 
 ---
@@ -226,8 +226,8 @@ Implementation: [BLOCKED|AUTHORIZED]
 /execute-task epic-001
 /execute-task task-001-1
 
-# 3. Debug issues
-/debug task-001-1 Payment processing failing
+# 3. Audit issues
+/audit task-001-1 Payment processing failing
 ```
 
 ### Complex Feature (SDD 2.0)
@@ -282,7 +282,7 @@ your-project/
 │   │   ├── upgrade.md
 │   │   ├── refine.md
 │   │   ├── generate-prd.md
-│   │   ├── debug.md
+│   │   ├── audit.md
 │   │   ├── generate-rules.md
 │   │   ├── sdd-full-plan.md
 │   │   └── execute-task.md
@@ -321,30 +321,31 @@ your-project/
 | `/plan` | Plan | Architecture design |
 | `/tasks` | Plan | Task breakdown |
 | `/implement` | Agent | Full multi-file changes |
-| `/debug` | Custom (Debug) | Investigate before fixing |
+| `/audit` | Debug | Spec-driven audit with runtime evidence |
 
 ### Switching Modes
 
 Use `Cmd+.` (Mac) or `Ctrl+.` (Windows/Linux) to switch modes.
 
-### Custom Debug Mode
+### Using Debug Mode with /audit
 
-Set up in Cursor Settings → Chat → Custom Modes:
+Cursor's built-in Debug Mode pairs perfectly with the `/audit` command:
 
-```
-Name: Debug
-Tools: All Search, Terminal, Edit & Reapply
-Instructions: Investigate thoroughly before proposing fixes.
-```
+1. **Switch to Debug Mode** (`Cmd+.` or `Ctrl+.`)
+2. **Run `/audit [task-id]`** to compare code against specs
+3. **Leverage Debug Mode's features** for runtime evidence:
+   - Hypothesis generation
+   - Log instrumentation
+   - Runtime analysis
 
 ---
 
-## 🐛 The /debug Command
+## 🔍 The /audit Command
 
-Spec-driven technical audit that investigates before fixing:
+Spec-driven technical audit that compares implementation against specifications:
 
 ```bash
-/debug user-auth Login failures on mobile
+/audit user-auth Login failures on mobile
 ```
 
 **What it does:**
@@ -354,9 +355,12 @@ Spec-driven technical audit that investigates before fixing:
 4. Generates Review Board with severity levels
 5. Proposes fixes only after investigation
 
+**Synergy with Debug Mode:**
+When running in Cursor's Debug Mode, `/audit` can leverage log instrumentation to gather runtime evidence alongside spec comparison.
+
 **Output:**
 ```
-📋 Debug Report Ready
+📋 Audit Report Ready
 
 Summary:
 - 🔴 Critical: 1 issue (SQL injection)
@@ -401,7 +405,7 @@ We ❤️ contributions!
 ### Recent Changes
 
 - ✅ v3.0: Agentic-first template rewrite
-- ✅ New commands: `/generate-prd`, `/debug`, `/refine`
+- ✅ New commands: `/generate-prd`, `/audit`, `/refine`
 - ✅ Cursor mode integration
 - ✅ Self-correction protocols
 - ✅ Shared agent protocols (`_shared/`)
