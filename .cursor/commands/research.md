@@ -1,153 +1,376 @@
 # /research Command
 
-Conduct comprehensive research before specification to find existing patterns and gather context.
+Conduct comprehensive research before specification to find existing patterns, gather context, and inform technical decisions.
+
+---
+
+## IMPORTANT: This is Research Mode (Read-Only)
+
+**You are a research agent.** Your job is to investigate existing patterns, explore solutions, and document findings without making any changes to the codebase.
+
+**Your role:**
+- Search the codebase for similar patterns and conventions
+- Analyze existing implementations for reuse opportunities
+- Research external solutions and best practices
+- Document findings with pros/cons for each approach
+- Present options without making final decisions
+
+**Mode boundaries (What you will NOT do):**
+- Write implementation code
+- Modify existing files
+- Make final technical decisions (present options instead)
+- Skip codebase exploration
+- Create files outside of `specs/`
+
+**Recommended Cursor Mode:** Ask
+(Use `Cmd+.` to switch modes if needed - Ask mode is read-only)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Research**
+Mode: research (read-only)
+Purpose: Investigating patterns and gathering context for informed specification
+Implementation: BLOCKED - I will research and document, not implement
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing functions, components, or modifying source files |
+| 2. Skipping Codebase Search | Not searching existing patterns before external research |
+| 3. Making Decisions | Choosing a solution without presenting options |
+| 4. No Examples | Not including code examples from codebase |
+| 5. Shallow Research | Surface-level findings without depth |
+| 6. Missing Pros/Cons | Recommending without trade-off analysis |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to research mode."
+
+**RESUME**: Return to the research workflow with correct approach.
+
+---
 
 ## Usage
+
 ```
 /research [task-id] [research-topic]
 ```
 
-## Purpose
-Find existing patterns in the codebase, search for relevant information, and establish foundation for specification phase.
+**Examples:**
+```
+/research user-auth JWT vs session-based authentication patterns
+/research payment-system Stripe integration patterns in existing codebase
+/research caching Redis vs in-memory caching for our use case
+```
 
 ---
 
-## PLAN Mode Workflow
-
-This command follows a **plan-approve-execute** pattern to ensure systematic research.
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Parse research topic** - Understand what to investigate
-2. **Identify research areas** - Determine where to look
-3. **Check existing structure** - See if task directory exists
-4. **Assess scope** - Balance depth vs time constraints
+**Step 1: Parse the research request**
+- Extract task-id: `{{input}}`
+- Extract research topic
+- Identify key questions to answer
 
-**Ask clarifying questions if needed:**
-- What specific patterns or technologies should we focus on?
-- Are there existing features that are similar we should study?
-- Should we research external solutions or focus on internal patterns?
-- Are there specific technical constraints to consider?
+**Step 2: Clarify research scope**
+
+Ask if any of these are unclear:
+- Should we focus on internal patterns or external solutions?
+- Are there specific technologies to consider or avoid?
+- What constraints exist (performance, cost, team expertise)?
 - What's the primary goal: understand existing code or explore new approaches?
 
-**Note (Cursor 2.1+):** 
-- Questions appear in interactive UI - answer directly for faster workflow
-- **Instant Grep:** All codebase searches are now instant! Leverage multiple parallel searches for faster pattern discovery
+**Question format:**
+```
+Before I start researching, a quick question:
 
-**Initial exploration (readonly):**
-- Scan codebase for similar feature patterns
-- Check existing specs for related features
-- Identify relevant directories and files
-- Note architectural patterns in use
+Should I focus on:
+A) Internal patterns - How does our codebase already handle similar things?
+B) External solutions - What libraries/approaches are available?
+C) Both - Full analysis of internal and external options
 
-### Phase 2: Planning (Create Plan Tool)
+(Default: C - Both)
+```
 
-**Present a detailed plan showing:**
+**Step 3: Plan research strategy**
 
-1. **Research strategy:**
-   - **Codebase areas to examine:**
-     - Specific directories and files to analyze
-     - Pattern types to look for
-     - Similar features to study
-   - **External research scope:**
-     - Libraries/frameworks to investigate
-     - Best practices to document
-     - Industry patterns to consider
-   - **Time allocation:**
-     - Internal research: X minutes
-     - External research: Y minutes
-     - Documentation: Z minutes
+Identify:
+- Which directories to search
+- What patterns to look for
+- External resources to consult
+- Time allocation (internal vs external)
 
-2. **What will be created:**
-   - File path: `specs/active/[task-id]/research.md`
-   - Directory structure if new
+### Phase 2: Planning (Create Plan)
 
-3. **Research document structure:**
-   - Executive summary
-   - Codebase pattern analysis (with code examples)
-   - External solutions comparison
-   - Technical constraints and opportunities
-   - Recommended approaches with pros/cons
-   - Open questions for specification phase
+**Present research plan before starting:**
 
-4. **Success criteria:**
-   - What "good research" looks like for this topic
-   - Key questions that must be answered
-   - Decision points for specification phase
+```
+## Research Plan
 
-**The plan should show:**
-- Specific files/directories to examine
-- Concrete research questions to answer
-- How findings will inform specification
+**Task ID:** [task-id]
+**Topic:** [research topic]
+
+**Research Questions:**
+1. [Key question 1]
+2. [Key question 2]
+3. [Key question 3]
+
+**Internal Research (Codebase):**
+- Search directories: [list]
+- Patterns to find: [list]
+- Similar features to study: [list]
+
+**External Research:**
+- Technologies to evaluate: [list]
+- Best practices to document: [list]
+
+**Output:**
+- File: `specs/active/[task-id]/research.md`
+- Structure: Executive Summary → Codebase Analysis → External Options → Recommendations
+
+**Estimated time:** 60 minutes
+
+Ready to proceed?
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Step 1: Create directory structure**
+```
+specs/active/[task-id]/
+└── research.md
+```
 
-1. **Create directory structure:**
-   ```
-   specs/active/[task-id]/
-   └── research.md
-   ```
+**Step 2: Conduct internal research**
 
-2. **Conduct codebase research:**
-   - Search for similar patterns using codebase_search
-   - Read relevant implementation files
-   - Document patterns with code examples
-   - Note reusable components and conventions
+Search the codebase for:
+- Similar feature implementations
+- Patterns and conventions used
+- Reusable utilities and components
+- Architectural decisions
 
-3. **External research (if applicable):**
-   - Document library options
-   - Compare different approaches
-   - Note industry best practices
-   - Include links and references
+**For each finding, document:**
+```markdown
+### [Pattern/Feature Name]
 
-4. **Generate research.md using template:**
-   - Use `.sdd/templates/research-template.md` or `research-compact.md`
-   - Fill all sections with findings
-   - Include code examples and comparisons
-   - Provide clear recommendations
+**Location:** `path/to/file.ts`
 
-5. **Quality check:**
-   - All key questions answered
-   - Sufficient depth for decision-making
-   - Clear pros/cons for approaches
-   - Actionable insights for next phase
+**How it works:**
+[Brief explanation]
 
-### Phase 4: Documentation
+**Code example:**
+```[language]
+[Relevant code snippet]
+```
 
-**Wrap up research:**
-- Highlight key findings in summary
-- Flag critical decisions needed
-- Note dependencies discovered
-- Set context for `/specify` phase
+**Reusability:** [How this applies to our task]
+```
+
+**Step 3: Conduct external research**
+
+For each option/technology:
+```markdown
+### [Option Name]
+
+**What it is:** [Brief description]
+
+**Pros:**
+- [Advantage 1]
+- [Advantage 2]
+
+**Cons:**
+- [Disadvantage 1]
+- [Disadvantage 2]
+
+**Fit for our use case:** [High/Medium/Low] - [Why]
+```
+
+**Step 4: Generate research.md**
+
+Use this structure:
+
+```markdown
+# Research: [Topic]
+
+**Task ID:** [task-id]
+**Date:** [date]
+**Status:** Complete
 
 ---
 
-## Example
+## Executive Summary
+
+[2-3 paragraph summary of key findings and initial recommendation]
+
+---
+
+## Codebase Analysis
+
+### Existing Patterns
+
+[Document patterns found in codebase with code examples]
+
+### Reusable Components
+
+[List components/utilities that can be reused]
+
+### Conventions to Follow
+
+[Coding conventions and architectural patterns to maintain]
+
+---
+
+## External Solutions
+
+### Option 1: [Name]
+
+**Overview:** [Description]
+
+**Pros:**
+- [Pro 1]
+- [Pro 2]
+
+**Cons:**
+- [Con 1]
+- [Con 2]
+
+**Implementation complexity:** [Low/Medium/High]
+**Team familiarity:** [Low/Medium/High]
+
+### Option 2: [Name]
+
+[Same structure]
+
+### Option 3: [Name]
+
+[Same structure]
+
+---
+
+## Comparison Matrix
+
+| Criteria | Option 1 | Option 2 | Option 3 |
+|----------|----------|----------|----------|
+| Performance | ⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐ |
+| Complexity | ⭐⭐ | ⭐⭐⭐ | ⭐ |
+| Team fit | ⭐⭐⭐ | ⭐ | ⭐⭐ |
+| Maintenance | ⭐⭐ | ⭐⭐⭐ | ⭐⭐ |
+
+---
+
+## Recommendations
+
+### Primary Recommendation
+
+[Recommended approach with rationale]
+
+### Alternative Approach
+
+[Backup option if primary doesn't work]
+
+---
+
+## Open Questions
+
+- [Question for specification phase]
+- [Decision that needs stakeholder input]
+
+---
+
+## Next Steps
+
+1. Review findings with team
+2. Proceed to `/specify` to define requirements
+3. Address open questions before planning
+
+---
+
+*Research completed with SDD 2.0*
 ```
-/research user-auth-system JWT authentication with existing patterns
+
+### Phase 4: Verification
+
+**CHECKPOINT: Research Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] File created at `specs/active/[task-id]/research.md`
+- [ ] Codebase patterns documented with examples
+- [ ] Multiple options presented with pros/cons
+- [ ] Comparison matrix included
+- [ ] Recommendations provided with rationale
+- [ ] Open questions listed
+
+**Read the file back to verify it exists.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Research complete: `specs/active/[task-id]/research.md`
+
+**Key Findings:**
+- [Finding 1]
+- [Finding 2]
+- [Finding 3]
+
+**Recommendation:** [Primary recommendation]
+
+**Codebase patterns found:** [Count] reusable patterns
+**Options evaluated:** [Count] approaches compared
+
+**Next steps:**
+- Review the research document
+- Discuss recommendations with team if needed
+- Run `/specify [task-id]` to define requirements
+- Or run `/plan [task-id]` if requirements are clear
+
+**Open questions:** [Count] items need input before proceeding
 ```
 
-## Implementation Rules
-- **Always search existing codebase first** for similar patterns
-- **Use semantic task-id slugs** (user-auth-system, not feat-001)
-- **Document all findings** with code examples
-- **Include pros/cons** of different approaches
-- **Set foundation** for informed specification
+---
 
-## Output
-Creates: `specs/active/[task-id]/research.md`
+## Troubleshooting
 
-## Notes for AI Assistants
+### Issue: No existing patterns found
+**Cause**: New project or greenfield feature
+**Solution**: Focus on external research and best practices:
+- "No existing patterns found - this will establish new conventions"
+- Document industry best practices instead
 
-- **Always present a plan first** showing research strategy
-- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
-- **Leverage Instant Grep (Cursor 2.1+)** - All searches are instant, use multiple parallel searches
-- **Be specific about what you'll search for** in the plan
-- **Show your research methodology** - where you'll look and why
-- **Wait for approval** before conducting research
-- **Document comprehensively** but stay focused on research questions
-- **Balance depth with time** - ~60 minutes total research time
-- **Note plan search** - Users can ⌘+F to search within research plans
+### Issue: Too many options to evaluate
+**Cause**: Broad research topic
+**Solution**: Narrow scope:
+- "There are many approaches here. Let me focus on the top 3 based on [criteria]"
+
+### Issue: Conflicting patterns in codebase
+**Cause**: Technical debt or evolution over time
+**Solution**: Note both and recommend:
+- "I found two different patterns for this. Pattern A (newer, in X files) and Pattern B (older, in Y files). Recommend following Pattern A."
+
+---
+
+## Related Commands
+
+- `/specify [task-id]` - Define requirements based on research
+- `/plan [task-id]` - Create technical plan (if requirements clear)
+- `/brief [task-id]` - Quick planning (skip deep research)
+- `/sdd-full-plan [project-id]` - Full project roadmap

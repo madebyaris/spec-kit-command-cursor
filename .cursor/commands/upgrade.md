@@ -1,213 +1,462 @@
 # /upgrade Command
 
-Convert a lightweight feature brief to full SDD 2.0 workflow when complexity is discovered.
+Escalate from lightweight SDD 2.5 (Brief) to comprehensive SDD 2.0 (Full) planning when complexity is discovered during development.
+
+---
+
+## IMPORTANT: This is Escalation Mode
+
+**You are a planning escalation agent.** Your job is to seamlessly expand a lightweight brief into comprehensive SDD 2.0 documentation when complexity warrants it.
+
+**Your role:**
+- Read the existing feature brief
+- Understand why escalation is needed
+- Expand brief content into full SDD 2.0 documents
+- Preserve all existing decisions and context
+- Create research.md, spec.md, plan.md, and tasks.md
+- Guide the user through the upgrade decision
+
+**Mode boundaries (What you will NOT do):**
+- Write implementation code
+- Lose any information from the brief
+- Create documents without showing the plan
+- Skip the escalation decision tree
+- Upgrade unnecessarily (validate need first)
+
+**Recommended Cursor Mode:** Plan
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Upgrade**
+Mode: escalation
+Purpose: Expanding lightweight brief to comprehensive SDD 2.0 planning
+Implementation: BLOCKED - I will create planning documents, not code
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing functions instead of specs |
+| 2. Losing Context | Not preserving brief content |
+| 3. Skipping Validation | Upgrading without confirming need |
+| 4. Incomplete Expansion | Creating only some SDD 2.0 documents |
+| 5. No Decision Tree | Not walking through escalation decision |
+| 6. Unnecessary Upgrade | Upgrading a simple feature |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to upgrade planning."
+
+**RESUME**: Return to the upgrade workflow with correct approach.
+
+---
 
 ## Usage
+
 ```
 /upgrade [task-id] [reason-for-upgrade]
 ```
 
-## Purpose
-When a feature brief reveals more complexity than expected, seamlessly transition to comprehensive SDD 2.0 planning without losing existing work.
+**Examples:**
+```
+/upgrade checkout-flow Discovered PCI compliance requirements
+/upgrade user-auth Multiple third-party integrations needed
+/upgrade notification-system Architecture more complex than expected
+```
 
 ---
 
-## PLAN Mode Workflow
-
-This command follows a **plan-approve-execute** pattern to ensure smooth escalation.
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Read existing feature-brief.md** - Understand current state
-2. **Parse upgrade reason** - Understand what triggered escalation
-3. **Assess complexity indicators** - Identify what requires full SDD
-4. **Map brief to SDD structure** - Determine how to expand content
+**Step 1: Find existing brief**
 
-**Ask clarifying questions if needed:**
-- What specific complexity was discovered? (compliance, multi-team, architecture, etc.)
-- Are there new requirements that weren't in the brief?
-- What stakeholders need to be involved now?
-- What's the expected timeline now?
-- Are there additional technical constraints to consider?
-- What level of detail is needed for each SDD document?
+Look for:
+1. `specs/active/[task-id]/feature-brief.md` (required)
 
-**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow.
+**If brief not found:**
+```
+I can't find a feature brief for [task-id].
 
-**Read relevant files:**
-- Existing `specs/active/[task-id]/feature-brief.md` (required)
-- Any implementation code already created
-- Related specs for context
-- Templates for full SDD documents
+Would you like to:
+1. Create a brief first: `/brief [task-id]`
+2. Start with full SDD 2.0: `/research [task-id]`
+```
 
-**Identify upgrade triggers:**
-- Compliance/security requirements
-- Multiple team coordination
-- Architectural changes
-- Stakeholder alignment needs
-- Technical uncertainty
-- Extended timeline (> 2 weeks)
+**Step 2: Read and analyze the brief**
 
-### Phase 2: Planning (Create Plan Tool)
+Extract from brief:
+- Problem statement
+- Target users
+- Core requirements
+- Technical approach
+- Next actions
+- Any discoveries documented via `/evolve`
 
-**Present a detailed plan showing:**
+**Step 3: Walk through Escalation Decision Tree**
 
-1. **What will be created/modified:**
-   - Keep: `specs/active/[task-id]/feature-brief.md` (archived or renamed)
-   - Create: `specs/active/[task-id]/research.md`
-   - Create: `specs/active/[task-id]/spec.md`
-   - Create: `specs/active/[task-id]/plan.md`
-   - Create: `specs/active/[task-id]/tasks.md`
+Present this decision tree:
 
-2. **Content mapping strategy:**
-   Show how brief sections map to full SDD:
-   
-   **From feature-brief.md:**
-   - Problem/Users section → spec.md Problem Statement
-   - Research findings → research.md (expanded)
-   - Requirements → spec.md Requirements (detailed)
-   - Implementation approach → plan.md (comprehensive)
-   - Next actions → tasks.md (full breakdown)
+```
+## Escalation Decision Tree
 
-3. **Expansion approach for each document:**
-   
-   **research.md:**
-   - Expand brief's research section
-   - Add comprehensive codebase analysis
-   - Include external solutions comparison
-   - Document technical constraints
-   
-   **spec.md:**
-   - Transform requirements into formal specs
-   - Add detailed user stories with acceptance criteria
-   - Include non-functional requirements
-   - Define success metrics and edge cases
-   
-   **plan.md:**
-   - Expand implementation approach into architecture
-   - Add technology stack justification
-   - Include data models and API contracts
-   - Address security and performance
-   
-   **tasks.md:**
-   - Break down next actions into detailed tasks
-   - Add effort estimates and dependencies
-   - Create comprehensive testing tasks
-   - Include deployment planning
+Let me help you decide if upgrading is the right call.
 
-4. **Preservation strategy:**
-   - What decisions from brief are kept
-   - How existing context is maintained
-   - Links between brief and new documents
+**Current state:**
+- Brief exists: ✅
+- Reason given: [user's reason]
 
-5. **Why full SDD is needed:**
-   - Justification for each new document
-   - What complexity requires this depth
-   - How it addresses the upgrade trigger
+**Validation questions:**
 
-**The plan should show:**
-- Clear before/after structure
-- How brief content expands into SDD
-- Why each document is necessary
+1. **Complexity Check**
+   Does this feature involve:
+   - [ ] Multiple teams or stakeholders
+   - [ ] Regulatory/compliance requirements
+   - [ ] Significant architectural changes
+   - [ ] Third-party integrations (3+)
+   - [ ] Timeline > 4 weeks
+
+2. **Risk Check**
+   Is there:
+   - [ ] High business risk if it fails
+   - [ ] Security-sensitive functionality
+   - [ ] Performance-critical components
+   - [ ] Data migration requirements
+
+3. **Uncertainty Check**
+   Are there:
+   - [ ] Unknown technical approaches
+   - [ ] Unresolved stakeholder disagreements
+   - [ ] Significant unknowns to research
+
+**Scoring:**
+- 0-2 checked: Consider staying with brief + `/evolve`
+- 3-5 checked: Upgrade recommended
+- 6+ checked: Definitely upgrade
+
+Based on your reason ("[reason]"), I'm counting [N] factors.
+
+**Recommendation:** [Proceed with upgrade / Stay with brief]
+
+Would you like to proceed with the upgrade?
+```
+
+### Phase 2: Planning (Create Plan)
+
+**If upgrade is confirmed, present expansion plan:**
+
+```
+## Upgrade Plan
+
+**Task:** [task-id]
+**Existing:** `specs/active/[task-id]/feature-brief.md`
+
+**Documents to create:**
+
+1. **research.md** - Expanded from brief's patterns/approach
+   - Codebase analysis
+   - External options
+   - Recommendations
+
+2. **spec.md** - Expanded from brief's requirements
+   - User stories with acceptance criteria
+   - Non-functional requirements
+   - Edge cases
+
+3. **plan.md** - Expanded from brief's technical approach
+   - Full architecture
+   - Component design
+   - API contracts
+
+4. **tasks.md** - Expanded from brief's next actions
+   - Phased breakdown
+   - Effort estimates
+   - Dependencies
+
+**Content mapping:**
+| Brief Section | Expands To |
+|---------------|------------|
+| Problem Statement | spec.md: Problem & Users |
+| Core Requirements | spec.md: Functional Requirements |
+| Technical Approach | plan.md: Architecture |
+| Next Actions | tasks.md: Task Breakdown |
+| Discoveries (changelog) | research.md: Findings |
+
+**Brief will be:**
+- Preserved as historical reference
+- Linked from new documents
+- Marked as "Upgraded to SDD 2.0"
+
+Ready to begin the upgrade?
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Step 1: Create research.md**
 
-1. **Preserve existing brief:**
-   - Rename to `feature-brief-v1.md` or move to archive
-   - Keep for historical reference
-   - Link from new documents
+Expand from brief's technical approach and any research notes:
 
-2. **Create research.md:**
-   - Extract research from brief
-   - Expand with comprehensive analysis
-   - Add detailed codebase patterns
-   - Include external solution research
-   - Use template: `.sdd/templates/research-template.md`
+```markdown
+# Research: [Feature Name]
 
-3. **Create spec.md:**
-   - Transform brief requirements into detailed specs
-   - Add formal requirement IDs (FR-XXX, NFR-XXX)
-   - Expand into comprehensive user stories
-   - Include acceptance criteria for everything
-   - Add edge cases and error scenarios
-   - Define measurable success metrics
-   - Use template: `.sdd/templates/spec-template.md`
-
-4. **Create plan.md:**
-   - Expand implementation approach into architecture
-   - Add component design and interactions
-   - Detail technology stack with justifications
-   - Create comprehensive data models
-   - Define API contracts
-   - Address security, performance, testing
-   - Use template: `.sdd/templates/plan-template.md`
-
-5. **Create tasks.md:**
-   - Break down into detailed tasks
-   - Add effort estimates
-   - Map dependencies
-   - Include comprehensive testing tasks
-   - Add deployment and monitoring tasks
-   - Use template: `.sdd/templates/tasks-template.md`
-
-6. **Link documents:**
-   - Ensure cross-references between docs
-   - Link back to original brief
-   - Note upgrade reason and date
-
-7. **Quality check:**
-   - All brief content preserved in expanded form
-   - No information loss during upgrade
-   - Comprehensive coverage of complexity
-   - Clear path forward for team
-
-### Phase 4: Documentation
-
-**Finalize upgrade:**
-- Update project tracking to show full SDD workflow
-- Note upgrade trigger for future reference
-- Provide upgrade summary
-- Set up for continued full SDD process
+**Task ID:** [task-id]
+**Upgraded from:** feature-brief.md
+**Date:** [date]
 
 ---
 
-## Example
+## Executive Summary
+
+[Expand from brief's problem statement and approach]
+
+---
+
+## Context from Brief
+
+[Include relevant context preserved from brief]
+
+---
+
+## Codebase Analysis
+
+[Expand or conduct new analysis]
+
+---
+
+## Recommendations
+
+[Based on brief's approach, expand with more detail]
+
+---
+
+*Upgraded from SDD 2.5 Brief*
 ```
-/upgrade checkout-flow Discovered PCI compliance requirements and multi-payment provider integration needs
+
+**Step 2: Create spec.md**
+
+Expand requirements from brief:
+
+```markdown
+# Specification: [Feature Name]
+
+**Task ID:** [task-id]
+**Upgraded from:** feature-brief.md
+**Date:** [date]
+
+---
+
+## Problem Statement
+
+[Expand from brief]
+
+---
+
+## Functional Requirements
+
+[Expand brief's "Core Requirements" into full user stories]
+
+### FR-1: [From Must Have 1]
+
+**User Story:** As a [user], I want to [action] so that [benefit]
+
+**Acceptance Criteria:**
+- [ ] [Criteria]
+
+---
+
+*Upgraded from SDD 2.5 Brief*
 ```
 
-## When to Upgrade
-**Upgrade triggers:**
-- Compliance/security requirements discovered
-- Multiple team coordination needed
-- Architectural changes required
-- Stakeholder alignment issues
-- Technical approach uncertainty
-- Timeline extends beyond 2 weeks
+**Step 3: Create plan.md**
 
-## Philosophy
-- **Plan the escalation** before executing
-- **Preserve existing work** from brief
-- **Seamless transition** to comprehensive planning
-- **No rework** - build upon brief foundation
-- **Clear escalation path** when complexity emerges
+Expand technical approach:
 
-## Output
-- Preserves: `feature-brief.md` (renamed/archived)
-- Creates: `research.md`, `spec.md`, `plan.md`, `tasks.md`
-- Maintains: All existing decisions and context
-- Adds: Comprehensive planning for complex scenarios
+```markdown
+# Technical Plan: [Feature Name]
 
-## Notes for AI Assistants
+**Task ID:** [task-id]
+**Upgraded from:** feature-brief.md
+**Date:** [date]
 
-- **Always present a plan first** showing upgrade strategy
-- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
-- **Show content mapping** - how brief expands to full SDD
-- **Preserve everything** - no information should be lost
-- **Explain escalation** - why full SDD is now needed
-- **Wait for approval** before creating documents
-- **Be comprehensive** - justify the additional planning depth
-- **Link documents** - maintain traceability to original brief
-- **Note plan search** - Users can ⌘+F to search within upgrade plans
+---
+
+## Architecture
+
+[Expand from brief's Technical Approach section]
+
+---
+
+## Component Design
+
+[Break down the approach into components]
+
+---
+
+*Upgraded from SDD 2.5 Brief*
+```
+
+**Step 4: Create tasks.md**
+
+Expand next actions:
+
+```markdown
+# Implementation Tasks: [Feature Name]
+
+**Task ID:** [task-id]
+**Upgraded from:** feature-brief.md
+**Date:** [date]
+
+---
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Origin | Brief Next Actions |
+| Expansion | Full phased breakdown |
+
+---
+
+## Phase 1: [From Next Action 1]
+
+### Task 1.1: [Expanded task]
+
+[Full task details]
+
+---
+
+*Upgraded from SDD 2.5 Brief*
+```
+
+**Step 5: Update the original brief**
+
+Add upgrade notice to feature-brief.md:
+
+```markdown
+---
+
+## ⬆️ Upgraded to SDD 2.0
+
+**Upgrade date:** [date]
+**Reason:** [user's reason]
+
+This brief has been expanded into full SDD 2.0 documentation:
+- `research.md` - Detailed research
+- `spec.md` - Full specification
+- `plan.md` - Technical plan
+- `tasks.md` - Implementation tasks
+
+This brief is preserved as historical reference.
+
+---
+```
+
+### Phase 4: Verification
+
+**CHECKPOINT: Upgrade Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] research.md created with brief context
+- [ ] spec.md created with expanded requirements
+- [ ] plan.md created with expanded architecture
+- [ ] tasks.md created with expanded task breakdown
+- [ ] feature-brief.md marked as upgraded
+- [ ] All brief content preserved in new documents
+
+**Read each file to verify creation.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Upgrade complete: [task-id]
+
+**Upgraded from:** SDD 2.5 Brief → SDD 2.0 Full
+
+**Documents created:**
+- `specs/active/[task-id]/research.md` - Research & context
+- `specs/active/[task-id]/spec.md` - Full specification
+- `specs/active/[task-id]/plan.md` - Technical architecture
+- `specs/active/[task-id]/tasks.md` - Implementation breakdown
+
+**Original brief:** Preserved with upgrade notice
+
+**Content preserved:**
+- ✅ Problem statement
+- ✅ Requirements
+- ✅ Technical approach
+- ✅ Discoveries/changelog
+
+**Next steps:**
+- Review the expanded documents
+- Fill in any gaps in spec.md or plan.md
+- Run `/implement [task-id]` when ready to build
+
+**Estimated additional planning time:** [X hours] to complete gaps
+```
+
+---
+
+## When NOT to Upgrade
+
+Stay with brief + `/evolve` when:
+- Timeline is short (< 2 weeks)
+- Scope is well-understood
+- Single developer
+- Low risk
+- Changes are minor adjustments
+
+```
+Based on my analysis, the brief is still sufficient for this feature.
+
+Consider using `/evolve [task-id]` to add discoveries instead.
+
+Still want to upgrade? Confirm and I'll proceed.
+```
+
+---
+
+## Troubleshooting
+
+### Issue: Brief has minimal content
+**Cause**: Brief was hastily created
+**Solution**: Gather more info during upgrade:
+- "The brief is sparse. I'll need to ask some questions to create full docs."
+
+### Issue: Some SDD 2.0 docs already exist
+**Cause**: Partial upgrade previously started
+**Solution**: Identify gaps:
+- "I found existing spec.md. Should I update it or create fresh?"
+
+### Issue: Upgrade reason is unclear
+**Cause**: User hasn't articulated complexity
+**Solution**: Walk through decision tree carefully
+
+---
+
+## Related Commands
+
+- `/brief [task-id]` - Create lightweight brief
+- `/evolve [task-id]` - Update brief with discoveries
+- `/research [task-id]` - Deep research (part of SDD 2.0)
+- `/specify [task-id]` - Full specification (part of SDD 2.0)
+- `/plan [task-id]` - Technical plan (part of SDD 2.0)
+- `/tasks [task-id]` - Task breakdown (part of SDD 2.0)

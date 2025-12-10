@@ -1,397 +1,455 @@
 # /sdd-full-plan Command
 
-Create comprehensive SDD roadmap from A to Z with kanban-style task organization.
+Create a comprehensive project roadmap from A to Z with kanban-style task organization, epic hierarchy, and VSCode extension compatibility.
 
-## Aliases
-- /pecut-all-in-one
+**Aliases:** `/pecut-all-in-one`
+
+---
+
+## IMPORTANT: This is Full Project Planning Mode
+
+**You are a project roadmap architect.** Your job is to create complete project plans with epic-level organization, task hierarchy, and kanban board structure.
+
+**Your role:**
+- Analyze project scope and complexity
+- Create epic-level organization of work
+- Break down into tasks and subtasks
+- Manage dependencies between tasks
+- Generate VSCode-compatible kanban JSON
+- Map tasks to appropriate SDD commands
+
+**Mode boundaries (What you will NOT do):**
+- Write implementation code
+- Execute any tasks
+- Skip complexity analysis
+- Create roadmaps without user approval
+- Skip the execution mode selection question
+
+**Recommended Cursor Mode:** Plan
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Full Project Planning**
+Mode: planning
+Purpose: Creating comprehensive A-Z project roadmap with kanban structure
+Implementation: BLOCKED - I will plan the entire project, not implement it
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing actual functions or starting to build |
+| 2. Skipping Complexity Analysis | Not assessing project scope first |
+| 3. No Execution Mode Question | Creating tasks without asking one-by-one vs immediate |
+| 4. Missing Dependencies | Not identifying task relationships |
+| 5. Wrong SDD Mapping | Tasks not mapped to appropriate SDD commands |
+| 6. Invalid JSON | Kanban JSON with syntax errors |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to roadmap planning."
+
+**RESUME**: Return to the planning workflow with correct approach.
+
+---
 
 ## Usage
+
 ```
 /sdd-full-plan [project-id] [description]
 /pecut-all-in-one [project-id] [description]
 ```
 
-## Purpose
-Orchestrate complete SDD workflow, generating a full project roadmap with:
-- Epic-level main tasks
-- Phase-based organization
-- Detailed sub-tasks
-- Implementation tasks
-- Kanban board structure
-- VSCode extension compatibility
+**Examples:**
+```
+/sdd-full-plan blog-platform Full-featured blog with CMS and analytics
+/sdd-full-plan ecommerce-app Multi-vendor marketplace with payments
+/pecut-all-in-one saas-dashboard Admin dashboard for SaaS product
+```
 
 ---
 
-## PLAN Mode Workflow
-
-This command follows a **plan-approve-execute** pattern for comprehensive project planning.
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze request:**
-1. **Parse project description** - Understand scope and complexity
-2. **Determine type** - Full application vs major feature
-3. **Assess complexity** - Simple, medium, complex, enterprise
-4. **Identify phases** - Research, planning, implementation, testing, deployment
-5. **Calculate estimates** - Timeline, effort, resources needed
+**Step 1: Parse the project request**
+- Extract project-id: `{{input}}`
+- Extract project description
+- Identify initial scope
 
-**Ask clarifying questions if needed:**
-- What's the primary goal/problem this solves?
-- Who are the target users?
-- What's the technology stack preference (if any)?
-- Any existing codebase to integrate with?
-- Timeline and resource constraints?
-- Key features (must-have vs nice-to-have)?
-- Deployment environment and infrastructure?
-- Team size and composition?
-- Budget constraints?
+**Step 2: Gather requirements**
 
-**CRITICAL: Execution Mode Question**
-After presenting the roadmap plan, **always ask**:
+Ask these questions:
+```
+Before I create the roadmap, I need some information:
 
-> "How would you like to proceed with task creation?
-> 
-> **Option A: One-by-One Processing** (Recommended for learning)
-> - Review and approve each task as it's created
-> - Understand each phase before moving forward
-> - Interactive, step-by-step learning about your project
-> - Best for: New projects, learning, thorough review
-> 
-> **Option B: Immediate Execution**
-> - Generate all tasks at once after roadmap approval
-> - Fast, automated task creation
-> - Quick setup for experienced users
-> - Best for: Well-understood projects, experienced teams
-> 
-> Which mode would you prefer? (A/B or 'one-by-one'/'immediate')"
+1. **Goal**: What's the primary goal/problem this solves?
+2. **Users**: Who are the target users?
+3. **Tech Stack**: Any technology preferences? (or should I recommend?)
+4. **Timeline**: Any deadline or timeline constraints?
+5. **Team**: How many developers will work on this?
+6. **Must-haves**: What are the 3-5 critical features?
+7. **Nice-to-haves**: What features can wait for later versions?
 
-**Wait for user choice before proceeding.**
+(Answer what you can, skip what you're unsure about)
+```
 
-**Note (Cursor 2.1+):** 
-- Questions appear in interactive UI - answer directly for faster workflow
-- **Background Planning:** For very complex projects, you can create plan in background and continue working
-- **Plan Search:** Use ⌘+F to search within generated roadmap plans
+**Step 3: Assess complexity**
 
-**Read relevant files:**
-- Existing roadmaps in `specs/todo-roadmap/`
-- Project overview at `specs/00-overview.md`
-- Templates at `.sdd/templates/`
-- Similar projects for pattern matching
+| Indicator | Simple | Medium | Complex | Enterprise |
+|-----------|--------|--------|---------|------------|
+| Timeline | < 3 weeks | 3-8 weeks | 8-20 weeks | 20+ weeks |
+| Team size | 1-2 | 2-4 | 4-8 | 8+ |
+| Features | 3-5 | 5-10 | 10-20 | 20+ |
+| Integrations | 0-2 | 2-5 | 5-10 | 10+ |
+| Risk level | Low | Medium | High | Very High |
 
-**Complexity detection criteria:**
-- **Simple** (< 3 weeks): Single feature, small scope, 1-2 developers
-- **Medium** (3-8 weeks): Multiple features, moderate complexity, small team
-- **Complex** (8-20 weeks): Full application, high complexity, multiple teams
-- **Enterprise** (> 20 weeks): Platform/system, very high complexity, large organization
+**Determine:**
+- Complexity level
+- Recommended SDD approach (2.5 vs 2.0)
+- Number of epics and tasks
 
-### Phase 2: Planning (Create Plan Tool)
+### Phase 2: Planning (Create Plan Preview)
 
-**Present detailed plan showing:**
+**Present roadmap structure:**
 
-1. **Project Analysis:**
-   - Type: Application / Major Feature / System / Platform
-   - Complexity: Simple / Medium / Complex / Enterprise
-   - Estimated duration (timeline)
-   - Team size recommendation
-   - Recommended SDD approach (2.5 vs 2.0)
+```
+## Project Roadmap Preview
 
-2. **Roadmap Structure Preview:**
-   - Total epics/main tasks (count)
-   - Total sub-tasks estimated
-   - Phase organization (4-6 phases typical)
-   - Critical path identification
-   - Dependencies mapping
+**Project ID:** [project-id]
+**Complexity:** [Simple/Medium/Complex/Enterprise]
+**Estimated duration:** [X weeks]
+**Recommended approach:** [SDD 2.5 Brief / SDD 2.0 Full / Mixed]
 
-3. **Epic Breakdown (2-3 examples with subtasks):**
-   ```
-   Epic 1: Research & Foundation (Week 1-2)
-   ├── Sub-task: Research existing patterns (8h)
-   ├── Sub-task: Define requirements (16h)
-   ├── Sub-task: Create technical specification (12h)
-   └── Sub-task: Architecture design (16h)
-   
-   Epic 2: Core Development (Week 3-6)
-   ├── Sub-task: Setup infrastructure (8h)
-   ├── Sub-task: Implement backend API (40h)
-   ├── Sub-task: Build frontend components (32h)
-   └── Sub-task: Integration & testing (24h)
-   
-   Epic 3: Deployment & Launch (Week 7-8)
-   ├── Sub-task: Performance optimization (16h)
-   ├── Sub-task: Security hardening (12h)
-   ├── Sub-task: Deployment setup (8h)
-   └── Sub-task: Documentation & training (16h)
-   ```
+**Epic Structure:**
+1. Epic 1: [Name] - [X tasks]
+2. Epic 2: [Name] - [Y tasks]
+3. Epic 3: [Name] - [Z tasks]
+[...]
 
-4. **File Structure to be created:**
-   ```
-   specs/todo-roadmap/[project-id]/
-   ├── roadmap.json          # Kanban data (VSCode compatible)
-   ├── roadmap.md            # Human-readable view
-   ├── tasks/                # Individual task details
-   │   ├── epic-001.json     # Epic task details
-   │   ├── task-001-1.json   # Sub-task details
-   │   └── ...
-   └── execution-log.md      # Task execution tracking
-   ```
+**Total tasks:** [Count]
+**Estimated effort:** [Hours/Days]
 
-5. **Integration Strategy:**
-   - How main tasks map to SDD commands
-   - Task execution workflow
-   - Progress tracking mechanism
-   - Link to `specs/active/` for implementation
+**What I'll create:**
+- `specs/todo-roadmap/[project-id]/roadmap.json` - Kanban data
+- `specs/todo-roadmap/[project-id]/roadmap.md` - Human-readable view
+- `specs/todo-roadmap/[project-id]/tasks/*.json` - Task details
+- `specs/todo-roadmap/[project-id]/execution-log.md` - Tracking
 
-6. **Success Metrics:**
-   - How completion will be measured
-   - Quality checkpoints
-   - Review gates
+Does this structure look right?
+```
 
-**The plan should clearly show:**
-- Complete project breakdown
-- Realistic timeline and effort estimates
-- Task dependencies and critical path
-- Execution strategy
+**Wait for approval, then ask execution mode:**
+
+```
+**How would you like to proceed with task creation?**
+
+**Option A: One-by-One Processing** (Recommended for learning)
+- Review and approve each epic as it's created
+- Interactive, step-by-step approach
+- Best for: New projects, thorough review
+
+**Option B: Immediate Execution**
+- Generate all tasks at once
+- Fast, automated setup
+- Best for: Experienced users, well-understood projects
+
+Which mode would you prefer? (A/B)
+```
+
+**Wait for execution mode selection before proceeding.**
 
 ### Phase 3: Execution (After Approval AND Mode Selection)
 
-**Once plan is approved AND user selects execution mode:**
+#### Option A: One-by-One Processing
 
-#### Execution Mode A: One-by-One Processing (Interactive Learning)
+**For each epic:**
 
-**Workflow:**
-1. **Create directory structure first:**
-   ```bash
-   mkdir -p specs/todo-roadmap/[project-id]/tasks
-   ```
-
-2. **Create initial roadmap.json skeleton:**
-   - Basic structure with metadata
-   - Empty tasks object initially
-   - Kanban columns setup
-   - Statistics initialized to zeros
-
-3. **For each epic/task (in order):**
-   
-   **a) Present task plan:**
-   ```
-   Next task to create: Epic 1 - Research & Foundation
-   
-   This epic includes:
-   - Task 1-1: Research patterns (8h)
-   - Task 1-2: Define architecture (16h)
-   - Task 1-3: Create specification (16h)
-   
-   Total: 3 tasks, 40 hours
-   SDD Phase: Research → Specification → Planning
-   
-   Create this epic now? (Yes/No/Skip)
-   ```
-   
-   **b) Wait for user approval**
-   
-   **c) If approved:**
-   - Generate task JSON files for this epic
-   - Add to roadmap.json tasks object
-   - Update roadmap.md with new epic
-   - Show what was created
-   - Update statistics
-   - Ask if ready for next task
-   
-   **d) If skipped:**
-   - Mark as "planned but not created yet"
-   - Move to next task
-   - Can come back later
-   
-   **e) User can also request:**
-   - "Show me all remaining tasks first"
-   - "Create all remaining tasks now" (switch to immediate mode)
-   - "Let me review the roadmap so far"
-   - "Pause and come back later"
-
-4. **After each task creation:**
-   - Update roadmap.md with new content
-   - Show partial kanban board (what's created so far)
-   - Display progress summary:
-     ```
-     Progress: 2/8 epics created
-     Tasks created: 6
-     Estimated hours: 80/240
-     ```
-   - Ask if ready for next task/epic
-
-5. **Final step (when all tasks created):**
-   - Create execution-log.md template
-   - Update roadmap registry
-   - Provide final summary and next steps
-
-**Benefits:**
-- Learn about each phase before it's created
-- Understand dependencies and relationships
-- Adjust tasks on-the-fly
-- Review as you go
-- Better understanding of project structure
-
-#### Execution Mode B: Immediate Execution (Fast Setup)
-
-**Workflow:**
-1. **Create directory structure:**
-   ```bash
-   mkdir -p specs/todo-roadmap/[project-id]/tasks
-   ```
-
-2. **Generate complete roadmap.json:**
-   - Use template from `.sdd/templates/roadmap-template.json`
-   - Include ALL epics, tasks, and subtasks
-   - Set up kanban columns (To Do, In Progress, Review, Done)
-   - Define complete task hierarchy and dependencies
-   - Add SDD command mappings for all tasks
-   - Include metadata (complexity, timeline, etc.)
-   - Calculate all statistics
-
-3. **Create roadmap.md:**
-   - Generate complete human-readable markdown view
-   - Include full kanban board visualization
-   - Show complete task hierarchy
-   - Provide all execution commands
-   - Include progress tracking section
-
-4. **Generate all individual task files:**
-   - Create JSON file for EVERY task
-   - Include full task details
-   - Link to parent tasks
-   - Map to SDD commands
-   - Add execution instructions
-
-5. **Set up execution-log.md:**
-   - Create complete template for tracking
-   - Include task execution history section
-   - Status change log
-   - Time tracking structure
-
-6. **Update roadmap registry:**
-   - Add entry to `specs/todo-roadmap/index.json`
-   - Register project metadata
-   - Link to roadmap files
-
-7. **Quality checks:**
-   - All tasks have clear descriptions
-   - Dependencies are logical
-   - Estimates are reasonable
-   - SDD commands properly mapped
-   - JSON is valid and parseable
-
-8. **Provide complete summary:**
-   - Total epics, tasks, subtasks created
-   - Timeline and effort estimates
-   - Next steps for execution
-   - Quick reference guide
-
-**Benefits:**
-- Fast, automated setup
-- Complete roadmap ready immediately
-- All tasks visible from start
-- Better for experienced users
-- Ready for team collaboration
-
-#### Hybrid Option (Available During One-by-One)
-
-**If user changes mind mid-process:**
 ```
-You've created 3 of 8 epics so far.
-Would you like to:
-- Continue one-by-one (recommended)
-- Switch to immediate mode (create remaining 5 epics now)
-- Pause and review what we have so far
+## Creating Epic [N]: [Epic Name]
+
+**Description:** [What this epic covers]
+
+**Tasks in this epic:**
+1. [Task 1] - [SDD command] - [Effort]
+2. [Task 2] - [SDD command] - [Effort]
+3. [Task 3] - [SDD command] - [Effort]
+
+**Total:** [X tasks], [Y hours]
+
+Create this epic now? (Yes/No/Skip)
 ```
 
-#### Background Planning (Cursor 2.1+)
+After approval:
+- Create epic JSON file
+- Update roadmap.json
+- Update roadmap.md
+- Show progress
 
-**For very complex projects:**
-- Create plan in background while you continue working
-- Plan generates with one model, you can build with another
-- Get notification when plan is ready
-- Review plan when convenient
-
-**Usage:**
-- Enable in Cursor settings
-- Plan generates while you work
-- Multiple plan options can be created in parallel
-- Compare approaches and choose best plan
-
-### Phase 4: Documentation
-
-**For One-by-One Mode:**
-After each task/epic creation:
-- Show what was created
-- Provide summary of current progress
-- Display partial kanban board (what's created so far)
-- Ask if ready for next task
-- Provide option to switch modes
-
-**For Immediate Mode:**
-After complete roadmap creation:
-- Provide comprehensive summary
-- Show complete kanban board
-- List all created tasks
-- Document execution commands
-- Explain task workflow
-
-**Final Output Summary:**
 ```
-✅ Roadmap created: specs/todo-roadmap/[project-id]/
-✅ Total epics: X
-✅ Total tasks: Y
-✅ Estimated duration: Z weeks
-✅ Execution mode: [One-by-One | Immediate]
+✓ Epic [N] created
 
-Next steps:
-1. Review roadmap: specs/todo-roadmap/[project-id]/roadmap.md
-2. Start first task: /execute-task epic-001
-3. Track progress in roadmap.json
+Progress: [N]/[Total] epics
+Tasks created: [Count]
+Remaining: [Count] epics
 
-Execution Commands:
-- View roadmap: cat specs/todo-roadmap/[project-id]/roadmap.md
-- Execute task: /execute-task [task-id]
-- Check progress: View roadmap.json statistics
+Continue to next epic?
+```
+
+#### Option B: Immediate Execution
+
+Create everything at once:
+
+**Step 1: Create directory structure**
+```
+specs/todo-roadmap/[project-id]/
+├── roadmap.json
+├── roadmap.md
+├── tasks/
+│   ├── epic-001.json
+│   ├── task-001-1.json
+│   └── ...
+└── execution-log.md
+```
+
+**Step 2: Generate roadmap.json**
+
+```json
+{
+  "id": "[project-id]",
+  "title": "[Project Title]",
+  "description": "[Description]",
+  "type": "application",
+  "created": "[ISO date]",
+  "updated": "[ISO date]",
+  "status": "planning",
+  "metadata": {
+    "sddVersion": "3.0",
+    "complexity": "[simple/medium/complex/enterprise]",
+    "estimatedDuration": "[X weeks]",
+    "teamSize": [N]
+  },
+  "columns": [
+    {"id": "todo", "title": "To Do", "order": 0, "tasks": []},
+    {"id": "in-progress", "title": "In Progress", "order": 1, "tasks": []},
+    {"id": "review", "title": "Review", "order": 2, "tasks": []},
+    {"id": "done", "title": "Done", "order": 3, "tasks": []}
+  ],
+  "tasks": {
+    "epic-001": {
+      "id": "epic-001",
+      "title": "[Epic Title]",
+      "type": "epic",
+      "status": "todo",
+      "sdd": {
+        "phase": "research",
+        "commands": ["/research"],
+        "executeCommand": "/execute-task epic-001"
+      }
+    }
+  },
+  "statistics": {
+    "totalTasks": [N],
+    "todoTasks": [N],
+    "completionPercentage": 0
+  }
+}
+```
+
+**Step 3: Generate roadmap.md**
+
+```markdown
+# Project Roadmap: [Project Name]
+
+**Project ID:** [project-id]
+**Created:** [date]
+**Status:** Planning
+**Complexity:** [Level]
+
+---
+
+## Overview
+
+[Project description]
+
+**Timeline:** [X weeks]
+**Effort:** [Y hours]
+**Team:** [Z developers]
+
+---
+
+## Kanban Board
+
+### 📋 To Do ([Count])
+
+#### Epic 1: [Name]
+- [ ] Task 1-1: [Title] ([Xh]) - `/execute-task task-001-1`
+- [ ] Task 1-2: [Title] ([Yh]) - `/execute-task task-001-2`
+
+#### Epic 2: [Name]
+- [ ] Task 2-1: [Title] ([Xh]) - `/execute-task task-002-1`
+
+### 🔄 In Progress ([Count])
+
+(Empty)
+
+### 👀 Review ([Count])
+
+(Empty)
+
+### ✅ Done ([Count])
+
+(Empty)
+
+---
+
+## Epic Details
+
+### Epic 1: [Name]
+
+**Goal:** [What this epic achieves]
+**SDD Phase:** Research → Specification
+**Estimated:** [X hours]
+
+| Task | Description | Effort | Command |
+|------|-------------|--------|---------|
+| 1-1 | [Description] | [Xh] | `/execute-task task-001-1` |
+| 1-2 | [Description] | [Yh] | `/execute-task task-001-2` |
+
+---
+
+## Execution Commands
+
+```bash
+# Start first epic
+/execute-task epic-001
+
+# Execute specific task
+/execute-task task-001-1
 ```
 
 ---
 
-## Command Behavior
+## Progress Summary
 
-### Automatic Scope Detection
+| Metric | Value |
+|--------|-------|
+| Total Epics | [N] |
+| Total Tasks | [M] |
+| Completed | 0 |
+| Completion | 0% |
 
-**Simple Project (< 3 weeks):**
-- Use SDD 2.5 Brief approach
-- 3-5 main tasks
-- Quick iteration
-- Minimal documentation
-- Timeline: Days to 2 weeks
+---
 
-**Medium Project (3-8 weeks):**
-- Mix of Brief and Full SDD
-- 5-10 main tasks
-- Structured phases
-- Moderate documentation
-- Timeline: 3-8 weeks
+*Roadmap created with SDD 3.0*
+```
 
-**Complex Project (8-20 weeks):**
-- Full SDD 2.0 workflow
-- 10-20 main tasks
-- Comprehensive planning
-- Full documentation
-- Timeline: 2-5 months
+**Step 4: Generate task JSON files**
 
-**Enterprise Project (> 20 weeks):**
-- Multi-phase SDD
-- 20+ main tasks
-- Milestone-based approach
-- Enterprise documentation
-- Timeline: 5+ months
+For each task, create `tasks/[task-id].json`:
 
-### Task Type Mapping
+```json
+{
+  "id": "[task-id]",
+  "title": "[Task Title]",
+  "description": "[Description]",
+  "type": "task",
+  "parentId": "[epic-id]",
+  "status": "todo",
+  "priority": "high",
+  "estimatedHours": [N],
+  "dependencies": [],
+  "sdd": {
+    "phase": "[research/brief/specification/planning/tasks/implementation]",
+    "commands": ["/[command]"],
+    "linkedSpec": null,
+    "executeCommand": "/execute-task [task-id]"
+  }
+}
+```
 
-Tasks automatically map to SDD commands based on type:
+**Step 5: Create execution-log.md**
+
+```markdown
+# Execution Log: [Project Name]
+
+## Task History
+
+| Date | Task | Action | Duration | Notes |
+|------|------|--------|----------|-------|
+| | | | | |
+
+## Status Changes
+
+| Date | Task | From | To | By |
+|------|------|------|----|----|
+| | | | | |
+```
+
+### Phase 4: Verification
+
+**CHECKPOINT: Roadmap Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] roadmap.json is valid JSON
+- [ ] roadmap.md is readable
+- [ ] All tasks have SDD command mappings
+- [ ] Dependencies are logical (no cycles)
+- [ ] Execution-log.md created
+
+**Read roadmap.json back to verify it exists.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Roadmap created: `specs/todo-roadmap/[project-id]/`
+
+**Summary:**
+- Epics: [Count]
+- Tasks: [Count]
+- Estimated duration: [X weeks]
+- Complexity: [Level]
+
+**Files created:**
+- `roadmap.json` - Kanban board data
+- `roadmap.md` - Human-readable view
+- `tasks/` - [Count] task files
+- `execution-log.md` - Tracking
+
+**Epic breakdown:**
+1. [Epic 1]: [X tasks] - [SDD approach]
+2. [Epic 2]: [Y tasks] - [SDD approach]
+[...]
+
+**To start:**
+```bash
+/execute-task epic-001
+```
+
+**View roadmap:**
+Open `specs/todo-roadmap/[project-id]/roadmap.md`
+```
+
+---
+
+## SDD Command Mapping
 
 | Task Phase | SDD Command | Output |
 |------------|-------------|--------|
@@ -400,163 +458,42 @@ Tasks automatically map to SDD commands based on type:
 | Specification | `/specify` | spec.md |
 | Planning | `/plan` | plan.md |
 | Task Breakdown | `/tasks` | tasks.md |
-| Implementation | `/implement` | todo-list.md + code |
-| Evolution | `/evolve` | updates to docs |
-| Upgrade | `/upgrade` | full SDD suite |
+| Implementation | `/implement` | Code + todo-list.md |
 
-### Task Execution Workflow
+---
 
-Each task includes an execute command:
-```bash
-/execute-task epic-001
-/execute-task task-001-1
-```
+## Complexity Guidelines
 
-**Execution process:**
-1. Read task details from roadmap.json
-2. Determine appropriate SDD command based on task.sdd.phase
-3. Run SDD command with task context
-4. Create spec in `specs/active/[task-id]/`
-5. Update roadmap.json:
-   - Set linkedSpec path
-   - Update status (todo → in-progress → review → done)
-   - Log execution time
-6. Update execution-log.md with entry
-7. Move task card in kanban columns
+| Complexity | Epics | Tasks | Approach |
+|------------|-------|-------|----------|
+| **Simple** | 2-3 | 5-10 | SDD 2.5 (Brief) |
+| **Medium** | 3-5 | 10-20 | Mixed |
+| **Complex** | 5-8 | 20-40 | SDD 2.0 (Full) |
+| **Enterprise** | 8+ | 40+ | Multi-phase SDD 2.0 |
 
-### Status Management
+---
 
-**Task Status Flow:**
-```
-todo → in-progress → review → done
-  ↓         ↓           ↓
-blocked  on-hold    archived
-```
+## Troubleshooting
 
-**Status Meanings:**
-- **todo**: Ready to start, all dependencies met
-- **in-progress**: Currently being worked on
-- **review**: Completed, awaiting review
-- **done**: Reviewed and approved
-- **blocked**: Cannot proceed, has blocker
-- **on-hold**: Paused temporarily
-- **archived**: Cancelled or obsolete
+### Issue: Project too vague
+**Cause**: Description lacks detail
+**Solution**: Ask more specific questions about features and scope
 
-### Dependency Management
+### Issue: Too many tasks
+**Cause**: Over-scoped project
+**Solution**: Suggest phased approach:
+- "This is a large project. Should we plan Phase 1 first and roadmap the rest later?"
 
-Tasks can depend on other tasks:
-```json
-{
-  "id": "task-002",
-  "dependencies": ["task-001"],
-  "status": "blocked"
-}
-```
+### Issue: Conflicting priorities
+**Cause**: Everything is "must have"
+**Solution**: Force prioritization:
+- "If you could only ship 5 features in v1, which would they be?"
 
-System automatically:
-- Prevents execution of dependent tasks until dependencies done
-- Updates status when dependencies complete
-- Shows dependency chain in roadmap.md
+---
 
-## Output
+## Related Commands
 
-**Created Files:**
-- `specs/todo-roadmap/[project-id]/roadmap.json` - Kanban data
-- `specs/todo-roadmap/[project-id]/roadmap.md` - Human-readable view
-- `specs/todo-roadmap/[project-id]/tasks/*.json` - Individual task details
-- `specs/todo-roadmap/[project-id]/execution-log.md` - Execution history
-
-**Registry Updated:**
-- `specs/todo-roadmap/index.json` - All roadmaps registry
-
-**Integration Created:**
-- Links to execute via existing SDD commands
-- Tracks progress in kanban format
-- VSCode extension compatible
-
-## Examples
-
-### Example 1: Simple Feature
-```bash
-/sdd-full-plan user-notifications Add email and push notifications with preferences
-```
-
-**Expected Output:**
-- Type: Feature
-- Complexity: Simple
-- Duration: 2 weeks
-- Tasks: 3-5 main tasks
-- Approach: SDD 2.5 (Brief)
-
-### Example 2: Medium Application
-```bash
-/sdd-full-plan blog-platform Full-featured blog with CMS, user management, and analytics
-```
-
-**Expected Output:**
-- Type: Application
-- Complexity: Medium
-- Duration: 6 weeks
-- Tasks: 8-12 main tasks
-- Approach: Mixed SDD
-
-### Example 3: Complex System
-```bash
-/pecut-all-in-one ecommerce-platform Multi-vendor marketplace with payments, shipping, and vendor management
-```
-
-**Expected Output:**
-- Type: System
-- Complexity: Complex
-- Duration: 16 weeks
-- Tasks: 15-20 main tasks
-- Approach: Full SDD 2.0
-
-## Notes for AI Assistants
-
-- **Always present plan first** with complete roadmap preview
-- **CRITICAL: Always ask execution mode** after plan approval:
-  - "One-by-One" (Option A) - Interactive, step-by-step learning
-  - "Immediate" (Option B) - Fast, all-at-once creation
-  - Wait for user's choice before proceeding
-- **For One-by-One mode:**
-  - Present each epic/task individually
-  - Wait for approval before creating
-  - Show progress after each creation
-  - Allow switching to immediate mode mid-process
-  - Provide pause/review options
-- **For Immediate mode:**
-  - Generate everything at once after approval
-  - Create complete roadmap.json with all tasks
-  - Generate all task JSON files
-  - Provide comprehensive summary
-- **Detect complexity automatically** using multiple indicators
-- **Create hierarchical structure** with proper parent-child relationships
-- **Generate VSCode-compatible JSON** following Taskr Kanban format
-- **Wait for approval AND mode selection** before creating any files
-- **Respect user preference** - don't skip the execution mode question
-- **Use interactive question UI (Cursor 2.1+)** - Questions appear automatically
-- **Consider background planning** for very complex projects
-- **Link to SDD commands** for each task execution
-- **Track progress** meticulously in execution log
-- **Validate dependencies** ensure logical task ordering
-- **Estimate realistically** use historical data when possible
-- **Document thoroughly** all decisions and rationale
-- **Note plan search** - Users can ⌘+F to search within roadmap plans
-
-## Integration with VSCode Extensions
-
-The roadmap.json format is designed to be compatible with:
-- Taskr Kanban extension
-- Custom SDD kanban extensions
-- Generic JSON-based project management tools
-
-See [ROADMAP_FORMAT_SPEC.md](../../.sdd/ROADMAP_FORMAT_SPEC.md) for complete JSON schema specification.
-
-## See Also
-
-- [/execute-task](./execute-task.md) - Execute tasks from roadmap
-- [ROADMAP_FORMAT_SPEC.md](../../.sdd/ROADMAP_FORMAT_SPEC.md) - JSON format details
-- [FULL_PLAN_EXAMPLES.md](../../.sdd/FULL_PLAN_EXAMPLES.md) - Complete examples
-- [SDD Guidelines](../../.sdd/guidelines.md) - Methodology overview
-
+- `/execute-task [task-id]` - Execute a task from the roadmap
+- `/brief [task-id]` - Quick feature planning
+- `/research [task-id]` - Deep research phase
+- `/implement [task-id]` - Implementation phase

@@ -1,243 +1,403 @@
 # /implement Command
 
-Execute the planned implementation with todo-list generation and continuous execution.
+Execute the planned implementation with systematic todo-list execution and continuous progress tracking.
+
+---
+
+## IMPORTANT: This is Implementation Mode
+
+**You are an implementation agent.** Your job is to execute the planned implementation systematically, following the todo-list exactly and marking progress as you go.
+
+**Your role:**
+- Read and understand all planning documents (plan.md, tasks.md, spec.md)
+- Generate a comprehensive todo-list if one doesn't exist
+- Execute todos in order, respecting dependencies
+- Mark each item complete as you finish it
+- Document blockers and deviations
+- Write production-quality code
+
+**Mode boundaries (What you will NOT do):**
+- Skip tasks or jump around randomly
+- Mark items done without actually completing them
+- Ignore the plan and do your own thing
+- Silently deviate from the specification
+- Leave partial work without documenting it
+
+**Recommended Cursor Mode:** Agent
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Implementation**
+Mode: implementation
+Purpose: Executing planned implementation with todo-list tracking
+Implementation: AUTHORIZED - I will write code following the plan
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Skipping Todos | Not following the todo-list order |
+| 2. Silent Deviation | Implementing differently than planned without noting it |
+| 3. Batch Completion | Marking multiple items done without implementing each |
+| 4. No Progress Update | Not updating checkboxes after completing work |
+| 5. Ignoring Blockers | Not reporting when a task cannot be completed |
+| 6. No Plan Check | Starting without reading plan.md first |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to systematic implementation."
+
+**RESUME**: Return to the next unchecked todo item.
+
+---
+
+## Prerequisites
+
+- Must have existing `plan.md` file in task directory
+- Task must exist in `specs/active/[task-id]/`
+- Recommended: `tasks.md` for detailed task breakdown
+
+---
 
 ## Usage
+
 ```
 /implement [task-id]
 ```
 
-## Prerequisites
-- Must have existing `plan.md` file in task directory
-- Task must exist in `specs/active/[task-id]/`
-
-## Purpose
-Convert the technical plan into actionable todo-list and execute implementation with maximum efficiency.
+**Examples:**
+```
+/implement user-auth-system
+/implement checkout-flow
+/implement notification-system
+```
 
 ---
 
-## PLAN Mode Workflow
-
-This command follows a **plan-approve-execute** pattern to ensure systematic implementation.
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Read all planning documents:**
-   - `research.md` (if exists) - Context and patterns
-   - `spec.md` (if exists) - Requirements
-   - `plan.md` (required) - Technical approach
-   - `tasks.md` (if exists) - Task breakdown
+**Step 1: Read all planning documents**
 
-2. **Understand codebase context:**
-   - Identify where code will be added/modified
-   - Note existing patterns to follow
-   - Check for reusable components
-   - Understand file/directory structure
+Check for and read these files in order:
+1. `specs/active/[task-id]/plan.md` (REQUIRED)
+2. `specs/active/[task-id]/spec.md` (if exists)
+3. `specs/active/[task-id]/tasks.md` (if exists)
+4. `specs/active/[task-id]/research.md` (if exists)
+5. `specs/active/[task-id]/feature-brief.md` (if exists)
 
-3. **Assess implementation scope:**
-   - What needs to be built
-   - What can be reused
-   - What patterns to follow
-   - Dependencies and blockers
+**If plan.md doesn't exist:**
+```
+I can't find a plan for [task-id]. 
 
-**Ask clarifying questions if needed:**
-- Should we start with a specific phase or component?
-- Are there high-priority items to tackle first?
-- Any known blockers or dependencies to address upfront?
-- Should we focus on backend, frontend, or full-stack?
-- Are there existing examples to follow for similar features?
+Would you like me to:
+1. Run `/plan [task-id]` to create one first
+2. Run `/brief [task-id]` for quick planning
+3. Proceed with implementation based on your description (not recommended)
+```
 
-**Note (Cursor 2.1+):** 
-- Questions appear in interactive UI - answer directly for faster workflow
-- **AI Code Reviews:** After implementation, Cursor will automatically review code and show issues in sidepanel
+**Step 2: Understand the implementation scope**
+- What needs to be built
+- What patterns to follow
+- What can be reused
+- Dependencies and blockers
 
-**Read relevant files:**
-- All specification documents in task directory
-- Existing codebase files that will be modified
-- Similar implementations for patterns
-- Template at `.sdd/templates/todo-list-template.md`
+**Step 3: Check for existing todo-list**
 
-### Phase 2: Planning (Create Plan Tool)
+Look for `specs/active/[task-id]/todo-list.md`
 
-**Present a detailed plan showing:**
+### Phase 2: Planning (Create Plan)
 
-1. **What will be created:**
-   - File path: `specs/active/[task-id]/todo-list.md`
-   - File path: `specs/active/[task-id]/progress.md` (if doesn't exist)
+**Present implementation plan before starting:**
 
-2. **Implementation strategy:**
-   - **Execution order:**
-     - Phase 1: Foundation and setup
-     - Phase 2: Core functionality
-     - Phase 3: Integration and polish
-     - Phase 4: Testing and documentation
-   
-   - **Pattern reuse approach:**
-     - Existing patterns identified
-     - Components that can be reused
-     - Conventions to follow
+```
+## Implementation Plan
 
-3. **Todo-list structure preview (5-10 key items):**
-   ```markdown
-   - [ ] Setup database schema (2h)
-   - [ ] Create API service layer (3h)
-   - [ ] Implement authentication middleware (2h)
-   - [ ] Build frontend components (4h)
-   - [ ] Write unit tests (3h)
-   ```
+**Task:** [task-id]
+**Plan:** specs/active/[task-id]/plan.md
 
-4. **Implementation approach:**
-   - File organization strategy
-   - What code files will be created/modified
-   - Testing strategy
-   - How we'll track progress
+**What I'll build:**
+- [Component/feature 1]
+- [Component/feature 2]
+- [Component/feature 3]
 
-5. **Success criteria:**
-   - Definition of done for implementation
-   - How we'll validate completeness
-   - What makes this "ready to ship"
+**Execution order:**
+1. Phase 1: [Foundation/Setup]
+2. Phase 2: [Core functionality]
+3. Phase 3: [Integration/Polish]
+4. Phase 4: [Testing/Documentation]
 
-**The plan should show:**
-- Clear execution roadmap
-- Preview of key todos
-- How plan maps to actual code
+**Files I'll create/modify:**
+- `src/[path1]` - [purpose]
+- `src/[path2]` - [purpose]
+
+**Patterns I'll follow:**
+- [Pattern from codebase]
+
+**Todo-list structure:**
+[Show 5-10 key items as preview]
+
+Ready to start implementation? (or let me know if you'd like changes)
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Step 1: Create or update todo-list.md**
 
-1. **Generate todo-list.md using template:**
-   - Use `.sdd/templates/todo-list-template.md` or `todo-compact.md`
-   - Create comprehensive, ordered checklist
-   - Include all items from plan/tasks
+```markdown
+# Implementation Todo List: [Task Name]
 
-2. **Todo-list format:**
-   ```markdown
-   ## Phase 1: Foundation
-   - [ ] Task description (estimated time)
-     - **Acceptance criteria:** Clear done condition
-     - **Files:** List of files to create/modify
-     - **Dependencies:** What must be done first
-   ```
-
-3. **Begin systematic implementation:**
-   
-   **CRITICAL - Todo Execution Rules:**
-   - **Read entire todo-list** before starting
-   - **Execute in order** - respect dependencies
-   - **Mark completion** - Update `- [ ]` to `- [x]`
-   - **Document blockers** - Never skip silently
-   - **Update progress.md** continuously
-   - **Ask before deviating** from plan
-   
-   **Execution pattern:**
-   ```
-   1. Pick next uncompleted todo
-   2. Complete it fully
-   3. Mark [x] checkbox in todo-list.md
-   4. Update progress.md
-   5. Move to next todo
-   ```
-
-4. **Implementation principles:**
-   - **Continuous flow** - Go as long as possible
-   - **Pattern reuse** - Follow existing conventions
-   - **Quality focus** - Write clean, tested code
-   - **Documentation** - Comment complex logic
-   - **Progress tracking** - Keep stakeholders informed
-
-5. **Create/modify code files:**
-   - Follow plan architecture
-   - Maintain code quality
-   - Write tests alongside features
-   - Document as you go
-
-6. **Update progress tracking:**
-   - Mark todos complete as you finish them
-   - Update `progress.md` with current status
-   - Document any discoveries or changes
-   - Note any deviations from plan
-
-### Phase 4: Code Review (Cursor 2.1+)
-
-**AI Code Review Integration:**
-- Cursor automatically analyzes code changes
-- Issues appear in sidepanel for review
-- Review and fix bugs directly in editor
-- Address security, performance, and quality issues
-
-**Review Checklist:**
-- [ ] All requirements met
-- [ ] Code follows project patterns
-- [ ] No security vulnerabilities
-- [ ] Performance considerations addressed
-- [ ] Tests included and passing
-- [ ] Documentation updated
-
-**Fix Issues:**
-- Click issues in sidepanel to review
-- Apply suggested fixes directly
-- Re-review until all issues resolved
-
-### Phase 5: Documentation
-
-**Finalize implementation:**
-- Ensure all todos marked complete
-- Update progress.md with final status
-- Document any plan deviations
-- Note learnings for future features
-- Suggest `/evolve` updates if discoveries made
-- Record code review findings
+**Task ID:** [task-id]
+**Started:** [date]
+**Status:** In Progress
 
 ---
 
-## Example
-```
-/implement user-auth-system
+## Phase 1: Foundation
+
+- [ ] [Task 1] (estimated: Xh)
+  - Files: [files to create/modify]
+  - Dependencies: None
+  
+- [ ] [Task 2] (estimated: Xh)
+  - Files: [files to create/modify]
+  - Dependencies: Task 1
+
+## Phase 2: Core Features
+
+- [ ] [Task 3] (estimated: Xh)
+- [ ] [Task 4] (estimated: Xh)
+
+## Phase 3: Integration
+
+- [ ] [Task 5] (estimated: Xh)
+
+## Phase 4: Testing & Docs
+
+- [ ] Write unit tests
+- [ ] Update documentation
+
+---
+
+## Progress Log
+
+| Date | Completed | Notes |
+|------|-----------|-------|
+| [date] | [items] | [notes] |
 ```
 
-## Implementation Rules
+**Step 2: Execute todos systematically**
 
-**CRITICAL - Todo-List Execution:**
+**CRITICAL - Todo Execution Rules:**
+
 1. **Read entire todo-list** before starting
-2. **Execute todos in order** - follow dependencies
-3. **Mark completion** - Update checkboxes [x] as you finish
+2. **Execute in order** - respect dependencies
+3. **Mark completion** - Change `- [ ]` to `- [x]` after each item
 4. **Document blockers** - Never skip silently
-5. **Update progress** - Track continuously
-6. **Ask before deviating** - Don't ignore plan
+5. **Update progress log** - Track what's done
 
-**Todo Format:**
-```markdown
-- [ ] Task description (effort) - owner
-  Status: NOT_STARTED | IN_PROGRESS | BLOCKED | COMPLETE
+**For each todo item:**
+
+```
+## Working on: [Todo item description]
+
+[Implement the item]
+
+✓ Completed: [Brief description of what was done]
+
+Updating todo-list...
+- [x] [Todo item] ✓
+
+Next: [Next todo item]
 ```
 
-**Execution Pattern:**
-- Pick next uncompleted task
-- Complete it fully
-- Mark [x] checkbox
-- Document any changes
-- Move to next task
+**Step 3: Handle blocked items**
 
-**See**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md) for comprehensive rules
+If a todo cannot be completed:
 
-## Output
-- Creates: `specs/active/[task-id]/todo-list.md`
-- Updates: `specs/active/[task-id]/progress.md`
-- Creates: Implementation code and artifacts
+```
+⚠️ BLOCKED: [Todo item]
 
-## Notes for AI Assistants
+**Reason:** [Why it's blocked]
+**Needs:** [What's required to unblock]
 
-- **Always present a plan first** showing implementation strategy
-- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
-- **Show todo preview** in the plan (5-10 key items)
-- **Explain execution order** and why
-- **Wait for approval** before creating todo-list
-- **Execute systematically** - follow the todo-list exactly
-- **Mark progress continuously** - update checkboxes as you complete
-- **Document everything** - discoveries, blockers, changes
-- **Go for flow** - implement continuously without interruption
-- **Quality matters** - don't rush, write good code
-- **After implementation:** Remind users about AI Code Review in sidepanel
-- **Note plan search** - Users can ⌘+F to search within implementation plans
+Options:
+1. Skip for now and continue with unblocked items
+2. Pause and resolve the blocker first
+3. Mark as blocked and revisit later
+
+Which would you prefer?
+```
+
+Mark blocked items in todo-list:
+```markdown
+- [ ] [BLOCKED: reason] Original task description
+```
+
+**Step 4: Continuous implementation**
+
+Keep implementing until:
+- All todos are complete, OR
+- A critical blocker is hit, OR
+- User requests a pause
+
+After every 3-5 completed items, show progress:
+```
+## Progress Update
+
+Completed: X/Y tasks (Z%)
+Current phase: [Phase name]
+Next up: [Next task]
+
+[Continue?]
+```
+
+### Phase 4: Verification
+
+**After implementation, verify:**
+
+- [ ] All todos marked complete (or explicitly blocked)
+- [ ] Code follows project patterns
+- [ ] No linter errors introduced
+- [ ] Tests pass (if applicable)
+
+**AI Code Review (Cursor 2.1+):**
+- Check sidepanel for AI-detected issues
+- Address any critical or major issues
+- Note minor issues for future cleanup
+
+---
+
+## CHECKPOINT: Implementation Complete (REQUIRED)
+
+Before final output, verify:
+- [ ] All todos addressed (complete or blocked)
+- [ ] todo-list.md updated with final status
+- [ ] Progress log has completion entry
+- [ ] No silent deviations from plan
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Implementation complete: [task-id]
+
+**Summary:**
+- Completed: [X]/[Y] tasks
+- Blocked: [N] items (if any)
+- Files created: [count]
+- Files modified: [count]
+
+**What was built:**
+- [Feature/component 1]
+- [Feature/component 2]
+
+**Blocked items (if any):**
+- [Item]: [Reason]
+
+**Next steps:**
+- Run tests: `[test command]`
+- Review changes: Check AI Code Review in sidepanel
+- Update specs if discoveries were made: `/evolve [task-id] [discovery]`
+
+**Files:**
+- Todo list: `specs/active/[task-id]/todo-list.md`
+- Progress: `specs/active/[task-id]/progress.md`
+```
+
+---
+
+## Task Blocking Protocol
+
+### Scenario 1: Missing Dependency
+```
+The task needs [dependency] which isn't ready yet.
+
+I can:
+1. Complete the dependency first
+2. Skip this task and continue with others
+3. Mark as blocked and notify you
+
+Which approach?
+```
+
+### Scenario 2: Technical Blocker
+```
+I hit a technical issue: [description]
+
+What I tried:
+- [Attempt 1]
+- [Attempt 2]
+
+This needs your input. Options:
+1. Show me more details
+2. Skip this task for now
+3. Try a different approach: [suggestion]
+```
+
+### Scenario 3: Unclear Requirement
+```
+The task says "[task description]" but I'm not sure about [specific ambiguity].
+
+Do you mean:
+A) [Interpretation A]
+B) [Interpretation B]
+
+Or something else?
+```
+
+---
+
+## Troubleshooting
+
+### Issue: No plan.md found
+**Cause**: Implementation started without planning
+**Solution**: Run `/plan [task-id]` or `/brief [task-id]` first
+
+### Issue: Todo item too large
+**Cause**: Task wasn't broken down enough
+**Solution**: Break into subtasks:
+```
+Original: "Implement authentication"
+Break into:
+- [ ] Create auth service structure
+- [ ] Implement login endpoint
+- [ ] Implement logout endpoint
+- [ ] Add JWT token generation
+- [ ] Create auth middleware
+```
+
+### Issue: Too many blocked items
+**Cause**: Dependencies not ready or external blockers
+**Solution**: 
+- List all blockers
+- Prioritize unblocking
+- Continue with independent tasks
+
+---
+
+## Related Commands
+
+- `/plan [task-id]` - Create implementation plan (prerequisite)
+- `/tasks [task-id]` - Generate task breakdown
+- `/evolve [task-id]` - Update specs with discoveries
+- `/debug [task-id]` - Investigate issues before fixing
+- `/brief [task-id]` - Quick planning alternative
