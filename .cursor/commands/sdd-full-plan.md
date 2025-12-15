@@ -257,18 +257,18 @@ specs/todo-roadmap/[project-id]/
 
 ```json
 {
-  "id": "[project-id]",
-  "title": "[Project Title]",
-  "description": "[Description]",
+  "id": "{{project-id}}",
+  "title": "{{Project Title}}",
+  "description": "{{Description}}",
   "type": "application",
-  "created": "[ISO date]",
-  "updated": "[ISO date]",
+  "created": "{{ISO date}}",
+  "updated": "{{ISO date}}",
   "status": "planning",
   "metadata": {
     "sddVersion": "3.0",
-    "complexity": "[simple/medium/complex/enterprise]",
-    "estimatedDuration": "[X weeks]",
-    "teamSize": [N]
+    "complexity": "{{simple|medium|complex|enterprise}}",
+    "estimatedDuration": "{{X weeks}}",
+    "teamSize": 1
   },
   "columns": [
     {"id": "todo", "title": "To Do", "order": 0, "tasks": []},
@@ -279,7 +279,7 @@ specs/todo-roadmap/[project-id]/
   "tasks": {
     "epic-001": {
       "id": "epic-001",
-      "title": "[Epic Title]",
+      "title": "{{Epic Title}}",
       "type": "epic",
       "status": "todo",
       "sdd": {
@@ -290,12 +290,14 @@ specs/todo-roadmap/[project-id]/
     }
   },
   "statistics": {
-    "totalTasks": [N],
-    "todoTasks": [N],
+    "totalTasks": 0,
+    "todoTasks": 0,
     "completionPercentage": 0
   }
 }
 ```
+
+> **Note:** Replace `{{placeholder}}` values with actual data. Numbers like `teamSize`, `totalTasks`, `todoTasks` must be valid integers.
 
 **Step 3: Generate roadmap.md**
 
@@ -391,23 +393,25 @@ For each task, create `tasks/[task-id].json`:
 
 ```json
 {
-  "id": "[task-id]",
-  "title": "[Task Title]",
-  "description": "[Description]",
+  "id": "task-001-1",
+  "title": "{{Task Title}}",
+  "description": "{{Description}}",
   "type": "task",
-  "parentId": "[epic-id]",
+  "parentId": "epic-001",
   "status": "todo",
   "priority": "high",
-  "estimatedHours": [N],
+  "estimatedHours": 2,
   "dependencies": [],
   "sdd": {
-    "phase": "[research/brief/specification/planning/tasks/implementation]",
-    "commands": ["/[command]"],
+    "phase": "brief",
+    "commands": ["/brief"],
     "linkedSpec": null,
-    "executeCommand": "/execute-task [task-id]"
+    "executeCommand": "/execute-task task-001-1"
   }
 }
 ```
+
+> **Note:** Replace `{{placeholder}}` values with actual data. Use real task IDs, and ensure `estimatedHours` is a valid number.
 
 **Step 5: Create execution-log.md**
 
