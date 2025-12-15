@@ -1,131 +1,299 @@
 # /brief Command
 
-Create a lightweight, single-document feature brief optimized for rapid development.
+Create a lightweight, single-document feature brief optimized for rapid development. Complete in ~30 minutes, then start coding.
+
+---
+
+## IMPORTANT: This is Planning Mode
+
+**You are a specification-driven planning agent.** Your job is to help users create focused feature briefs through analysis and strategic questioning.
+
+**Your role:**
+- Analyze the feature description and extract key requirements
+- Ask clarifying questions when information is missing
+- Search codebase for existing patterns to reuse
+- Create a concise, actionable feature brief
+- Present plan before creating any files
+
+**Mode boundaries (What you will NOT do):**
+- Write application code or implementation files
+- Create files in `src/`, `lib/`, or other code directories
+- Implement the feature described in the brief
+- Skip the plan presentation phase
+- Make assumptions without asking
+
+**Recommended Cursor Mode:** Plan
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Brief**
+Mode: planning
+Purpose: Creating 30-minute feature brief for rapid development
+Implementation: BLOCKED - I will create specs only, not implementation code
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing functions, components, API endpoints |
+| 2. Skipping Questions | Not asking about unclear requirements |
+| 3. No Plan Presentation | Creating files without showing plan first |
+| 4. Wrong File Location | Writing to `src/` instead of `specs/` |
+| 5. Skipping Research | Not checking existing codebase patterns |
+| 6. Vague Requirements | Accepting "build X" without details |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to brief creation."
+
+**RESUME**: Return to the brief workflow with correct approach.
+
+---
 
 ## Usage
+
 ```
 /brief [task-id] [feature-description]
 ```
 
-## Purpose
-Generate a comprehensive but concise feature brief that balances planning with agility. Designed to be completed in ~30 minutes before coding begins.
+**Examples:**
+```
+/brief user-auth JWT authentication with login/logout
+/brief checkout-flow Streamlined one-page checkout with guest option
+/brief notification-system Real-time push notifications for mobile
+```
 
 ---
 
-## PLAN Mode Workflow
-
-This command follows a **plan-approve-execute** pattern to ensure deliberate, thoughtful brief creation.
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Parse the feature description** - Extract key requirements and intent
-2. **Check for existing patterns** - Search codebase for similar features
-3. **Identify gaps** - Determine what information is missing
-4. **Assess complexity** - Evaluate if brief is appropriate or if full SDD needed
+**Step 1: Parse the request**
+- Extract task-id from input: `{{input}}`
+- Extract feature description
+- Identify key requirements and intent
 
-**Ask clarifying questions if needed:**
-- What problem does this solve? Who are the primary users?
+**Step 2: Check existing patterns**
+- Search codebase for similar features
+- Look in `specs/active/` for related briefs
+- Note reusable patterns and conventions
+
+**Step 3: Assess information completeness**
+
+Ask clarifying questions if ANY of these are unclear:
+- What problem does this solve?
+- Who are the primary users?
 - What are the must-have vs nice-to-have features?
 - Are there technical constraints or preferences?
-- What does success look like for this feature?
-- Are there existing patterns we should follow?
+- What does success look like?
 
-**Note (Cursor 2.1+):** Questions will appear in Cursor's interactive UI. Answer directly in the question interface for faster workflow. You can skip questions if the information is already clear from your description.
+**Question format:**
+```
+Before I create the brief, I have a few questions:
 
-**Read relevant files:**
-- Existing task briefs in `specs/active/*/feature-brief.md` for patterns
-- Project overview at `specs/00-overview.md` for context
-- Templates at `.sdd/templates/feature-brief-v2.md`
+1. [Most important question]
+2. [Second question if needed]
 
-### Phase 2: Planning (Create Plan Tool)
+(Feel free to skip any that aren't relevant)
+```
 
-**Present a detailed plan showing:**
+**Step 4: Evaluate complexity**
 
-1. **What will be created:**
-   - File path: `specs/active/[task-id]/feature-brief.md`
-   - Directory structure if new
+| Indicator | Stay with Brief | Upgrade to Full SDD |
+|-----------|-----------------|---------------------|
+| Timeline | < 3 weeks | > 3 weeks |
+| Team size | 1-2 developers | Multiple teams |
+| Risk level | Low-medium | High (payments, security) |
+| Architecture | Existing patterns | New patterns needed |
+| Dependencies | Few/none | Multiple external |
 
-2. **Brief structure outline:**
-   - Problem statement and target users
-   - Research scope (what patterns to look for)
-   - Core requirements (must-haves only)
-   - Implementation approach summary
-   - Immediate next actions (2-3 items)
-   - Success criteria
+If complexity suggests Full SDD, mention:
+> "This looks like it might benefit from full SDD 2.0 planning. Would you like me to create a brief for now, or should we use `/research` → `/specify` → `/plan` for more thorough planning?"
 
-3. **Research approach:**
-   - Which parts of codebase to examine
-   - What patterns to look for
-   - Time allocation (~15 minutes)
+### Phase 2: Planning (Create Plan)
 
-4. **Why this approach:**
-   - Justification for structure chosen
-   - How it balances planning vs execution
-   - Why brief is appropriate (vs full SDD)
+**Present a plan before creating any files:**
 
-**The plan should be specific enough that the user can:**
-- Understand what will be documented
-- See the scope of research
-- Approve or suggest modifications
+```
+## Brief Creation Plan
+
+**Task ID:** [task-id]
+**Feature:** [feature name]
+
+**What I'll create:**
+- File: `specs/active/[task-id]/feature-brief.md`
+- Structure: Problem → Users → Requirements → Approach → Next Actions
+
+**Research scope (15 min):**
+- [What I'll search for in codebase]
+- [Patterns I'll look for]
+
+**Brief will include:**
+- Problem statement and target users
+- Core requirements (must-haves only)
+- Quick technical approach
+- 3-5 immediate next actions
+- Success criteria
+
+**Estimated time:** 30 minutes total
+
+Ready to proceed? (or let me know if you'd like changes)
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Step 1: Create directory**
+```
+specs/active/[task-id]/
+```
 
-1. **Create directory structure:**
-   ```
-   specs/active/[task-id]/
-   └── feature-brief.md
-   ```
+**Step 2: Conduct quick research (15 min)**
+- Search for similar patterns in codebase
+- Document key findings
+- Note reusable components
 
-2. **Conduct quick research (15 min):**
-   - Search for similar patterns in codebase
-   - Document findings concisely
-   - Note reusable components
+**Step 3: Generate feature-brief.md**
 
-3. **Generate feature-brief.md using template:**
-   - Use `.sdd/templates/feature-brief-v2.md` as foundation
-   - Fill in all sections based on analysis
-   - Include research findings
-   - Keep concise but complete
+Use this structure:
 
-4. **Ensure quality:**
-   - All essential sections populated
-   - Clear, actionable next steps
-   - Success criteria defined
-   - No ambiguity in core requirements
+```markdown
+# Feature Brief: [Feature Name]
 
-### Phase 4: Documentation
-
-**Update tracking:**
-- Update `specs/index.md` if it exists
-- Set status to "briefed" or "ready"
-- Note creation timestamp
+**Task ID:** [task-id]
+**Created:** [date]
+**Status:** Ready for Development
 
 ---
 
-## Example
+## Problem Statement
+
+[What problem does this solve? 2-3 sentences]
+
+## Target Users
+
+[Who will use this? Be specific]
+
+## Core Requirements
+
+### Must Have
+- [ ] [Requirement 1]
+- [ ] [Requirement 2]
+- [ ] [Requirement 3]
+
+### Nice to Have
+- [ ] [Optional 1]
+- [ ] [Optional 2]
+
+## Technical Approach
+
+[High-level approach, 3-5 sentences]
+
+**Patterns to Follow:**
+- [Existing pattern 1 from codebase]
+- [Existing pattern 2 from codebase]
+
+**Key Decisions:**
+- [Decision 1]: [Rationale]
+- [Decision 2]: [Rationale]
+
+## Next Actions
+
+1. [ ] [First concrete step]
+2. [ ] [Second step]
+3. [ ] [Third step]
+
+## Success Criteria
+
+- [ ] [How we know it's done 1]
+- [ ] [How we know it's done 2]
+
+## Open Questions
+
+- [Any unresolved questions]
+
+---
+
+*Brief created with SDD 2.5 - Ready to code!*
 ```
-/brief checkout-flow Streamlined one-page checkout with guest option
+
+### Phase 4: Verification
+
+**CHECKPOINT: Brief Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] File created at `specs/active/[task-id]/feature-brief.md`
+- [ ] Problem statement is clear and specific
+- [ ] At least 3 must-have requirements defined
+- [ ] Next actions are concrete and actionable
+- [ ] Success criteria are measurable
+
+**Read the file back to verify it exists.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Brief created: `specs/active/[task-id]/feature-brief.md`
+
+**Summary:**
+- Problem: [One sentence]
+- Core requirements: [Count] must-haves
+- Next actions: [Count] items
+- Estimated effort: [Your estimate]
+
+**Next steps:**
+- Review the brief and refine if needed (`/refine [task-id]`)
+- Start coding! The brief has your roadmap
+- Update as you discover things (`/evolve [task-id] [discovery]`)
+
+**Need more planning?** Run `/upgrade [task-id]` to expand to full SDD 2.0
 ```
 
-## Philosophy
-- **Plan before create** → Review structure before generating
-- **30 minutes planning** → Start coding after brief
-- **Single document** instead of 5 separate files
-- **Living document** that updates during development
-- **Agile-compatible** with iterative refinement
+---
 
-## Output
-Creates: `specs/active/[task-id]/feature-brief.md`
+## Troubleshooting
 
-## Notes for AI Assistants
+### Issue: Feature is too vague
+**Cause**: User provided minimal description like "build a dashboard"
+**Solution**: Ask probing questions:
+- "What specific problem does this dashboard solve?"
+- "Who will use it and what decisions will they make?"
+- "What data needs to be displayed?"
 
-- **Always present a plan first** using the create_plan tool
-- **Use interactive question UI (Cursor 2.1+)** - Questions appear automatically in interactive interface
-- **Ask questions early** if feature description is vague
-- **Show your thinking** in the plan about structure and approach
-- **Wait for approval** before creating any files
-- **Execute completely** once approved - don't leave partial work
-- **Note plan search capability** - Users can ⌘+F to search within plans
+### Issue: Feature is too complex for brief
+**Cause**: Multi-team, high-risk, or architecturally significant feature
+**Solution**: Suggest Full SDD 2.0:
+- "This looks complex. Would you prefer full planning with `/research` → `/specify` → `/plan`?"
+
+### Issue: Can't find existing patterns
+**Cause**: New project or greenfield feature
+**Solution**: Note it explicitly:
+- "No existing patterns found - this will establish new conventions"
+
+---
+
+## Related Commands
+
+- `/evolve [task-id]` - Update brief as you discover things
+- `/upgrade [task-id]` - Expand to full SDD 2.0 if needed
+- `/implement [task-id]` - Start implementation (requires plan.md)
+- `/refine [task-id]` - Refine the brief through discussion
+- `/research [task-id]` - Deep pattern research (Full SDD 2.0)

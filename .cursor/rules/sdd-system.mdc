@@ -2,21 +2,38 @@
 alwaysApply: true
 ---
 
-# SDD (Spec-Driven Development) System Overview
+# SDD (Spec-Driven Development) System v3.0
 
-This project implements a comprehensive **Spec-Driven Development** workflow using three core commands that work together to transform ideas into structured implementation plans.
+This project implements an **agentic-first Spec-Driven Development** workflow. All slash commands are direct agent instructions, not descriptions.
 
 ## Core Philosophy
+
 Spec-Driven Development emphasizes creating detailed, executable specifications **before** writing code, ensuring:
 - Requirements are clear before implementation
 - Technical decisions are well-planned and documented  
 - Development tasks are structured and manageable
 - Team collaboration is enhanced through shared understanding
 
-### PLAN Mode Integration
-All SDD commands now follow a **plan-approve-execute** workflow inspired by Cursor's PLAN mode:
+### Agentic-First Architecture (v3.0)
 
-**Workflow Pattern:**
+SDD v3.0 follows an **agentic-first architecture**:
+
+1. **Slash commands are agent instructions** - Templates tell you exactly what role to assume, what to output, and how to self-correct
+2. **State assertions required** - Every command starts with declaring your mode and boundaries
+3. **Self-correction protocol** - Built-in mistake detection and recovery
+4. **Plan-approve-execute pattern** - Show plans before creating files
+
+**Key Patterns:**
+- **Role Declaration**: "You are a [role]. Your job is [purpose]."
+- **State Assertion**: Output mode, purpose, and implementation status
+- **Mode Boundaries**: What you WILL and WILL NOT do
+- **Self-Correction**: DETECT → STOP → CORRECT → RESUME
+- **Checkpoints**: Verification before completion
+
+### PLAN Mode Integration
+
+All SDD commands follow **plan-approve-execute** workflow:
+
 ```
 User Command → Analysis → Create Plan → User Approval → Execute → Document
 ```
@@ -28,130 +45,103 @@ User Command → Analysis → Create Plan → User Approval → Execute → Docu
 - **Transparency** - Explain reasoning and approach in plans
 - **Thoughtful Execution** - Deliberate, well-considered actions
 
-**Benefits:**
-- **Visibility** - See what will happen before it happens
-- **Control** - Approve or modify plans before execution
-- **Quality** - More thoughtful specifications and plans
-- **Safety** - No surprise changes or modifications
-- **Learning** - Understand AI reasoning and approach
+## SDD 2.5: Lightweight Workflow (80% of features)
 
-### Cursor 2.1 Enhancements
+### `/brief` - 30-Minute Planning
+Transform ideas into actionable development plans in 30 minutes.
 
-**Interactive Question UI:**
-- Questions appear automatically in interactive interface
-- Answer directly in UI for faster workflow
-- Better UX and mobile-friendly
+### `/evolve` - Living Documentation
+Keep specifications aligned with reality during development.
 
-**Plan Search (⌘+F):**
-- Search within generated plans
-- Navigate large plans efficiently
-- Find specific sections quickly
+### `/refine` - Interactive Refinement
+Iterate on existing specs through discussion.
 
-**AI Code Reviews:**
-- Automatic code review after implementation
-- Issues appear in sidepanel
-- Fix bugs directly in editor
-- Integrated into `/implement` workflow
+## SDD 2.0: Full Planning (20% of complex features)
 
-**Instant Grep:**
-- All codebase searches are instant
-- Faster `/research` command
-- Multiple parallel searches possible
+### Full Workflow: `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
+For complex, high-risk, or multi-team features.
 
-**Background Planning:**
-- Create plans in background while working
-- Useful for complex `/sdd-full-plan` projects
-- Compare multiple plan options
+## New Commands
 
-**Multi-Agents:**
-- Execute up to 8 tasks in parallel
-- Independent tasks run simultaneously
-- No file conflicts (isolated environments)
+### `/generate-prd` - PRD Generation
+Create Product Requirements Documents through Socratic questioning.
 
-**Team Commands:**
-- Define SDD commands in dashboard
-- Share with entire team
-- Centralized management
+### `/audit` - Spec-Driven Audit
+Compare code against specs. Propose fixes after investigation. Use with Cursor's Debug Mode for runtime evidence.
 
-**Voice Mode:**
-- Control SDD commands with voice
-- Hands-free workflow
-- Accessibility improvement
-
-## SDD 2.5: Agile-Compatible Lightweight Workflow (Default)
-
-### Primary Approach (80% of features)
-
-#### `/brief` - 30-Minute Planning
-Transform ideas into actionable development plans in 30 minutes
-- **Time**: 30 minutes total planning before coding
-- **Output**: Single [feature-brief.md](mdc:specs/active/[task-id]/feature-brief.md) with essential context
-- **Philosophy**: "Just enough" planning to start coding confidently
-- **Key Elements**: Problem/users, quick research, requirements, next actions
-
-#### `/evolve` - Living Documentation
-Keep specifications aligned with reality during development
-- **Purpose**: Continuous updates as discoveries are made during coding
-- **Output**: Updates existing feature-brief.md with changelog
-- **Philosophy**: Specifications as living documents that evolve with code
-
-### Advanced Approach (20% of complex features) - SDD 2.0
-
-For complex, high-risk, or multi-team features requiring comprehensive planning:
-
-#### Full Workflow: `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
-- **Use When**: Feature complexity high, multiple stakeholders, significant architectural impact
-- **Time Investment**: 4-6 hours upfront planning
-- **Output**: Complete documentation suite (research.md, spec.md, plan.md, tasks.md)
+### `/generate-rules` - Coding Rules
+Auto-generate Cursor rules based on tech stack detection.
 
 ## Decision Framework
 
-**Start with `/brief`** unless feature meets ANY of these criteria:
+**Start with `/brief`** unless feature meets ANY criteria:
 - Multiple teams involved
 - Architectural changes required
 - High business risk/compliance needs
 - Uncertain technical approach
 - 3+ week development timeline
 
-**Upgrade from brief to full SDD** if complexity discovered during implementation
+**Upgrade from brief to full SDD** with `/upgrade` if complexity discovered.
 
-**Use `/sdd-full-plan`** (or `/pecut-all-in-one`) when:
-- Planning entire application or major system
-- Need comprehensive roadmap with kanban structure
-- Want structured task hierarchy (epic → task → subtask)
-- Require VSCode extension integration
-- Managing multi-phase projects
+**Use `/sdd-full-plan`** for full project roadmaps with kanban structure.
+
+## Automated Execution: `--until-finish`
+
+Add `--until-finish` to execute tasks automatically without stopping:
+
+```bash
+# Execute entire epic automatically
+/execute-task epic-001 --until-finish
+
+# Create roadmap AND execute everything
+/sdd-full-plan project-id Description --until-finish
+/pecut-all-in-one project-id Description --until-finish
+```
+
+**Behavior:**
+- Executes all tasks in dependency order
+- No user approval between tasks
+- **Stops on error** - fix and resume with same command
+- Continues until complete
+
+## Cursor Mode Mapping
+
+| SDD Command | Cursor Mode | Purpose |
+|-------------|-------------|---------|
+| `/brief`, `/specify`, `/plan`, `/tasks` | Plan | Planning without code changes |
+| `/research` | Ask | Read-only exploration |
+| `/implement`, `/execute-task` | Agent | Multi-file implementation |
+| `/audit` | Debug | Spec-driven audit with runtime evidence |
 
 ## File Organization
 
-The system uses a context-engineering approach with:
-- **Active tasks**: [specs/active/[task-id]/](mdc:specs/active/) - Tasks currently in development
-- **Task artifacts**: research.md, spec.md, plan.md, tasks.md, todo-list.md, progress.md
-- **Roadmap registry**: [specs/todo-roadmap/](mdc:specs/todo-roadmap/) - Project roadmaps with kanban structure
-  - **roadmap.json**: VSCode extension compatible kanban board
-  - **roadmap.md**: Human-readable markdown view
-  - **tasks/**: Individual task JSON files
-  - **execution-log.md**: Task execution history
-- **Templates**: [.sdd/templates/](mdc:.sdd/templates/) - Reusable document templates  
-- **Configuration**: [.sdd/config.json](mdc:.sdd/config.json) - System settings and preferences
-- **Guidelines**: [.sdd/guidelines.md](mdc:.sdd/guidelines.md) - Development methodology guide
+- **Active tasks**: `specs/active/[task-id]/` - Tasks in development
+- **Roadmaps**: `specs/todo-roadmap/[project-id]/` - Project roadmaps
+- **Shared protocols**: `.cursor/commands/_shared/` - Agent protocols
 
-## Task ID Convention
-- Use semantic slugs: `user-auth-system`, `payment-integration`, `dashboard-redesign`
-- Avoid generic numbering: `feat-001` (legacy approach)
-- Focus on meaningful, searchable identifiers
+## Command Reference
 
-## Quality Assurance
-Each phase includes comprehensive review checklists and validation rules to ensure:
-- Specifications are clear and testable
-- Plans are technically sound and scalable
-- Tasks are actionable and properly estimated
-- Documentation maintains consistency across the project
+| Command | Purpose | Output |
+|---------|---------|--------|
+| `/brief` | Quick 30-min planning | feature-brief.md |
+| `/research` | Pattern investigation | research.md |
+| `/specify` | Detailed requirements | spec.md |
+| `/plan` | Technical architecture | plan.md |
+| `/tasks` | Task breakdown | tasks.md |
+| `/implement` | Execute implementation | Code + todo-list.md |
+| `/evolve` | Update specs with discoveries | Updated spec |
+| `/upgrade` | Expand to full SDD 2.0 | All SDD 2.0 docs |
+| `/refine` | Iterate on specs | Refined spec |
+| `/generate-prd` | Create PRD | full-prd.md, quick-prd.md |
+| `/audit` | Spec-driven audit | Audit report |
+| `/generate-rules` | Create coding rules | .cursor/rules/*.mdc |
+| `/sdd-full-plan` | Full project roadmap | Kanban + tasks |
+| `/execute-task` | Execute roadmap task | Varies by task |
+| `--until-finish` | Flag: automated execution | Runs until complete |
 
-## Implementation & Todo-List Execution
+## CRITICAL FOR AI ASSISTANTS
 
-**CRITICAL FOR AI ASSISTANTS:**  
-Todo-lists are NOT suggestions - they are executable checklists that MUST be followed systematically.
+**Todo-lists are NOT suggestions** - they are executable checklists that MUST be followed systematically.
 
 ### Todo Execution Rules
 1. **Read entire list** before starting
@@ -160,75 +150,20 @@ Todo-lists are NOT suggestions - they are executable checklists that MUST be fol
 4. **Document blockers** - never skip silently
 5. **Update progress** continuously
 
-### For AI Models (Cursor, ChatGPT, Claude)
-- Todo-list is your implementation roadmap
-- Each unchecked item is a required task
-- Check off items as you complete them
-- Document any deviations with rationale
-- Ask before skipping or changing approach
+### Self-Correction Protocol
 
-**Reference**: [.sdd/IMPLEMENTATION_GUIDE.md](mdc:.sdd/IMPLEMENTATION_GUIDE.md)
+If you catch yourself:
+1. Writing code in a planning mode - STOP
+2. Skipping the plan presentation - STOP
+3. Not asking clarifying questions - STOP
+4. Claiming features don't exist without checking - STOP
 
-## Full Project Planning (NEW)
+**Recovery**: Say "I apologize - I was [mistake]. Let me return to [correct mode]."
 
-### `/generate-rules` Command
-Automatically generate comprehensive coding rules based on technology stack detection and codebase analysis:
-- **Technology Detection:** Auto-detects languages and frameworks from package files
-- **Codebase Analysis:** Analyzes patterns and project complexity
-- **Rule Generation:** Creates hierarchical rule files following 10X dev principles
-- **Best Practices:** Includes language/framework-specific best practices
-- **Project-Specific:** Extracts patterns from your codebase
+## References
 
-**Output:** Rule files in `.cursor/rules/` organized by language, framework, and category.
-
-**See:** [Generate Rules Guide](../../.sdd/GENERATE_RULES_GUIDE.md) for complete documentation.
-
-### `/sdd-full-plan` & `/pecut-all-in-one` Commands
-Create comprehensive project roadmaps from A to Z with:
-- **Epic-level organization** - Main phases and milestones
-- **Task hierarchy** - Epics → Tasks → Subtasks
-- **Kanban board structure** - To Do, In Progress, Review, Done columns
-- **Dependency management** - Automatic blocking and unblocking
-- **SDD command integration** - Each task maps to appropriate SDD command
-- **VSCode extension ready** - Compatible with Taskr Kanban and custom extensions
-
-### Command Usage
-```bash
-# Create full project roadmap
-/sdd-full-plan [project-id] [description]
-/pecut-all-in-one [project-id] [description]
-
-# Execute specific task from roadmap
-/execute-task [task-id]
-```
-
-### Complexity Detection
-- **Simple** (< 3 weeks): 3-5 tasks, Brief approach
-- **Medium** (3-8 weeks): 8-12 tasks, Mixed SDD
-- **Complex** (8-20 weeks): 15-20 tasks, Full SDD 2.0
-- **Enterprise** (20+ weeks): 20+ tasks, Multi-phase approach
-
-### Output Structure
-```
-specs/todo-roadmap/[project-id]/
-├── roadmap.json          # Kanban data
-├── roadmap.md            # Human-readable view
-├── tasks/                # Task details
-└── execution-log.md      # Execution tracking
-```
-
-### Integration with Existing SDD
-- Roadmaps link to `specs/active/` for implementation
-- Tasks execute via existing SDD commands (`/brief`, `/implement`, etc.)
-- Progress tracked in both roadmap and individual specs
-- Bidirectional linking maintained
-
-**See**: [.sdd/ROADMAP_FORMAT_SPEC.md](mdc:.sdd/ROADMAP_FORMAT_SPEC.md) for complete specification
-
-## Collaboration Support
-The system supports multi-developer workflows with:
-- Assignee tracking for features and tasks
-- Progress monitoring through status updates
-- Kanban board management with roadmaps
-- Review workflows with feedback integration
-- Audit trails for change management
+- **Shared Protocols**: `.cursor/commands/_shared/agent-manual.md`
+- **Self-Correction**: `.cursor/commands/_shared/self-correction.md`
+- **Cursor Modes**: `.cursor/commands/_shared/cursor-modes.md`
+- **Implementation Guide**: `.sdd/IMPLEMENTATION_GUIDE.md`
+- **Roadmap Spec**: `.sdd/ROADMAP_FORMAT_SPEC.md`

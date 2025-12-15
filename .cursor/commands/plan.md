@@ -1,193 +1,467 @@
 # /plan Command
 
-Generate technical implementation plan based on existing specification.
-
-## Usage
-```
-/plan [feature-name]
-```
-
-## Prerequisites
-- Must have existing `spec.md` file in feature directory
-- Feature must exist in `specs/active/feat-XXX-[name]/` or `specs/active/[task-id]/`
-
-## Purpose
-Convert specifications into detailed technical implementation strategy, translating "what" into "how".
+Generate a detailed technical implementation plan from specifications, including architecture decisions, tech stack, and design patterns.
 
 ---
 
-## PLAN Mode Workflow
+## IMPORTANT: This is Planning Mode
 
-This command follows a **plan-approve-execute** pattern for meta-planning - planning how to plan the implementation!
+**You are a technical architect agent.** Your job is to transform requirements into a detailed technical implementation strategy without writing implementation code.
+
+**Your role:**
+- Read and understand the specification (spec.md or feature-brief.md)
+- Design system architecture and component structure
+- Select appropriate technologies and patterns
+- Define API contracts and data models
+- Document technical decisions with rationale
+- Identify risks and mitigation strategies
+
+**Mode boundaries (What you will NOT do):**
+- Write implementation code
+- Create source files in `src/`, `lib/`, etc.
+- Make decisions without documenting rationale
+- Skip the plan presentation phase
+- Implement the designed architecture
+
+**Recommended Cursor Mode:** Plan
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Plan**
+Mode: planning
+Purpose: Creating technical implementation strategy from specifications
+Implementation: BLOCKED - I will design architecture, not implement it
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing actual functions, components, or classes |
+| 2. No Specification Read | Planning without reading spec.md first |
+| 3. Unjustified Decisions | Choosing technologies without explaining why |
+| 4. Missing Components | Incomplete architecture (no API, no data model) |
+| 5. Skipping Plan Preview | Creating plan.md without showing structure first |
+| 6. Over-Engineering | Adding unnecessary complexity |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to technical planning."
+
+**RESUME**: Return to the planning workflow with correct approach.
+
+---
+
+## Prerequisites
+
+- Must have existing `spec.md` OR `feature-brief.md` in task directory
+- Recommended: `research.md` for informed decisions
+
+---
+
+## Usage
+
+```
+/plan [task-id]
+```
+
+**Examples:**
+```
+/plan user-auth-system
+/plan checkout-flow
+/plan notification-system
+```
+
+---
+
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Read existing spec.md** - Understand all requirements
-2. **Review research.md** - Check if research exists for technical context
-3. **Scan existing codebase** - Identify patterns, architecture, tech stack
-4. **Identify technical challenges** - Note complex requirements
-5. **Check project constraints** - Review existing architecture decisions
+**Step 1: Read specification documents**
 
-**Ask clarifying questions if needed:**
-- Are there preferred technologies or frameworks in this project?
-- What are the scalability requirements?
-- Are there specific security or compliance requirements?
-- What's the deployment environment (cloud, on-prem, etc.)?
-- Are there existing services or APIs to integrate with?
-- What are the performance requirements and constraints?
-- Are there budget or timeline constraints affecting tech choices?
+Check for and read in order:
+1. `specs/active/[task-id]/spec.md` (preferred)
+2. `specs/active/[task-id]/feature-brief.md` (alternative)
+3. `specs/active/[task-id]/research.md` (if exists)
 
-**Note (Cursor 2.1+):** 
-- Questions appear in interactive UI - answer directly for faster workflow
-- **Background Planning:** For complex projects, you can create plan in background and continue working
-- **Plan Search:** Use ⌘+F to search within generated plans
+**If neither spec.md nor feature-brief.md exists:**
+```
+I can't find specifications for [task-id].
 
-**Read relevant files:**
-- Existing `specs/active/[task-id]/spec.md` (required)
-- Existing `specs/active/[task-id]/research.md` (if available)
-- Similar plans in `specs/active/*/plan.md` for consistency
-- Project overview at `specs/00-overview.md`
-- Templates at `.sdd/templates/plan-template.md`
-- Existing codebase architecture and patterns
+Would you like me to:
+1. Run `/specify [task-id]` to create detailed requirements
+2. Run `/brief [task-id]` for quick planning
+3. Create a plan based on your description (not recommended)
+```
 
-### Phase 2: Planning (Create Plan Tool)
+**Step 2: Extract key requirements**
+- Functional requirements (what it must do)
+- Non-functional requirements (performance, security, etc.)
+- Constraints and limitations
+- User stories and acceptance criteria
 
-**Present a detailed plan showing:**
+**Step 3: Analyze codebase context**
+- Existing architectural patterns
+- Technology stack in use
+- Coding conventions
+- Integration points
 
-1. **What will be created:**
-   - File path: `specs/active/[task-id]/plan.md`
+**Step 4: Identify technical decisions needed**
+- Architecture style
+- Data storage approach
+- API design
+- Third-party integrations
+- Security considerations
 
-2. **Technical plan structure outline:**
-   - **Architecture Overview:**
-     - System components and their interactions
-     - Design patterns to use
-     - Architecture diagram description
-   - **Technology Stack:**
-     - Languages and frameworks (with justification)
-     - Libraries and dependencies
-     - Why these choices fit requirements
-   - **Data Model:**
-     - Database schema (tables/collections)
-     - Data relationships and constraints
-     - Data flow and storage strategy
-   - **API Design:**
-     - Endpoint specifications
-     - Request/response contracts
-     - Authentication and authorization
-   - **Security Considerations:**
-     - Authentication/authorization approach
-     - Data protection strategies
-     - Security best practices
-   - **Performance Strategy:**
-     - Optimization approaches
-     - Caching strategies
-     - Scalability considerations
-   - **Testing Approach:**
-     - Unit, integration, e2e testing strategy
-     - Test coverage goals
-   - **Deployment Plan:**
-     - Environment setup
-     - CI/CD considerations
+### Phase 2: Planning (Create Plan Preview)
 
-3. **Technical decisions:**
-   - Key technology choices (preview of 2-3)
-   - Architecture patterns selected
-   - Why these fit the requirements
+**Present plan structure before creating:**
 
-4. **Reasoning:**
-   - How this plan addresses all spec requirements
-   - How it fits existing project architecture
-   - What makes this approach maintainable and scalable
-   - Trade-offs and alternatives considered
+```
+## Technical Plan Preview
 
-**The plan should show:**
-- Clear technical direction
-- How requirements map to architecture
-- Why specific technologies are chosen
+**Task ID:** [task-id]
+**Spec:** specs/active/[task-id]/spec.md
+
+**Architecture approach:**
+- [High-level architecture description]
+- [Key architectural decisions]
+
+**Tech stack:**
+- [Technology choices with brief rationale]
+
+**Main components:**
+1. [Component 1] - [purpose]
+2. [Component 2] - [purpose]
+3. [Component 3] - [purpose]
+
+**Data model:**
+- [Key entities and relationships]
+
+**API design:**
+- [Key endpoints or interfaces]
+
+**Plan structure:**
+1. System Architecture
+2. Component Design
+3. Data Model
+4. API Contracts
+5. Security Considerations
+6. Performance Strategy
+7. Implementation Phases
+8. Risk Assessment
+
+Ready to generate the full plan?
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Generate plan.md with this structure:**
 
-1. **Generate plan.md using template:**
-   - Use `.sdd/templates/plan-template.md` or `plan-compact.md`
-   - Fill in all sections comprehensively
+```markdown
+# Technical Plan: [Feature Name]
 
-2. **Architecture section:**
-   - Component diagram or description
-   - Design patterns and why they're used
-   - How components interact
-   - Clear separation of concerns
-
-3. **Technology stack section:**
-   - List each technology with justification
-   - Version specifications
-   - Why it's the best fit for requirements
-   - Alternatives considered
-
-4. **Data model section:**
-   - Complete database schema
-   - Entity relationships
-   - Indexes and constraints
-   - Data validation rules
-
-5. **API contracts section:**
-   - Endpoint definitions
-   - Request/response formats
-   - Error handling
-   - Authentication requirements
-
-6. **Security & performance sections:**
-   - Specific strategies for each requirement
-   - Implementation approaches
-   - Monitoring and validation
-
-7. **Testing & deployment sections:**
-   - Concrete testing approach
-   - Deployment workflow
-   - Rollback strategies
-
-8. **Ensure quality:**
-   - All spec requirements addressed
-   - Technical decisions justified
-   - Clear implementation path
-   - Consideration of edge cases from spec
-
-### Phase 4: Documentation
-
-**Finalize planning:**
-- Ensure alignment with specification
-- Note dependencies for task breakdown
-- Flag any requirement gaps discovered
-- Set up for `/tasks` phase
+**Task ID:** [task-id]
+**Created:** [date]
+**Status:** Ready for Implementation
+**Based on:** spec.md / feature-brief.md
 
 ---
 
-## Example
+## 1. System Architecture
+
+### Overview
+
+[High-level architecture description with diagram if helpful]
+
 ```
-/plan photo-organizer
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Client    │────▶│     API     │────▶│  Database   │
+└─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-## Implementation Rules
-- **Reference existing specification** - don't create new requirements
-- **Justify technology choices** based on project constraints
-- **Design for scalability** and maintainability
-- **Consider security implications** at each layer
-- **Define clear interfaces** and contracts
-- **Plan for testing** and deployment
+### Architecture Decisions
 
-## Output
-Creates: `specs/active/feat-XXX-[name]/plan.md` or `specs/active/[task-id]/plan.md`
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| [Decision 1] | [Choice] | [Why] |
+| [Decision 2] | [Choice] | [Why] |
 
-## Notes for AI Assistants
+---
 
-- **Always present a plan first** showing planning approach (meta!)
-- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
-- **Read spec thoroughly** - every requirement must be addressed
-- **Search codebase** for existing patterns to follow (Instant Grep makes this fast!)
-- **Justify all tech decisions** - no assumptions without reasoning
-- **Wait for approval** before creating plan file
-- **Be comprehensive** - this guides all implementation
-- **Stay consistent** with existing project architecture
-- **Note plan search** - Users can ⌘+F to search within planning documents
+## 2. Technology Stack
+
+| Layer | Technology | Version | Rationale |
+|-------|------------|---------|-----------|
+| Frontend | [Tech] | [Ver] | [Why] |
+| Backend | [Tech] | [Ver] | [Why] |
+| Database | [Tech] | [Ver] | [Why] |
+| Auth | [Tech] | [Ver] | [Why] |
+
+### Dependencies
+
+```json
+{
+  "[package]": "[version]",
+  "[package]": "[version]"
+}
+```
+
+---
+
+## 3. Component Design
+
+### Component 1: [Name]
+
+**Purpose:** [What it does]
+
+**Responsibilities:**
+- [Responsibility 1]
+- [Responsibility 2]
+
+**Interfaces:**
+```typescript
+interface ComponentName {
+  // Key interface definition
+}
+```
+
+**Dependencies:** [What it depends on]
+
+### Component 2: [Name]
+
+[Same structure]
+
+---
+
+## 4. Data Model
+
+### Entities
+
+#### [Entity 1]
+
+```typescript
+interface EntityName {
+  id: string;
+  // fields
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+**Relationships:**
+- [Relationship description]
+
+#### [Entity 2]
+
+[Same structure]
+
+### Database Schema
+
+```sql
+CREATE TABLE [table_name] (
+  -- schema definition
+);
+```
+
+---
+
+## 5. API Contracts
+
+### Endpoints
+
+#### [Endpoint Group]
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | /api/[path] | [Description] |
+| GET | /api/[path] | [Description] |
+
+#### Request/Response Examples
+
+**POST /api/[path]**
+
+Request:
+```json
+{
+  "field": "value"
+}
+```
+
+Response:
+```json
+{
+  "id": "123",
+  "field": "value"
+}
+```
+
+---
+
+## 6. Security Considerations
+
+### Authentication
+[How users are authenticated]
+
+### Authorization
+[How permissions are enforced]
+
+### Data Protection
+[How sensitive data is protected]
+
+### Security Checklist
+- [ ] Input validation on all endpoints
+- [ ] Authentication required for protected routes
+- [ ] Sensitive data encrypted at rest
+- [ ] HTTPS enforced
+- [ ] Rate limiting implemented
+
+---
+
+## 7. Performance Strategy
+
+### Optimization Targets
+- [Performance goal 1]
+- [Performance goal 2]
+
+### Caching Strategy
+[How caching will be used]
+
+### Scaling Approach
+[How the system will scale]
+
+---
+
+## 8. Implementation Phases
+
+### Phase 1: Foundation (Week 1)
+- [ ] Setup project structure
+- [ ] Configure database
+- [ ] Implement base models
+
+### Phase 2: Core Features (Week 2-3)
+- [ ] Implement main functionality
+- [ ] Build API endpoints
+- [ ] Create UI components
+
+### Phase 3: Integration (Week 4)
+- [ ] Connect all components
+- [ ] Implement auth flow
+- [ ] Add error handling
+
+### Phase 4: Polish (Week 5)
+- [ ] Performance optimization
+- [ ] Testing
+- [ ] Documentation
+
+---
+
+## 9. Risk Assessment
+
+| Risk | Impact | Likelihood | Mitigation |
+|------|--------|------------|------------|
+| [Risk 1] | High/Med/Low | High/Med/Low | [Strategy] |
+| [Risk 2] | High/Med/Low | High/Med/Low | [Strategy] |
+
+---
+
+## 10. Open Questions
+
+- [ ] [Question requiring stakeholder input]
+- [ ] [Technical decision pending more research]
+
+---
+
+## Next Steps
+
+1. Review plan with team
+2. Run `/tasks [task-id]` to generate implementation tasks
+3. Run `/implement [task-id]` to start building
+
+---
+
+*Plan created with SDD 2.0*
+```
+
+### Phase 4: Verification
+
+**CHECKPOINT: Plan Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] File created at `specs/active/[task-id]/plan.md`
+- [ ] Architecture decisions documented with rationale
+- [ ] All components defined with interfaces
+- [ ] Data model complete
+- [ ] API contracts specified
+- [ ] Security considerations addressed
+- [ ] Implementation phases defined
+
+**Read the file back to verify it exists.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Plan created: `specs/active/[task-id]/plan.md`
+
+**Architecture:** [Brief description]
+**Components:** [Count] main components
+**Phases:** [Count] implementation phases
+**Timeline:** [Estimated duration]
+
+**Key decisions:**
+- [Decision 1]: [Choice]
+- [Decision 2]: [Choice]
+
+**Next steps:**
+- Review the technical plan
+- Run `/tasks [task-id]` to generate implementation tasks
+- Or run `/implement [task-id]` if tasks are clear
+
+**Risks identified:** [Count] - see plan for mitigation strategies
+```
+
+---
+
+## Troubleshooting
+
+### Issue: Specification is too vague
+**Cause**: spec.md lacks detail for technical planning
+**Solution**: Ask clarifying questions or suggest `/specify`:
+- "The spec doesn't have enough detail for technical planning. Should I ask questions or run `/specify` first?"
+
+### Issue: Conflicting requirements
+**Cause**: Spec has contradictory requirements
+**Solution**: Document the conflict and ask for resolution:
+- "I found conflicting requirements: [X] vs [Y]. Which should take priority?"
+
+### Issue: Unknown technology constraints
+**Cause**: Not sure what tech stack to use
+**Solution**: Present options with pros/cons, or check research.md
+
+---
+
+## Related Commands
+
+- `/tasks [task-id]` - Generate implementation tasks from plan
+- `/implement [task-id]` - Start implementation
+- `/specify [task-id]` - Create detailed requirements (prerequisite)
+- `/research [task-id]` - Research options before planning
+- `/brief [task-id]` - Quick planning alternative

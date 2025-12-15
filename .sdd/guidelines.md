@@ -1,19 +1,79 @@
-# Spec-Driven Development Guidelines
+# Spec-Driven Development Guidelines v3.0
 
 ## Overview
-This project follows Spec-Driven Development (SDD) methodology, emphasizing detailed specifications before implementation. All SDD commands now integrate with Cursor's PLAN mode for enhanced deliberation and control.
+
+This project follows **Agentic-First Spec-Driven Development (SDD)** methodology. All slash commands are direct agent instructions that you (the AI) execute using Cursor's native tools.
+
+## Agentic-First Architecture
+
+### Core Principles
+
+1. **Slash commands are agent instructions** - Not descriptions, but direct instructions to you
+2. **State assertions required** - Every command starts with declaring your mode and boundaries
+3. **Self-correction protocol** - Built-in mistake detection and recovery
+4. **Plan-approve-execute pattern** - Show plans before creating files
+
+### Every Command Template Contains
+
+| Component | Purpose |
+|-----------|---------|
+| **Role Declaration** | "You are a [role]. Your job is [purpose]." |
+| **State Assertion** | Output mode, purpose, implementation status |
+| **Mode Boundaries** | What you WILL and WILL NOT do |
+| **Self-Correction** | Mistake detection and recovery protocol |
+| **Checkpoints** | Verification gates before completion |
+| **Literal Output** | Exact format for final output |
+
+### Self-Correction Protocol
+
+When you detect a mistake:
+
+```
+DETECT: If you find yourself doing [mistake type]...
+STOP: Immediately halt the incorrect action
+CORRECT: Output "I apologize - I was [mistake]. Let me return to [correct mode]."
+RESUME: Return to the correct workflow
+```
+
+Common mistakes to detect:
+- Writing implementation code in planning mode
+- Skipping the plan presentation
+- Not asking clarifying questions
+- Making assumptions without informing user
+- Claiming features don't exist without checking
+
+## Cursor Mode Integration
+
+### Mode Mapping
+
+| SDD Command | Cursor Mode | Tools Available |
+|-------------|-------------|-----------------|
+| `/brief` | Plan | Codebase, Read, Terminal |
+| `/research` | Ask | Search only (read-only) |
+| `/specify` | Plan | Codebase, Read, Terminal |
+| `/plan` | Plan | Codebase, Read, Terminal |
+| `/tasks` | Plan | Codebase, Read, Terminal |
+| `/implement` | Agent | All tools |
+| `/evolve` | Plan | Codebase, Read, Terminal |
+| `/upgrade` | Plan | Codebase, Read, Terminal |
+| `/refine` | Plan | Codebase, Read, Terminal |
+| `/generate-prd` | Plan | Codebase, Read, Terminal |
+| `/debug` | Custom (Debug) | All Search, Terminal, Edit |
+| `/execute-task` | Agent | All tools |
+| `/generate-rules` | Plan | Codebase, Read, Terminal |
+
+### Switching Modes
+
+Users can switch modes with `Cmd+.` (Mac) or `Ctrl+.` (Windows/Linux).
+
+Suggest mode switches when appropriate:
+- "/research works best in Ask mode for read-only exploration"
+- "/implement needs Agent mode for full file access"
 
 ## PLAN Mode Integration
 
-### Philosophy
-Every SDD command follows a **plan-approve-execute** workflow to ensure:
-- **Visibility**: See what will be created before it happens
-- **Control**: Approve or modify plans before execution
-- **Quality**: More thoughtful specifications and implementations
-- **Safety**: No surprise file changes or modifications
-- **Transparency**: Understand AI reasoning and approach
-
 ### Universal Workflow Pattern
+
 ```
 User Command → Analysis (Readonly) → Create Plan → User Approval → Execute → Document
 ```
@@ -22,239 +82,196 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
 
 **Phase 1: Analysis (Readonly)**
 - Read relevant files and context
-- Ask clarifying questions if information is missing
+- Ask clarifying questions if needed
 - Analyze what needs to be done
 - No file modifications
 
-**Phase 2: Planning (Create Plan Tool)**
-- Present detailed plan showing what will be created/modified
+**Phase 2: Planning (Show Plan)**
+- Present detailed plan
 - Explain reasoning and approach
 - Show structure and content preview
 - Wait for user approval
-- **Cursor 2.1+:** Questions appear in interactive UI
-- **Cursor 2.1+:** Users can ⌘+F to search within plans
 
 **Phase 3: Execution (After Approval)**
 - Create or modify files as planned
 - Follow templates and guidelines
-- Maintain quality and consistency
 - Track progress continuously
 
-**Phase 4: Documentation**
+**Phase 4: Verification**
+- Verify files were created
 - Update tracking files
-- Note timestamps and status
-- Maintain audit trail
-- Set up for next phase
-
-### Benefits
-
-**For Individual Developers:**
-- Review plans before files are created
-- Modify approach before execution
-- Learn from AI reasoning
-- Catch issues early
-
-**For Teams:**
-- Collaborative plan review
-- Shared understanding of approach
-- Risk reduction through oversight
-- Clear audit trail for decisions
+- Present completion summary
 
 ## Workflow Phases
 
-### 1. Brief Phase (`/brief`) - SDD 2.5 Primary
-- **Purpose**: 30-minute planning for rapid development
-- **Focus**: Essential context, quick research, immediate action
-- **Output**: Single `feature-brief.md` with just-enough planning
-- **PLAN Mode**: Shows brief structure before creating
-- **Key Questions**: 
-  - What problem and who are the users?
-  - Must-have vs nice-to-have features?
-  - Success criteria and next actions?
+### SDD 2.5: Lightweight (80% of features)
 
-### 2. Evolve Phase (`/evolve`) - SDD 2.5 Living Docs
-- **Purpose**: Keep briefs aligned with implementation reality
-- **Focus**: Lightweight updates during development
-- **Output**: Updates to `feature-brief.md` with changelog
-- **PLAN Mode**: Shows before/after changes before updating
-- **Key Questions**:
-  - What changed and why?
-  - Does this affect approach or requirements?
-  - Should we upgrade to full SDD?
+#### `/brief` - 30-Minute Planning
+- **Purpose**: Quick planning for rapid development
+- **Output**: `feature-brief.md`
+- **Use for**: Standard features, clear requirements
 
-### 3. Research Phase (`/research`) - SDD 2.0
-- **Purpose**: Comprehensive pattern investigation
-- **Focus**: Existing codebase patterns, external solutions
-- **Output**: `research.md` with findings and recommendations
-- **PLAN Mode**: Shows research strategy before executing
-- **Key Questions**:
-  - Where should we look for patterns?
-  - Internal vs external research focus?
-  - What constraints exist?
+#### `/evolve` - Living Documentation
+- **Purpose**: Update specs during development
+- **Output**: Updated brief with changelog
+- **Use for**: Discoveries, refinements
 
-### 4. Specify Phase (`/specify`) - SDD 2.0
-- **Purpose**: Define what needs to be built and why
-- **Focus**: User requirements, business logic, acceptance criteria
-- **Output**: `spec.md` with comprehensive requirements
-- **PLAN Mode**: Shows spec structure before creating
-- **Key Questions**: 
-  - What problem are we solving?
-  - Who are the users?
-  - What are the success criteria?
+#### `/refine` - Interactive Refinement
+- **Purpose**: Iterate on specs through discussion
+- **Output**: Refined documentation
+- **Use for**: Improving existing specs
 
-### 5. Plan Phase (`/plan`) - SDD 2.0
-- **Purpose**: Define how to build it technically
-- **Focus**: Architecture, tech stack, design patterns
-- **Output**: `plan.md` with technical implementation strategy
-- **PLAN Mode**: Shows planning approach before creating (meta!)
-- **Key Questions**:
-  - What technology stack should we use?
-  - How will the system architecture look?
-  - What are the technical constraints?
+### SDD 2.0: Full Planning (20% of features)
 
-### 6. Tasks Phase (`/tasks`) - SDD 2.0
-- **Purpose**: Break down the plan into actionable items
-- **Focus**: Discrete, manageable development tasks
-- **Output**: `tasks.md` with implementation roadmap
-- **PLAN Mode**: Shows task breakdown strategy before creating
-- **Key Questions**:
-  - What specific tasks need to be completed?
-  - What is the order of implementation?
-  - What are the dependencies?
+#### `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
-### 7. Implement Phase (`/implement`) - SDD 2.0
-- **Purpose**: Execute planned implementation systematically
-- **Focus**: Todo-list generation and continuous execution
-- **Output**: `todo-list.md`, code artifacts, progress tracking
-- **PLAN Mode**: Shows implementation strategy before todo creation
-- **Cursor 2.1+:** AI Code Review automatically analyzes code after implementation
-- **Key Questions**:
-  - What's the execution order?
-  - What patterns can we reuse?
-  - What are the priorities?
+For complex, high-risk, or multi-team features:
+- Multiple teams involved
+- Architectural changes required
+- High business risk/compliance needs
+- 3+ week development timeline
 
-### 8. Upgrade Phase (`/upgrade`) - Escalation
-- **Purpose**: Convert brief to full SDD when complexity emerges
-- **Focus**: Seamless transition preserving all context
-- **Output**: Full SDD document suite (research, spec, plan, tasks)
-- **PLAN Mode**: Shows upgrade strategy and content mapping
-- **Key Questions**:
-  - What complexity triggered upgrade?
-  - How does brief expand to full docs?
-  - What additional planning is needed?
+### New Commands
 
-### 9. Full Planning Phase (`/sdd-full-plan` / `/pecut-all-in-one`) - Complete Roadmap
-- **Purpose**: Create comprehensive A-to-Z project roadmap with kanban structure
-- **Focus**: Epic-level organization, task hierarchy, dependency management
-- **Output**: Full project roadmap in `specs/todo-roadmap/[project-id]/`
-  - `roadmap.json` - VSCode extension compatible kanban board
-  - `roadmap.md` - Human-readable markdown view
-  - `tasks/*.json` - Individual task details
-  - `execution-log.md` - Task execution tracking
-- **PLAN Mode**: Shows complete roadmap structure before creation
-- **Key Questions**:
-  - What's the project goal and scope?
-  - Who are the target users?
-  - Technology stack preferences?
-  - Timeline and team size?
-  - Must-have vs nice-to-have features?
+#### `/generate-prd` - PRD Generation
+Create Product Requirements Documents through Socratic questioning.
+- **Output**: `full-prd.md` + `quick-prd.md`
+- **Use for**: New products, major features
 
-### 10. Task Execution Phase (`/execute-task`) - Orchestrated Execution
-- **Purpose**: Execute specific task from roadmap using appropriate SDD command
-- **Focus**: Automatic SDD command mapping, status tracking, dependency validation
-- **Output**: Specs created in `specs/active/[task-id]/` linked to roadmap
-- **PLAN Mode**: Shows execution strategy before running command
-- **Key Questions**:
-  - Any additional context needed?
-  - Should we modify the task approach?
-  - Are there blockers to address first?
+#### `/debug` - Spec-Driven Audit
+Investigate issues by comparing code against specs.
+- **Output**: Debug report with severity ratings
+- **Use for**: Bug investigation, code review
+
+#### `/generate-rules` - Coding Rules
+Auto-generate Cursor rules based on tech stack detection.
+- **Output**: `.cursor/rules/*.mdc` files
+- **Use for**: New projects, establishing conventions
+
+### Project Planning
+
+#### `/sdd-full-plan` (or `/pecut-all-in-one`)
+Create comprehensive A-to-Z project roadmap.
+- **Output**: Kanban board in `specs/todo-roadmap/`
+- **Use for**: Full applications, major systems
+
+#### `/execute-task`
+Execute specific task from roadmap.
+- **Output**: Varies by task type
+- **Use for**: Roadmap task execution
 
 ## Directory Structure
 
 ```
 specs/
-├── 00-overview.md          # Project-wide specifications
-├── active/                 # Features in development
-│   └── feat-xxx-name/
-│       ├── spec.md         # Requirements
-│       ├── plan.md         # Technical approach
-│       ├── tasks.md        # Implementation tasks
-│       ├── progress.md     # Development tracking
-│       └── reviews.md      # Code review notes
-├── todo-roadmap/           # Project roadmaps (NEW)
-│   ├── index.json          # Roadmap registry
+├── 00-overview.md              # Project-wide specifications
+├── active/                     # Features in development
+│   └── [task-id]/
+│       ├── feature-brief.md    # SDD 2.5 brief
+│       ├── research.md         # SDD 2.0 research
+│       ├── spec.md             # SDD 2.0 specification
+│       ├── plan.md             # SDD 2.0 technical plan
+│       ├── tasks.md            # SDD 2.0 task breakdown
+│       ├── todo-list.md        # Implementation checklist
+│       └── progress.md         # Development tracking
+├── todo-roadmap/               # Project roadmaps
 │   └── [project-id]/
-│       ├── roadmap.json    # Kanban board data
-│       ├── roadmap.md      # Human-readable view
-│       ├── tasks/          # Individual task JSON files
-│       └── execution-log.md # Execution history
-├── completed/              # Delivered features
-├── backlog/                # Future features
-└── index.md               # Navigation/status
+│       ├── roadmap.json        # Kanban board data
+│       ├── roadmap.md          # Human-readable view
+│       ├── tasks/              # Individual task files
+│       └── execution-log.md    # Execution tracking
+├── completed/                  # Delivered features
+└── backlog/                    # Future features
+
+.cursor/
+├── commands/                   # SDD slash commands
+│   ├── _shared/               # Shared agent protocols
+│   │   ├── agent-manual.md    # Universal protocols
+│   │   ├── self-correction.md # Self-correction protocol
+│   │   └── cursor-modes.md    # Cursor mode reference
+│   ├── brief.md
+│   ├── research.md
+│   ├── specify.md
+│   ├── plan.md
+│   ├── tasks.md
+│   ├── implement.md
+│   ├── evolve.md
+│   ├── upgrade.md
+│   ├── refine.md
+│   ├── generate-prd.md
+│   ├── debug.md
+│   ├── generate-rules.md
+│   ├── sdd-full-plan.md
+│   └── execute-task.md
+└── rules/
+    └── sdd-system.mdc          # Always-applied SDD rules
 ```
 
-## Collaboration Best Practices
+## Task ID Convention
 
-1. **Choose the right starting point:**
-   - `/brief` - For 80% of features (quick start)
-   - `/sdd-full-plan` - For full applications or major systems
-   - `/research` + `/specify` - For complex features needing deep analysis
-2. **Keep specs updated** - Maintain alignment with implementation
-3. **Use progress tracking** - Update progress.md or roadmap.json regularly
-4. **Review and iterate** - Specs can evolve based on learnings
-5. **Cross-reference** - Link related features and dependencies
-6. **Leverage roadmaps** - Use kanban boards for project visibility
-
-## Feature Naming Convention
-
-- **Format**: `feat-XXX-descriptive-name`
-- **Examples**: 
-  - `feat-001-user-authentication`
-  - `feat-002-photo-organizer`
-  - `feat-003-payment-integration`
-
-## Status Tracking
-
-### Feature Status
-- `draft` - Initial specification in progress
-- `planned` - Technical plan completed
-- `ready` - Tasks defined, ready for implementation
-- `in-progress` - Under active development
-- `review` - In code review phase
-- `completed` - Feature delivered and tested
-- `archived` - Older completed features
-
-### Task Status
-- `todo` - Not yet started
-- `in-progress` - Currently being worked on
-- `blocked` - Waiting for dependencies
-- `review` - Ready for code review
-- `done` - Completed and verified
+- **Use semantic slugs**: `user-auth-system`, `payment-integration`, `dashboard-redesign`
+- **Avoid generic numbering**: `feat-001` (legacy approach)
+- **Focus on meaningful, searchable identifiers**
 
 ## Quality Standards
 
-### Specifications Should Include:
+### Specifications Should Include
 - Clear user stories with acceptance criteria
 - Business requirements and constraints
-- Success metrics and KPIs
+- Success metrics
 - Edge cases and error scenarios
+- Out of scope items
 
-### Plans Should Include:
-- Architecture diagrams and design patterns
-- Technology stack justification
+### Plans Should Include
+- Architecture diagrams
+- Technology stack with rationale
 - Data models and API contracts
 - Security and performance considerations
+- Risk assessment
 
-### Tasks Should Include:
+### Tasks Should Include
 - Clear, actionable descriptions
-- Estimated effort/complexity
-- Dependencies and prerequisites
-- Definition of done criteria
+- Estimated effort
+- Dependencies
+- Acceptance criteria
 
-### Roadmaps Should Include:
-- Epic-level organization of work
-- Clear task hierarchy (epic → task → subtask)
-- Dependency mappings between tasks
-- Status tracking across kanban columns
-- Integration with SDD commands
-- VSCode extension compatibility
+## Implementation Rules
+
+**CRITICAL FOR AI ASSISTANTS:**
+Todo-lists are NOT suggestions - they are executable checklists that MUST be followed systematically.
+
+### Todo Execution Rules
+1. **Read entire list** before starting
+2. **Execute in order** - respect dependencies
+3. **Mark completion**: `- [ ]` → `- [x]`
+4. **Document blockers** - never skip silently
+5. **Update progress** continuously
+
+### Anti-Patterns to Avoid
+- Skipping tasks without explanation
+- Marking items done without completing them
+- Implementing differently than planned without noting it
+- Not updating checkboxes after completing work
+
+## Best Practices
+
+1. **Choose the right starting point:**
+   - `/brief` - For 80% of features
+   - `/sdd-full-plan` - For full applications
+   - `/research` + `/specify` - For complex features
+
+2. **Keep specs updated with `/evolve`**
+
+3. **Use `/refine` for iterative improvements**
+
+4. **Upgrade when complexity emerges with `/upgrade`**
+
+5. **Use `/debug` to investigate issues systematically**
+
+6. **Generate coding rules for new projects with `/generate-rules`**
+
+## References
+
+- **Shared Protocols**: `.cursor/commands/_shared/`
+- **Implementation Guide**: `.sdd/IMPLEMENTATION_GUIDE.md`
+- **Roadmap Spec**: `.sdd/ROADMAP_FORMAT_SPEC.md`

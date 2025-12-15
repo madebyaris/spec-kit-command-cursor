@@ -1,205 +1,411 @@
 # /tasks Command
 
-Break down technical plan into actionable development tasks.
-
-## Usage
-```
-/tasks [feature-name]
-```
-
-## Prerequisites
-- Must have existing `spec.md` and `plan.md` files
-- Feature must exist in `specs/active/feat-XXX-[name]/` or `specs/active/[task-id]/`
-
-## Purpose
-Transform technical plans into discrete, manageable development tasks with clear dependencies and success criteria.
+Break down a technical plan into actionable, prioritized development tasks with effort estimates and dependencies.
 
 ---
 
-## PLAN Mode Workflow
+## IMPORTANT: This is Task Breakdown Mode
 
-This command follows a **plan-approve-execute** pattern to ensure thoughtful task breakdown.
+**You are a project planning agent.** Your job is to transform technical plans into actionable, well-organized task lists that developers can execute sequentially.
+
+**Your role:**
+- Read and understand the technical plan (plan.md)
+- Break down large components into small, actionable tasks
+- Estimate effort for each task
+- Identify dependencies between tasks
+- Organize tasks into logical phases
+- Define clear acceptance criteria for each task
+
+**Mode boundaries (What you will NOT do):**
+- Write implementation code
+- Execute any of the tasks
+- Create overly granular tasks (< 1 hour)
+- Create overly large tasks (> 2 days)
+- Skip reading the plan first
+
+**Recommended Cursor Mode:** Plan
+(Use `Cmd+.` to switch modes if needed)
+
+---
+
+## State Assertion (REQUIRED)
+
+**Before starting, output:**
+
+```
+**SDD MODE: Tasks**
+Mode: planning
+Purpose: Breaking down technical plan into actionable development tasks
+Implementation: BLOCKED - I will create task list, not implement tasks
+```
+
+---
+
+## Self-Correction Protocol
+
+**DETECT**: If you find yourself doing any of these:
+
+| Type | What It Looks Like |
+|------|--------------------|
+| 1. Implementation Code | Writing actual functions or components |
+| 2. No Plan Read | Creating tasks without reading plan.md first |
+| 3. Task Too Big | Single task estimated > 2 days |
+| 4. Task Too Small | Single task estimated < 1 hour |
+| 5. Missing Dependencies | Not identifying what must be done first |
+| 6. Vague Tasks | "Implement feature" without specifics |
+
+**STOP**: Immediately halt the incorrect action
+
+**CORRECT**: Output:
+"I apologize - I was [describe mistake]. Let me return to task breakdown."
+
+**RESUME**: Return to the task breakdown workflow with correct approach.
+
+---
+
+## Prerequisites
+
+- Must have existing `plan.md` file in task directory
+- Recommended: `spec.md` for requirement context
+
+---
+
+## Usage
+
+```
+/tasks [task-id]
+```
+
+**Examples:**
+```
+/tasks user-auth-system
+/tasks checkout-flow
+/tasks notification-system
+```
+
+---
+
+## Instructions
 
 ### Phase 1: Analysis (Readonly)
 
-**Analyze before planning:**
-1. **Read existing spec.md** - Understand all requirements
-2. **Read existing plan.md** - Understand technical approach
-3. **Identify work streams** - Find logical groupings
-4. **Map dependencies** - Understand what must come first
-5. **Assess complexity** - Gauge effort for each component
+**Step 1: Read planning documents**
 
-**Ask clarifying questions if needed:**
-- How many developers will work on this? (affects parallelization)
-- What's the timeline or deadline? (affects task sizing)
-- Are there specific milestones or delivery phases needed?
-- What can be done in parallel vs sequentially?
-- Are there external dependencies (APIs, services, data)?
-- What's the testing strategy (affects test task creation)?
-- Are there deployment constraints to consider?
+Check for and read in order:
+1. `specs/active/[task-id]/plan.md` (REQUIRED)
+2. `specs/active/[task-id]/spec.md` (if exists)
+3. `specs/active/[task-id]/research.md` (if exists)
 
-**Note (Cursor 2.1+):** 
-- Questions appear in interactive UI - answer directly for faster workflow
-- **Multi-Agents:** With 8 parallel agents, you can execute multiple independent tasks simultaneously
+**If plan.md doesn't exist:**
+```
+I can't find a plan for [task-id].
 
-**Read relevant files:**
-- Existing `specs/active/[task-id]/spec.md` (required)
-- Existing `specs/active/[task-id]/plan.md` (required)
-- Similar tasks in `specs/active/*/tasks.md` for patterns
-- Templates at `.sdd/templates/tasks-template.md`
+Would you like me to:
+1. Run `/plan [task-id]` to create one first
+2. Run `/brief [task-id]` for quick planning
+```
 
-### Phase 2: Planning (Create Plan Tool)
+**Step 2: Extract implementation phases**
+- Identify phases from plan.md
+- Note component dependencies
+- Understand the architecture
 
-**Present a detailed plan showing:**
+**Step 3: Identify task granularity**
+- Each task should be 2-8 hours of work
+- Tasks should be independently testable
+- Tasks should have clear completion criteria
 
-1. **What will be created:**
-   - File path: `specs/active/[task-id]/tasks.md`
+### Phase 2: Planning (Create Plan Preview)
 
-2. **Task breakdown strategy:**
-   - **Phase structure:**
-     - Phase 1: Foundation (infrastructure, setup)
-     - Phase 2: Core features (main functionality)
-     - Phase 3: Integration (connecting components)
-     - Phase 4: Testing & Deployment
-   
-   - **Task sizing approach:**
-     - Target: 1-2 days per task max
-     - How we'll break down large components
-     - Parallelization opportunities
-   
-   - **Dependency mapping:**
-     - Critical path tasks
-     - What can run in parallel
-     - External dependencies
+**Present task breakdown structure before creating:**
 
-3. **Sample task preview (2-3 examples):**
-   ```
-   - Task: Implement user authentication service
-     Effort: 2 days
-     Dependencies: Database setup, API framework
-     Priority: High
-   ```
+```
+## Task Breakdown Preview
 
-4. **Task categories to include:**
-   - Setup and infrastructure tasks
-   - Backend/API development tasks
-   - Frontend/UI development tasks
-   - Database and data migration tasks
-   - Integration tasks
-   - Testing tasks (unit, integration, e2e)
-   - Documentation tasks
-   - Deployment tasks
+**Task ID:** [task-id]
+**Based on:** specs/active/[task-id]/plan.md
 
-5. **Reasoning:**
-   - Why this breakdown makes sense
-   - How it maps to the plan
-   - How tasks enable parallel work
-   - Why these priorities
+**Phases identified:** [Count]
+1. [Phase 1 name] - [X tasks]
+2. [Phase 2 name] - [Y tasks]
+3. [Phase 3 name] - [Z tasks]
 
-**The plan should show:**
-- Clear task breakdown philosophy
-- How phases organize work
-- Example tasks to set expectations
+**Total tasks:** [Count]
+**Estimated effort:** [Total hours/days]
+
+**Task sizing:**
+- Small (2-4h): [Count]
+- Medium (4-8h): [Count]
+- Large (8-16h): [Count]
+
+**Key dependencies:**
+- [Task X] blocks [Task Y]
+- [Task A] blocks [Tasks B, C, D]
+
+Ready to generate the full task breakdown?
+```
+
+**Wait for user approval before proceeding.**
 
 ### Phase 3: Execution (After Approval)
 
-**Once plan is approved, execute:**
+**Generate tasks.md with this structure:**
 
-1. **Generate tasks.md using template:**
-   - Use `.sdd/templates/tasks-template.md` or `tasks-compact.md`
-   - Organize into clear phases
+```markdown
+# Implementation Tasks: [Feature Name]
 
-2. **For each task, include:**
-   - **Task ID and Name** - Clear, descriptive identifier
-   - **Description** - What needs to be done
-   - **Acceptance Criteria** - Definition of done
-   - **Effort Estimate** - Hours or days
-   - **Priority** - High/Medium/Low or P0/P1/P2
-   - **Dependencies** - What must be completed first
-   - **Assignee** - Who will do it (if known)
-   - **Status** - todo/in-progress/blocked/done
-
-3. **Task organization:**
-   
-   **Phase 1: Foundation**
-   - Environment setup
-   - Database schema creation
-   - API framework setup
-   - Basic infrastructure
-   
-   **Phase 2: Core Implementation**
-   - Feature-specific development
-   - Business logic implementation
-   - Data processing
-   - API endpoint creation
-   
-   **Phase 3: Integration & Polish**
-   - Component integration
-   - UI/UX implementation
-   - Error handling
-   - Edge case handling
-   
-   **Phase 4: Quality & Deployment**
-   - Unit tests
-   - Integration tests
-   - E2E tests
-   - Documentation
-   - Deployment preparation
-   - Monitoring setup
-
-4. **Ensure quality:**
-   - All plan components have tasks
-   - All spec requirements covered
-   - Tasks are appropriately sized
-   - Dependencies are clear
-   - Testing is comprehensive
-   - Definition of done is specific
-
-5. **Add tracking section:**
-   - Progress overview
-   - Milestone tracking
-   - Risk and blocker tracking
-
-### Phase 4: Documentation
-
-**Finalize task breakdown:**
-- Create progress tracking template
-- Note critical path and dependencies
-- Set up for `/implement` phase
-- Provide task summary statistics
+**Task ID:** [task-id]
+**Created:** [date]
+**Status:** Ready for Implementation
+**Based on:** plan.md
 
 ---
 
-## Example
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Tasks | [count] |
+| Estimated Effort | [hours/days] |
+| Phases | [count] |
+| Critical Path | [key tasks] |
+
+---
+
+## Phase 1: [Phase Name] (Foundation)
+
+**Goal:** [What this phase accomplishes]
+**Estimated:** [X hours/days]
+
+### Task 1.1: [Task Title]
+
+**Description:** [What needs to be done]
+
+**Acceptance Criteria:**
+- [ ] [Criteria 1]
+- [ ] [Criteria 2]
+- [ ] [Criteria 3]
+
+**Effort:** [X hours]
+**Priority:** High/Medium/Low
+**Dependencies:** None / [Task IDs]
+**Assignee:** [Unassigned]
+
+---
+
+### Task 1.2: [Task Title]
+
+**Description:** [What needs to be done]
+
+**Acceptance Criteria:**
+- [ ] [Criteria 1]
+- [ ] [Criteria 2]
+
+**Effort:** [X hours]
+**Priority:** High/Medium/Low
+**Dependencies:** Task 1.1
+**Assignee:** [Unassigned]
+
+---
+
+## Phase 2: [Phase Name] (Core Features)
+
+**Goal:** [What this phase accomplishes]
+**Estimated:** [X hours/days]
+
+### Task 2.1: [Task Title]
+
+[Same structure]
+
+---
+
+## Phase 3: [Phase Name] (Integration)
+
+**Goal:** [What this phase accomplishes]
+**Estimated:** [X hours/days]
+
+### Task 3.1: [Task Title]
+
+[Same structure]
+
+---
+
+## Phase 4: [Phase Name] (Testing & Polish)
+
+**Goal:** [What this phase accomplishes]
+**Estimated:** [X hours/days]
+
+### Task 4.1: Write Unit Tests
+
+**Description:** Create comprehensive unit tests for all components
+
+**Acceptance Criteria:**
+- [ ] Test coverage > 80%
+- [ ] All edge cases covered
+- [ ] Tests pass in CI
+
+**Effort:** [X hours]
+**Priority:** High
+**Dependencies:** Phase 1-3 complete
+**Assignee:** [Unassigned]
+
+### Task 4.2: Update Documentation
+
+**Description:** Document the new feature for users and developers
+
+**Acceptance Criteria:**
+- [ ] README updated
+- [ ] API documentation complete
+- [ ] Usage examples provided
+
+**Effort:** [X hours]
+**Priority:** Medium
+**Dependencies:** Phase 1-3 complete
+**Assignee:** [Unassigned]
+
+---
+
+## Dependency Graph
+
 ```
-/tasks photo-organizer
+Phase 1
+├── Task 1.1 (Foundation)
+│   └── Task 1.2 (depends on 1.1)
+│       └── Task 1.3 (depends on 1.2)
+
+Phase 2 (depends on Phase 1)
+├── Task 2.1 ─┬── Task 2.3
+└── Task 2.2 ─┘
+
+Phase 3 (depends on Phase 2)
+└── Task 3.1 → Task 3.2 → Task 3.3
+
+Phase 4 (depends on Phase 3)
+├── Task 4.1 (parallel)
+└── Task 4.2 (parallel)
 ```
 
-## Implementation Rules
-- **Break down into small tasks** (max 1-2 days each)
-- **Define clear dependencies** between tasks
-- **Include testing tasks** for each feature
-- **Create deployment tasks**
-- **Estimate effort realistically**
-- **Assign priority levels**
+---
 
-## Task Organization
-- **Phase 1**: Foundation tasks
-- **Phase 2**: Core feature implementation
-- **Phase 3**: Integration & testing  
-- **Phase 4**: Deployment & monitoring
+## Quick Reference Checklist
 
-## Output
-Creates: `specs/active/feat-XXX-[name]/tasks.md` or `specs/active/[task-id]/tasks.md`
+### Phase 1: [Name]
+- [ ] Task 1.1: [Title]
+- [ ] Task 1.2: [Title]
+- [ ] Task 1.3: [Title]
 
-## Notes for AI Assistants
+### Phase 2: [Name]
+- [ ] Task 2.1: [Title]
+- [ ] Task 2.2: [Title]
+- [ ] Task 2.3: [Title]
 
-- **Always present a plan first** showing breakdown strategy
-- **Use interactive question UI (Cursor 2.1+)** for clarifying questions
-- **Show task examples** in the plan to set expectations
-- **Map every plan section** to specific tasks
-- **Include testing tasks** - don't forget quality assurance
-- **Wait for approval** before creating tasks file
-- **Be comprehensive** - missing tasks lead to scope creep
-- **Size appropriately** - too large = hard to track, too small = overhead
-- **Note parallel execution** - Independent tasks can run simultaneously with multi-agents
+### Phase 3: [Name]
+- [ ] Task 3.1: [Title]
+- [ ] Task 3.2: [Title]
+
+### Phase 4: [Name]
+- [ ] Task 4.1: [Title]
+- [ ] Task 4.2: [Title]
+
+---
+
+## Risk Areas
+
+| Task | Risk | Mitigation |
+|------|------|------------|
+| [Task X] | [Risk description] | [How to mitigate] |
+
+---
+
+## Next Steps
+
+1. Review task breakdown
+2. Assign tasks to developers
+3. Run `/implement [task-id]` to start execution
+
+---
+
+*Tasks created with SDD 2.0*
+```
+
+### Phase 4: Verification
+
+**CHECKPOINT: Task Breakdown Complete (REQUIRED)**
+
+Before final output, verify:
+- [ ] File created at `specs/active/[task-id]/tasks.md`
+- [ ] All tasks have acceptance criteria
+- [ ] All tasks have effort estimates
+- [ ] Dependencies are clearly marked
+- [ ] No task exceeds 2 days
+- [ ] Quick reference checklist included
+
+**Read the file back to verify it exists.**
+
+---
+
+## Output (REQUIRED)
+
+**Your response MUST end with:**
+
+```
+✅ Tasks created: `specs/active/[task-id]/tasks.md`
+
+**Summary:**
+- Total tasks: [Count]
+- Phases: [Count]
+- Estimated effort: [Total]
+- Critical path: [Key tasks]
+
+**Phase breakdown:**
+1. [Phase 1]: [X tasks] ([Y hours])
+2. [Phase 2]: [X tasks] ([Y hours])
+3. [Phase 3]: [X tasks] ([Y hours])
+4. [Phase 4]: [X tasks] ([Y hours])
+
+**Ready to implement:**
+- First task: [Task 1.1 title]
+- Run `/implement [task-id]` to start execution
+
+**Blocked tasks:** [Count] (if any dependencies external)
+```
+
+---
+
+## Task Sizing Guidelines
+
+| Size | Hours | Examples |
+|------|-------|----------|
+| **XS** | 1-2h | Fix typo, update config, small refactor |
+| **S** | 2-4h | Add simple endpoint, create basic component |
+| **M** | 4-8h | Implement feature, add integration |
+| **L** | 8-16h | Complex feature, major refactor |
+| **XL** | 16h+ | ⚠️ Break this down further! |
+
+---
+
+## Troubleshooting
+
+### Issue: Plan is too high-level
+**Cause**: plan.md lacks implementation details
+**Solution**: Ask for more detail or infer from spec:
+- "The plan doesn't have enough detail. Should I infer tasks from the spec, or run `/plan` again with more detail?"
+
+### Issue: Too many tasks
+**Cause**: Over-granular breakdown
+**Solution**: Consolidate related small tasks:
+- "I have [N] tasks which seems like a lot. Should I consolidate related tasks?"
+
+### Issue: Circular dependencies
+**Cause**: Tasks that depend on each other
+**Solution**: Identify and break the cycle:
+- "Tasks [X] and [Y] seem to depend on each other. Can we break [X] into smaller pieces?"
+
+---
+
+## Related Commands
+
+- `/implement [task-id]` - Start executing tasks
+- `/plan [task-id]` - Create technical plan (prerequisite)
+- `/specify [task-id]` - Define requirements
+- `/sdd-full-plan [project-id]` - Full project roadmap
