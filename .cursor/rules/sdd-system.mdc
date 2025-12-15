@@ -150,6 +150,13 @@ Add `--until-finish` to execute tasks automatically without stopping:
 4. **Document blockers** - never skip silently
 5. **Update progress** continuously
 
+### JSON Format Rules
+When generating roadmap JSON files:
+- **Always use valid JSON** - no placeholder syntax like `[N]` for numbers
+- Use actual values: `"teamSize": 1` not `"teamSize": [N]`
+- Use `{{placeholder}}` syntax in strings only: `"title": "{{Epic Title}}"`
+- Validate JSON before writing to files
+
 ### Self-Correction Protocol
 
 If you catch yourself:

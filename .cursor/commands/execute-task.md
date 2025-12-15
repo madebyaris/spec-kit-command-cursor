@@ -211,11 +211,13 @@ Ready to execute?
 
 **Step 1: Update roadmap status to in-progress**
 
+Update the task in `roadmap.json` (example with actual values):
+
 ```json
 {
-  "id": "[task-id]",
+  "id": "task-001-1",
   "status": "in-progress",
-  "startedAt": "[ISO date]"
+  "startedAt": "2024-01-15T10:30:00Z"
 }
 ```
 
@@ -235,14 +237,14 @@ Executing: /[command] [task-id] [task.description]
 
 **Step 3: Link spec to task**
 
-After command completes, update task:
+After command completes, update task (example with actual values):
 
 ```json
 {
-  "id": "[task-id]",
+  "id": "task-001-1",
   "sdd": {
-    "linkedSpec": "specs/active/[task-id]/",
-    "executedAt": "[ISO date]"
+    "linkedSpec": "specs/active/task-001-1/",
+    "executedAt": "2024-01-15T11:00:00Z"
   }
 }
 ```
@@ -251,7 +253,7 @@ After command completes, update task:
 
 ```json
 {
-  "id": "[task-id]",
+  "id": "task-001-1",
   "status": "review"
 }
 ```
