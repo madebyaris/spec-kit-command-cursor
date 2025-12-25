@@ -1,4 +1,4 @@
-# 🚀 SDD Cursor Commands v3.0
+# 🚀 SDD Cursor Commands v3.1
 
 <div align="center">
 
@@ -17,11 +17,11 @@
 
 ---
 
-## 🆕 What's New in v3.0
+## 🆕 What's New in v3.1
 
 ### Agentic-First Architecture
 
-SDD v3.0 transforms templates from descriptions into **direct agent instructions**:
+SDD v3.1 transforms templates from descriptions into **direct agent instructions**:
 
 - **Role Declarations**: Every command starts with "You are a [role]. Your job is [purpose]."
 - **State Assertions**: AI outputs its mode and boundaries before starting
@@ -510,6 +510,7 @@ We ❤️ contributions!
 
 ### Recent Changes
 
+- ✅ v3.1: **Agent Skills** for Cursor 2.4+ (specialized subagents)
 - ✅ v3.1: **Agent Skills** for Cursor 2.4+ (specialized subagents)
 - ✅ v3.0: Agentic-first template rewrite
 - ✅ New commands: `/generate-prd`, `/audit`, `/refine`
