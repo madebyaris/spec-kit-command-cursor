@@ -48,6 +48,19 @@ Each command now maps to the optimal Cursor mode:
 | `/implement`, `/execute-task` | Agent |
 | `/audit` | Debug |
 
+### Agent Skills (Cursor 2.4+)
+
+SDD now includes **Agent Skills** - specialized subagents that Cursor auto-activates based on context:
+
+| Skill | Purpose |
+|-------|---------|
+| `sdd-research-agent` | Deep codebase investigation, pattern discovery |
+| `sdd-planning-agent` | Specs, plans, task breakdowns |
+| `sdd-implementation-agent` | Code generation, todo execution |
+| `sdd-audit-agent` | Code review, spec comparison |
+
+**Why Skills?** Context isolation - each skill does focused work internally and returns only summaries, keeping your main context clean.
+
 ---
 
 ## 🎯 What is Spec-Driven Development?
@@ -269,6 +282,15 @@ Implementation: [BLOCKED|AUTHORIZED]
 ```
 your-project/
 ├── .cursor/
+│   ├── agents/             # Agent Skills (Cursor 2.4+)
+│   │   ├── sdd-research-agent/
+│   │   │   └── SKILL.md
+│   │   ├── sdd-planning-agent/
+│   │   │   └── SKILL.md
+│   │   ├── sdd-implementation-agent/
+│   │   │   └── SKILL.md
+│   │   └── sdd-audit-agent/
+│   │       └── SKILL.md
 │   ├── commands/           # SDD slash commands
 │   │   ├── _shared/       # Shared agent protocols
 │   │   │   ├── agent-manual.md
@@ -374,6 +396,54 @@ To fix: "Fix #1" or "Fix all critical"
 
 ---
 
+## 🤖 Agent Skills (Cursor 2.4+)
+
+SDD includes specialized **Agent Skills** that act as focused subagents. Cursor automatically activates them based on context.
+
+### Available Skills
+
+| Skill | Location | When Activated |
+|-------|----------|----------------|
+| `sdd-research-agent` | `.cursor/agents/sdd-research-agent/` | Deep codebase exploration, pattern investigation |
+| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent/` | Creating specs, plans, task breakdowns |
+| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent/` | Building features, executing todos |
+| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent/` | Code review, spec compliance checks |
+
+### Why Agent Skills?
+
+**The Problem:** When an agent does 10+ searches, context fills with raw results.
+
+**The Solution:** Skills do focused work internally and return only summaries.
+
+```
+User: "Research how we handle auth"
+    ↓
+sdd-research-agent activates
+    ↓
+[Does 12 searches, analyzes 8 files internally]
+    ↓
+Returns: "JWT pattern in src/auth/. Key files: jwt.service.ts, auth.middleware.ts"
+    ↓
+Main context stays CLEAN!
+```
+
+### Enabling Skills
+
+1. Open **Cursor Settings → Rules → Import Settings**
+2. Toggle **Agent Skills** on
+3. Skills in `.cursor/agents/` are now available
+
+### Skills vs Commands
+
+| Aspect | Slash Commands | Agent Skills |
+|--------|----------------|--------------|
+| **Trigger** | User types `/command` | Cursor auto-activates |
+| **Location** | `.cursor/commands/` | `.cursor/agents/` |
+| **Control** | Explicit user action | Context-based activation |
+| **Use for** | Specific workflows | Focused subtasks |
+
+---
+
 ## 🚀 The `--until-finish` Flag
 
 **Automated execution mode** - run entire projects without stopping!
@@ -440,9 +510,10 @@ We ❤️ contributions!
 
 ### Recent Changes
 
+- ✅ v3.1: **Agent Skills** for Cursor 2.4+ (specialized subagents)
 - ✅ v3.0: Agentic-first template rewrite
 - ✅ New commands: `/generate-prd`, `/audit`, `/refine`
-- ✅ **NEW: `--until-finish` flag** - Automated execution mode
+- ✅ `--until-finish` flag - Automated execution mode
 - ✅ Cursor mode integration (including Debug Mode)
 - ✅ Self-correction protocols
 - ✅ Shared agent protocols (`_shared/`)

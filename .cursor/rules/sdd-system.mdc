@@ -30,6 +30,48 @@ SDD v3.0 follows an **agentic-first architecture**:
 - **Self-Correction**: DETECT → STOP → CORRECT → RESUME
 - **Checkpoints**: Verification before completion
 
+## Agent Skills (Cursor 2.4+)
+
+SDD includes specialized **Agent Skills** that Cursor automatically activates based on context. Skills provide focused capabilities with context isolation.
+
+### Available Skills
+
+| Skill | Location | Purpose |
+|-------|----------|---------|
+| `sdd-research-agent` | `.cursor/agents/sdd-research-agent/` | Codebase investigation, pattern discovery |
+| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent/` | Specs, plans, task breakdowns |
+| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent/` | Code generation, todo execution |
+| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent/` | Code review, spec comparison |
+
+### Skills vs Commands
+
+| Aspect | Slash Commands | Agent Skills |
+|--------|----------------|--------------|
+| **Trigger** | User types `/command` | Cursor auto-activates |
+| **Location** | `.cursor/commands/` | `.cursor/agents/` |
+| **Format** | Markdown instructions | SKILL.md with YAML frontmatter |
+| **Control** | Explicit user action | Agent-decided based on context |
+
+### How Skills Work
+
+1. **Discovery**: Cursor loads skill name/description at startup
+2. **Activation**: When task matches skill description, full instructions load
+3. **Execution**: Skill follows instructions, returns concise results
+4. **Context Isolation**: Skills return summaries, not raw data
+
+### Enabling Skills
+
+In Cursor Settings → Rules → Import Settings, toggle **Agent Skills** on.
+
+### Skill Coordination
+
+Skills can work together:
+```
+User Request → sdd-research-agent investigates → sdd-planning-agent creates spec → sdd-implementation-agent builds → sdd-audit-agent reviews
+```
+
+Each skill keeps context clean by returning only essential information to the main agent.
+
 ### PLAN Mode Integration
 
 All SDD commands follow **plan-approve-execute** workflow:
@@ -172,5 +214,6 @@ If you catch yourself:
 - **Shared Protocols**: `.cursor/commands/_shared/agent-manual.md`
 - **Self-Correction**: `.cursor/commands/_shared/self-correction.md`
 - **Cursor Modes**: `.cursor/commands/_shared/cursor-modes.md`
+- **Agent Skills**: `.cursor/agents/` (Cursor 2.4+)
 - **Implementation Guide**: `.sdd/IMPLEMENTATION_GUIDE.md`
 - **Roadmap Spec**: `.sdd/ROADMAP_FORMAT_SPEC.md`

@@ -237,4 +237,97 @@ At the end of workflows that produce output, include verification:
 
 ---
 
-*This manual is included in all SDD slash command templates. Version 3.0*
+## Agent Skills & Subagent Coordination (Cursor 2.4+)
+
+SDD includes specialized Agent Skills that act as focused subagents. These provide **context isolation** - each skill works internally and returns only essential summaries.
+
+### Available Skills
+
+| Skill | Specialization | Context Behavior |
+|-------|----------------|------------------|
+| `sdd-research-agent` | Pattern investigation, codebase analysis | Returns summary, not raw searches |
+| `sdd-planning-agent` | Specs, plans, task breakdown | Creates structured docs |
+| `sdd-implementation-agent` | Code generation, todo execution | Follows plans systematically |
+| `sdd-audit-agent` | Code review, spec comparison | Returns structured report |
+
+### Why Context Isolation Matters
+
+**The Problem:** When you do 10+ searches, context fills with raw results.
+
+**The Solution:** Skills do the work internally and return only summaries.
+
+**Example:**
+```
+Main Agent: "Research authentication patterns"
+    ↓
+sdd-research-agent activates
+    ↓
+[Internally: 12 searches, analyzes 8 files, compares 3 approaches]
+    ↓
+Returns: "Found JWT pattern in src/auth/. Recommend following existing JwtService class."
+    ↓
+Main Agent continues with CLEAN context
+```
+
+### When to Delegate to Skills
+
+| Scenario | Delegate To | Why |
+|----------|-------------|-----|
+| Need deep codebase exploration | `sdd-research-agent` | Isolates search noise |
+| Creating specs/plans | `sdd-planning-agent` | Specialized templates |
+| Implementing from plan | `sdd-implementation-agent` | Systematic execution |
+| Reviewing code quality | `sdd-audit-agent` | Structured findings |
+
+### Skill Coordination Flow
+
+Skills can work in sequence:
+
+```
+1. User Request: "Build a notification system"
+    ↓
+2. sdd-research-agent: Investigates existing patterns
+    → Returns: "Found email patterns in src/notifications/"
+    ↓
+3. sdd-planning-agent: Creates spec and plan
+    → Creates: specs/active/notifications/spec.md, plan.md
+    ↓
+4. sdd-implementation-agent: Builds the feature
+    → Creates: Code + todo-list.md
+    ↓
+5. sdd-audit-agent: Reviews implementation
+    → Returns: "2 minor issues found, spec compliance: 95%"
+```
+
+### Skill Output Requirements
+
+When a skill completes, it should return:
+1. **Concise summary** (not raw data)
+2. **Key findings or artifacts** (file paths, decisions)
+3. **Recommended next steps**
+
+**Keep skill outputs under 500 words** unless extensive detail is specifically requested.
+
+### How Cursor Activates Skills
+
+Skills are loaded based on their `description` in the SKILL.md frontmatter:
+
+```yaml
+---
+name: sdd-research-agent
+description: Investigate codebase patterns, research solutions...
+---
+```
+
+Cursor matches user intent to skill descriptions and activates relevant skills automatically.
+
+### Skills Location
+
+All SDD skills are in `.cursor/agents/`:
+- `.cursor/agents/sdd-research-agent/SKILL.md`
+- `.cursor/agents/sdd-planning-agent/SKILL.md`
+- `.cursor/agents/sdd-implementation-agent/SKILL.md`
+- `.cursor/agents/sdd-audit-agent/SKILL.md`
+
+---
+
+*This manual is included in all SDD slash command templates. Version 3.1 - Updated for Cursor 2.4 Agent Skills*
