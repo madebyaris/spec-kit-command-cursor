@@ -309,24 +309,25 @@ When a skill completes, it should return:
 
 ### How Cursor Activates Skills
 
-Skills are loaded based on their `description` in the SKILL.md frontmatter:
+Skills are loaded based on their `description` in the frontmatter:
 
 ```yaml
 ---
 name: sdd-research-agent
 description: Investigate codebase patterns, research solutions...
+model: inherit
 ---
 ```
 
-Cursor matches user intent to skill descriptions and activates relevant skills automatically.
+Cursor matches user intent to skill descriptions and activates relevant skills via the Task tool.
 
 ### Skills Location
 
 All SDD skills are in `.cursor/agents/`:
-- `.cursor/agents/sdd-research-agent/SKILL.md`
-- `.cursor/agents/sdd-planning-agent/SKILL.md`
-- `.cursor/agents/sdd-implementation-agent/SKILL.md`
-- `.cursor/agents/sdd-audit-agent/SKILL.md`
+- `.cursor/agents/sdd-research-agent.md`
+- `.cursor/agents/sdd-planning-agent.md`
+- `.cursor/agents/sdd-implementation-agent.md`
+- `.cursor/agents/sdd-audit-agent.md`
 
 ---
 

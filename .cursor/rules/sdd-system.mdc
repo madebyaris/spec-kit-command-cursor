@@ -36,12 +36,12 @@ SDD includes specialized **Agent Skills** that Cursor automatically activates ba
 
 ### Available Skills
 
-| Skill | Location | Purpose |
-|-------|----------|---------|
-| `sdd-research-agent` | `.cursor/agents/sdd-research-agent/` | Codebase investigation, pattern discovery |
-| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent/` | Specs, plans, task breakdowns |
-| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent/` | Code generation, todo execution |
-| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent/` | Code review, spec comparison |
+| Skill | File | Purpose |
+|-------|------|---------|
+| `sdd-research-agent` | `.cursor/agents/sdd-research-agent.md` | Codebase investigation, pattern discovery |
+| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent.md` | Specs, plans, task breakdowns |
+| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent.md` | Code generation, todo execution |
+| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent.md` | Code review, spec comparison |
 
 ### Skills vs Commands
 
@@ -49,7 +49,7 @@ SDD includes specialized **Agent Skills** that Cursor automatically activates ba
 |--------|----------------|--------------|
 | **Trigger** | User types `/command` | Cursor auto-activates |
 | **Location** | `.cursor/commands/` | `.cursor/agents/` |
-| **Format** | Markdown instructions | SKILL.md with YAML frontmatter |
+| **Format** | Markdown instructions | `.md` file with YAML frontmatter |
 | **Control** | Explicit user action | Agent-decided based on context |
 
 ### How Skills Work

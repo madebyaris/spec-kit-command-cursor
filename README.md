@@ -283,14 +283,10 @@ Implementation: [BLOCKED|AUTHORIZED]
 your-project/
 ├── .cursor/
 │   ├── agents/             # Agent Skills (Cursor 2.4+)
-│   │   ├── sdd-research-agent/
-│   │   │   └── SKILL.md
-│   │   ├── sdd-planning-agent/
-│   │   │   └── SKILL.md
-│   │   ├── sdd-implementation-agent/
-│   │   │   └── SKILL.md
-│   │   └── sdd-audit-agent/
-│   │       └── SKILL.md
+│   │   ├── sdd-research-agent.md
+│   │   ├── sdd-planning-agent.md
+│   │   ├── sdd-implementation-agent.md
+│   │   └── sdd-audit-agent.md
 │   ├── commands/           # SDD slash commands
 │   │   ├── _shared/       # Shared agent protocols
 │   │   │   ├── agent-manual.md
@@ -402,12 +398,12 @@ SDD includes specialized **Agent Skills** that act as focused subagents. Cursor 
 
 ### Available Skills
 
-| Skill | Location | When Activated |
-|-------|----------|----------------|
-| `sdd-research-agent` | `.cursor/agents/sdd-research-agent/` | Deep codebase exploration, pattern investigation |
-| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent/` | Creating specs, plans, task breakdowns |
-| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent/` | Building features, executing todos |
-| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent/` | Code review, spec compliance checks |
+| Skill | File | When Activated |
+|-------|------|----------------|
+| `sdd-research-agent` | `.cursor/agents/sdd-research-agent.md` | Deep codebase exploration, pattern investigation |
+| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent.md` | Creating specs, plans, task breakdowns |
+| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent.md` | Building features, executing todos |
+| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent.md` | Code review, spec compliance checks |
 
 ### Why Agent Skills?
 
