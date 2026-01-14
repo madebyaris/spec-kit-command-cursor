@@ -1,67 +1,14 @@
 # /upgrade Command
 
-Escalate from lightweight SDD 2.5 (Brief) to comprehensive SDD 2.0 (Full) planning when complexity is discovered during development.
+Escalate from lightweight SDD 2.5 (Brief) to comprehensive SDD 4.0 (Full) planning when complexity is discovered during development.
 
 ---
 
-## IMPORTANT: This is Escalation Mode
+## Role
 
-**You are a planning escalation agent.** Your job is to seamlessly expand a lightweight brief into comprehensive SDD 2.0 documentation when complexity warrants it.
-
-**Your role:**
-- Read the existing feature brief
-- Understand why escalation is needed
-- Expand brief content into full SDD 2.0 documents
-- Preserve all existing decisions and context
-- Create research.md, spec.md, plan.md, and tasks.md
-- Guide the user through the upgrade decision
-
-**Mode boundaries (What you will NOT do):**
-- Write implementation code
-- Lose any information from the brief
-- Create documents without showing the plan
-- Skip the escalation decision tree
-- Upgrade unnecessarily (validate need first)
+**Planning escalation agent** - Expand lightweight briefs into comprehensive SDD 4.0 documentation when complexity warrants it. Read existing briefs, validate upgrade need, expand content into research.md, spec.md, plan.md, and tasks.md while preserving all existing decisions and context.
 
 **Recommended Cursor Mode:** Plan
-(Use `Cmd+.` to switch modes if needed)
-
----
-
-## State Assertion (REQUIRED)
-
-**Before starting, output:**
-
-```
-**SDD MODE: Upgrade**
-Mode: escalation
-Purpose: Expanding lightweight brief to comprehensive SDD 2.0 planning
-Implementation: BLOCKED - I will create planning documents, not code
-```
-
----
-
-## Self-Correction Protocol
-
-**DETECT**: If you find yourself doing any of these:
-
-| Type | What It Looks Like |
-|------|--------------------|
-| 1. Implementation Code | Writing functions instead of specs |
-| 2. Losing Context | Not preserving brief content |
-| 3. Skipping Validation | Upgrading without confirming need |
-| 4. Incomplete Expansion | Creating only some SDD 2.0 documents |
-| 5. No Decision Tree | Not walking through escalation decision |
-| 6. Unnecessary Upgrade | Upgrading a simple feature |
-
-**STOP**: Immediately halt the incorrect action
-
-**CORRECT**: Output:
-"I apologize - I was [describe mistake]. Let me return to upgrade planning."
-
-**RESUME**: Return to the upgrade workflow with correct approach.
-
----
 
 ## Usage
 
@@ -93,7 +40,7 @@ I can't find a feature brief for [task-id].
 
 Would you like to:
 1. Create a brief first: `/brief [task-id]`
-2. Start with full SDD 2.0: `/research [task-id]`
+2. Start with full SDD 4.0: `/research [task-id]`
 ```
 
 **Step 2: Read and analyze the brief**
@@ -166,25 +113,10 @@ Would you like to proceed with the upgrade?
 
 **Documents to create:**
 
-1. **research.md** - Expanded from brief's patterns/approach
-   - Codebase analysis
-   - External options
-   - Recommendations
-
-2. **spec.md** - Expanded from brief's requirements
-   - User stories with acceptance criteria
-   - Non-functional requirements
-   - Edge cases
-
-3. **plan.md** - Expanded from brief's technical approach
-   - Full architecture
-   - Component design
-   - API contracts
-
-4. **tasks.md** - Expanded from brief's next actions
-   - Phased breakdown
-   - Effort estimates
-   - Dependencies
+1. **research.md** - Codebase analysis, external options, recommendations
+2. **spec.md** - User stories with acceptance criteria, non-functional requirements, edge cases
+3. **plan.md** - Full architecture, component design, API contracts
+4. **tasks.md** - Phased breakdown, effort estimates, dependencies
 
 **Content mapping:**
 | Brief Section | Expands To |
@@ -195,10 +127,7 @@ Would you like to proceed with the upgrade?
 | Next Actions | tasks.md: Task Breakdown |
 | Discoveries (changelog) | research.md: Findings |
 
-**Brief will be:**
-- Preserved as historical reference
-- Linked from new documents
-- Marked as "Upgraded to SDD 2.0"
+**Brief will be:** Preserved as historical reference, linked from new documents, marked as "Upgraded to SDD 4.0"
 
 Ready to begin the upgrade?
 ```
@@ -350,12 +279,12 @@ Add upgrade notice to feature-brief.md:
 ```markdown
 ---
 
-## ⬆️ Upgraded to SDD 2.0
+## ⬆️ Upgraded to SDD 4.0
 
 **Upgrade date:** [date]
 **Reason:** [user's reason]
 
-This brief has been expanded into full SDD 2.0 documentation:
+This brief has been expanded into full SDD 4.0 documentation:
 - `research.md` - Detailed research
 - `spec.md` - Full specification
 - `plan.md` - Technical plan
@@ -389,7 +318,7 @@ Before final output, verify:
 ```
 ✅ Upgrade complete: [task-id]
 
-**Upgraded from:** SDD 2.5 Brief → SDD 2.0 Full
+**Upgraded from:** SDD 2.5 Brief → SDD 4.0 Full
 
 **Documents created:**
 - `specs/active/[task-id]/research.md` - Research & context
@@ -397,20 +326,9 @@ Before final output, verify:
 - `specs/active/[task-id]/plan.md` - Technical architecture
 - `specs/active/[task-id]/tasks.md` - Implementation breakdown
 
-**Original brief:** Preserved with upgrade notice
+**Content preserved:** Problem statement, requirements, technical approach, discoveries/changelog
 
-**Content preserved:**
-- ✅ Problem statement
-- ✅ Requirements
-- ✅ Technical approach
-- ✅ Discoveries/changelog
-
-**Next steps:**
-- Review the expanded documents
-- Fill in any gaps in spec.md or plan.md
-- Run `/implement [task-id]` when ready to build
-
-**Estimated additional planning time:** [X hours] to complete gaps
+**Next steps:** Review expanded documents, fill gaps if needed, run `/implement [task-id]` when ready
 ```
 
 ---
@@ -441,7 +359,7 @@ Still want to upgrade? Confirm and I'll proceed.
 **Solution**: Gather more info during upgrade:
 - "The brief is sparse. I'll need to ask some questions to create full docs."
 
-### Issue: Some SDD 2.0 docs already exist
+### Issue: Some SDD 4.0 docs already exist
 **Cause**: Partial upgrade previously started
 **Solution**: Identify gaps:
 - "I found existing spec.md. Should I update it or create fresh?"
@@ -456,7 +374,7 @@ Still want to upgrade? Confirm and I'll proceed.
 
 - `/brief [task-id]` - Create lightweight brief
 - `/evolve [task-id]` - Update brief with discoveries
-- `/research [task-id]` - Deep research (part of SDD 2.0)
-- `/specify [task-id]` - Full specification (part of SDD 2.0)
-- `/plan [task-id]` - Technical plan (part of SDD 2.0)
-- `/tasks [task-id]` - Task breakdown (part of SDD 2.0)
+- `/research [task-id]` - Deep research (part of SDD 4.0)
+- `/specify [task-id]` - Full specification (part of SDD 4.0)
+- `/plan [task-id]` - Technical plan (part of SDD 4.0)
+- `/tasks [task-id]` - Task breakdown (part of SDD 4.0)

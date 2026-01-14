@@ -1,64 +1,20 @@
 # /brief Command
 
-Create a lightweight, single-document feature brief optimized for rapid development. Complete in ~30 minutes, then start coding.
+Create a lightweight feature brief in ~30 minutes, then start coding.
 
 ---
 
-## IMPORTANT: This is Planning Mode
+## Role
 
-**You are a specification-driven planning agent.** Your job is to help users create focused feature briefs through analysis and strategic questioning.
+Create focused feature briefs through analysis and strategic questioning.
 
-**Your role:**
-- Analyze the feature description and extract key requirements
+**What you do:**
+- Analyze feature description and extract requirements
 - Ask clarifying questions when information is missing
-- Search codebase for existing patterns to reuse
-- Create a concise, actionable feature brief
-- Present plan before creating any files
+- Search codebase for existing patterns
+- Present plan before creating files
 
-**Mode boundaries (What you will NOT do):**
-- Write application code or implementation files
-- Create files in `src/`, `lib/`, or other code directories
-- Implement the feature described in the brief
-- Skip the plan presentation phase
-- Make assumptions without asking
-
-**Recommended Cursor Mode:** Plan
-(Use `Cmd+.` to switch modes if needed)
-
----
-
-## State Assertion (REQUIRED)
-
-**Before starting, output:**
-
-```
-**SDD MODE: Brief**
-Mode: planning
-Purpose: Creating 30-minute feature brief for rapid development
-Implementation: BLOCKED - I will create specs only, not implementation code
-```
-
----
-
-## Self-Correction Protocol
-
-**DETECT**: If you find yourself doing any of these:
-
-| Type | What It Looks Like |
-|------|--------------------|
-| 1. Implementation Code | Writing functions, components, API endpoints |
-| 2. Skipping Questions | Not asking about unclear requirements |
-| 3. No Plan Presentation | Creating files without showing plan first |
-| 4. Wrong File Location | Writing to `src/` instead of `specs/` |
-| 5. Skipping Research | Not checking existing codebase patterns |
-| 6. Vague Requirements | Accepting "build X" without details |
-
-**STOP**: Immediately halt the incorrect action
-
-**CORRECT**: Output:
-"I apologize - I was [describe mistake]. Let me return to brief creation."
-
-**RESUME**: Return to the brief workflow with correct approach.
+**Output:** `specs/active/[task-id]/feature-brief.md`
 
 ---
 
@@ -228,27 +184,16 @@ Use this structure:
 
 ---
 
-*Brief created with SDD 2.5 - Ready to code!*
+*Brief created with SDD 4.0 - Ready to code!*
 ```
 
 ### Phase 4: Verification
 
-**CHECKPOINT: Brief Complete (REQUIRED)**
-
-Before final output, verify:
-- [ ] File created at `specs/active/[task-id]/feature-brief.md`
-- [ ] Problem statement is clear and specific
-- [ ] At least 3 must-have requirements defined
-- [ ] Next actions are concrete and actionable
-- [ ] Success criteria are measurable
-
-**Read the file back to verify it exists.**
+Verify file created and contains: problem statement, 3+ requirements, actionable next steps.
 
 ---
 
-## Output (REQUIRED)
-
-**Your response MUST end with:**
+## Output
 
 ```
 ✅ Brief created: `specs/active/[task-id]/feature-brief.md`
@@ -257,14 +202,8 @@ Before final output, verify:
 - Problem: [One sentence]
 - Core requirements: [Count] must-haves
 - Next actions: [Count] items
-- Estimated effort: [Your estimate]
 
-**Next steps:**
-- Review the brief and refine if needed (`/refine [task-id]`)
-- Start coding! The brief has your roadmap
-- Update as you discover things (`/evolve [task-id] [discovery]`)
-
-**Need more planning?** Run `/upgrade [task-id]` to expand to full SDD 2.0
+**Next:** Start coding or run `/upgrade [task-id]` for full SDD 2.0
 ```
 
 ---
