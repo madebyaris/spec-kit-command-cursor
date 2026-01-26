@@ -2,175 +2,98 @@
 alwaysApply: true
 ---
 
-# SDD (Spec-Driven Development) System v3.0
+# SDD (Spec-Driven Development) System v4.0
 
-This project implements an **agentic-first Spec-Driven Development** workflow. All slash commands are direct agent instructions, not descriptions.
+**Requires Cursor 2.3+** (2.4+ recommended for Agent Skills)
 
 ## Core Philosophy
 
-Spec-Driven Development emphasizes creating detailed, executable specifications **before** writing code, ensuring:
-- Requirements are clear before implementation
-- Technical decisions are well-planned and documented  
-- Development tasks are structured and manageable
-- Team collaboration is enhanced through shared understanding
+Create specifications **before** code. Plan-approve-execute for all operations.
 
-### Agentic-First Architecture (v3.0)
+## Agent Skills (Cursor 2.4+)
 
-SDD v3.0 follows an **agentic-first architecture**:
+| Skill | Location | Purpose |
+|-------|----------|---------|
+| `sdd-research` | `.cursor/skills/sdd-research.md` | Codebase investigation |
+| `sdd-planning` | `.cursor/skills/sdd-planning.md` | Specs and plans |
+| `sdd-implementation` | `.cursor/skills/sdd-implementation.md` | Todo execution |
+| `sdd-audit` | `.cursor/skills/sdd-audit.md` | Code review |
 
-1. **Slash commands are agent instructions** - Templates tell you exactly what role to assume, what to output, and how to self-correct
-2. **State assertions required** - Every command starts with declaring your mode and boundaries
-3. **Self-correction protocol** - Built-in mistake detection and recovery
-4. **Plan-approve-execute pattern** - Show plans before creating files
+## Workflows
 
-**Key Patterns:**
-- **Role Declaration**: "You are a [role]. Your job is [purpose]."
-- **State Assertion**: Output mode, purpose, and implementation status
-- **Mode Boundaries**: What you WILL and WILL NOT do
-- **Self-Correction**: DETECT → STOP → CORRECT → RESUME
-- **Checkpoints**: Verification before completion
+### SDD 2.5: Quick Planning (80% of features)
+- `/brief` - 30-minute planning → `feature-brief.md`
+- `/evolve` - Update specs with discoveries
+- `/refine` - Iterate on existing specs
 
-### PLAN Mode Integration
+### SDD 2.0: Full Planning (complex features)
+`/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
-All SDD commands follow **plan-approve-execute** workflow:
+### Project Roadmaps
+- `/sdd-full-plan` - Create full project roadmap with DAG
+- `/execute-task` - Execute roadmap tasks
+- `/execute-parallel` - Parallel execution via agent-orchestration
 
-```
-User Command → Analysis → Create Plan → User Approval → Execute → Document
-```
+## DAG-Based Execution
 
-**Key Principles:**
-- **Analysis First** - Read, understand, ask questions before planning
-- **Present Plans** - Show what will be created/modified before doing it
-- **User Control** - Wait for approval before any file changes
-- **Transparency** - Explain reasoning and approach in plans
-- **Thoughtful Execution** - Deliberate, well-considered actions
+Tasks organized as Directed Acyclic Graph with dependencies:
 
-## SDD 2.5: Lightweight Workflow (80% of features)
-
-### `/brief` - 30-Minute Planning
-Transform ideas into actionable development plans in 30 minutes.
-
-### `/evolve` - Living Documentation
-Keep specifications aligned with reality during development.
-
-### `/refine` - Interactive Refinement
-Iterate on existing specs through discussion.
-
-## SDD 2.0: Full Planning (20% of complex features)
-
-### Full Workflow: `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
-For complex, high-risk, or multi-team features.
-
-## New Commands
-
-### `/generate-prd` - PRD Generation
-Create Product Requirements Documents through Socratic questioning.
-
-### `/audit` - Spec-Driven Audit
-Compare code against specs. Propose fixes after investigation. Use with Cursor's Debug Mode for runtime evidence.
-
-### `/generate-rules` - Coding Rules
-Auto-generate Cursor rules based on tech stack detection.
-
-## Decision Framework
-
-**Start with `/brief`** unless feature meets ANY criteria:
-- Multiple teams involved
-- Architectural changes required
-- High business risk/compliance needs
-- Uncertain technical approach
-- 3+ week development timeline
-
-**Upgrade from brief to full SDD** with `/upgrade` if complexity discovered.
-
-**Use `/sdd-full-plan`** for full project roadmaps with kanban structure.
-
-## Automated Execution: `--until-finish`
-
-Add `--until-finish` to execute tasks automatically without stopping:
-
-```bash
-# Execute entire epic automatically
-/execute-task epic-001 --until-finish
-
-# Create roadmap AND execute everything
-/sdd-full-plan project-id Description --until-finish
-/pecut-all-in-one project-id Description --until-finish
+```json
+{
+  "dag": {
+    "roots": ["task-001", "task-003"],
+    "parallelGroups": [["task-001", "task-003"], ["task-002", "task-004"]]
+  }
+}
 ```
 
-**Behavior:**
-- Executes all tasks in dependency order
-- No user approval between tasks
-- **Stops on error** - fix and resume with same command
-- Continues until complete
+**EPIC 0 Pattern**: Prerequisites complete before feature work.
 
-## Cursor Mode Mapping
+## Automated Execution
 
-| SDD Command | Cursor Mode | Purpose |
-|-------------|-------------|---------|
-| `/brief`, `/specify`, `/plan`, `/tasks` | Plan | Planning without code changes |
-| `/research` | Ask | Read-only exploration |
-| `/implement`, `/execute-task` | Agent | Multi-file implementation |
-| `/audit` | Debug | Spec-driven audit with runtime evidence |
+**`--until-finish` flag:**
+- Sequential: Executes tasks in dependency order
+- With agent-orchestration: Parallel via sub-agents
+
+**Hooks** (Cursor 2.3+): For simple iteration loops (run tests until pass).
 
 ## File Organization
 
-- **Active tasks**: `specs/active/[task-id]/` - Tasks in development
-- **Roadmaps**: `specs/todo-roadmap/[project-id]/` - Project roadmaps
-- **Shared protocols**: `.cursor/commands/_shared/` - Agent protocols
+```
+specs/
+├── active/[task-id]/          # Tasks in development
+├── todo-roadmap/[project]/    # Project roadmaps with DAG
+└── completed/                 # Delivered features
+
+.cursor/
+├── skills/                    # Agent Skills (2.4+)
+├── commands/                  # Slash commands
+└── hooks/                     # Iteration hooks (2.3+)
+```
 
 ## Command Reference
 
-| Command | Purpose | Output |
-|---------|---------|--------|
-| `/brief` | Quick 30-min planning | feature-brief.md |
-| `/research` | Pattern investigation | research.md |
-| `/specify` | Detailed requirements | spec.md |
-| `/plan` | Technical architecture | plan.md |
-| `/tasks` | Task breakdown | tasks.md |
-| `/implement` | Execute implementation | Code + todo-list.md |
-| `/evolve` | Update specs with discoveries | Updated spec |
-| `/upgrade` | Expand to full SDD 2.0 | All SDD 2.0 docs |
-| `/refine` | Iterate on specs | Refined spec |
-| `/generate-prd` | Create PRD | full-prd.md, quick-prd.md |
-| `/audit` | Spec-driven audit | Audit report |
-| `/generate-rules` | Create coding rules | .cursor/rules/*.mdc |
-| `/sdd-full-plan` | Full project roadmap | Kanban + tasks |
-| `/execute-task` | Execute roadmap task | Varies by task |
-| `--until-finish` | Flag: automated execution | Runs until complete |
+| Command | Purpose |
+|---------|---------|
+| `/brief` | Quick 30-min planning |
+| `/research` | Pattern investigation |
+| `/specify` | Detailed requirements |
+| `/plan` | Technical architecture |
+| `/tasks` | Task breakdown |
+| `/implement` | Execute implementation |
+| `/audit` | Spec-driven audit |
+| `/sdd-full-plan` | Full project roadmap |
+| `/execute-task` | Execute roadmap task |
+| `/execute-parallel` | Parallel DAG execution |
 
-## CRITICAL FOR AI ASSISTANTS
+## Todo Execution Rules
 
-**Todo-lists are NOT suggestions** - they are executable checklists that MUST be followed systematically.
-
-### Todo Execution Rules
 1. **Read entire list** before starting
 2. **Execute in order** - respect dependencies
 3. **Mark completion**: `- [ ]` → `- [x]`
 4. **Document blockers** - never skip silently
-5. **Update progress** continuously
-
-### JSON Format Rules
-When generating roadmap JSON files:
-- **Always use valid JSON** - no placeholder syntax like `[N]` for numbers
-- Use actual values: `"teamSize": 1` not `"teamSize": [N]`
-- Use `{{placeholder}}` syntax in strings only: `"title": "{{Epic Title}}"`
-- Validate JSON before writing to files
-
-### Self-Correction Protocol
-
-If you catch yourself:
-1. Writing code in a planning mode - STOP
-2. Skipping the plan presentation - STOP
-3. Not asking clarifying questions - STOP
-4. Claiming features don't exist without checking - STOP
-
-**Recovery**: Say "I apologize - I was [mistake]. Let me return to [correct mode]."
 
 ## References
 
-- **Shared Protocols**: `.cursor/commands/_shared/agent-manual.md`
-- **Self-Correction**: `.cursor/commands/_shared/self-correction.md`
-- **Cursor Modes**: `.cursor/commands/_shared/cursor-modes.md`
-- **Implementation Guide**: `.sdd/IMPLEMENTATION_GUIDE.md`
-- **Roadmap Spec**: `.sdd/ROADMAP_FORMAT_SPEC.md`
+- **Agent Manual**: `.cursor/commands/_shared/agent-manual.md`
+- **Skills**: `.cursor/skills/` (Cursor 2.4+)

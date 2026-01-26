@@ -1,4 +1,4 @@
-# 🚀 SDD Cursor Commands v3.0
+# 🚀 SDD Cursor Commands v3.1
 
 <div align="center">
 
@@ -17,11 +17,11 @@
 
 ---
 
-## 🆕 What's New in v3.0
+## 🆕 What's New in v3.1
 
 ### Agentic-First Architecture
 
-SDD v3.0 transforms templates from descriptions into **direct agent instructions**:
+SDD v3.1 transforms templates from descriptions into **direct agent instructions**:
 
 - **Role Declarations**: Every command starts with "You are a [role]. Your job is [purpose]."
 - **State Assertions**: AI outputs its mode and boundaries before starting
@@ -47,6 +47,19 @@ Each command now maps to the optimal Cursor mode:
 | `/research` | Ask (read-only) |
 | `/implement`, `/execute-task` | Agent |
 | `/audit` | Debug |
+
+### Agent Skills (Cursor 2.4+)
+
+SDD now includes **Agent Skills** - specialized subagents that Cursor auto-activates based on context:
+
+| Skill | Purpose |
+|-------|---------|
+| `sdd-research-agent` | Deep codebase investigation, pattern discovery |
+| `sdd-planning-agent` | Specs, plans, task breakdowns |
+| `sdd-implementation-agent` | Code generation, todo execution |
+| `sdd-audit-agent` | Code review, spec comparison |
+
+**Why Skills?** Context isolation - each skill does focused work internally and returns only summaries, keeping your main context clean.
 
 ---
 
@@ -269,6 +282,11 @@ Implementation: [BLOCKED|AUTHORIZED]
 ```
 your-project/
 ├── .cursor/
+│   ├── agents/             # Agent Skills (Cursor 2.4+)
+│   │   ├── sdd-research-agent.md
+│   │   ├── sdd-planning-agent.md
+│   │   ├── sdd-implementation-agent.md
+│   │   └── sdd-audit-agent.md
 │   ├── commands/           # SDD slash commands
 │   │   ├── _shared/       # Shared agent protocols
 │   │   │   ├── agent-manual.md
@@ -374,6 +392,54 @@ To fix: "Fix #1" or "Fix all critical"
 
 ---
 
+## 🤖 Agent Skills (Cursor 2.4+)
+
+SDD includes specialized **Agent Skills** that act as focused subagents. Cursor automatically activates them based on context.
+
+### Available Skills
+
+| Skill | File | When Activated |
+|-------|------|----------------|
+| `sdd-research-agent` | `.cursor/agents/sdd-research-agent.md` | Deep codebase exploration, pattern investigation |
+| `sdd-planning-agent` | `.cursor/agents/sdd-planning-agent.md` | Creating specs, plans, task breakdowns |
+| `sdd-implementation-agent` | `.cursor/agents/sdd-implementation-agent.md` | Building features, executing todos |
+| `sdd-audit-agent` | `.cursor/agents/sdd-audit-agent.md` | Code review, spec compliance checks |
+
+### Why Agent Skills?
+
+**The Problem:** When an agent does 10+ searches, context fills with raw results.
+
+**The Solution:** Skills do focused work internally and return only summaries.
+
+```
+User: "Research how we handle auth"
+    ↓
+sdd-research-agent activates
+    ↓
+[Does 12 searches, analyzes 8 files internally]
+    ↓
+Returns: "JWT pattern in src/auth/. Key files: jwt.service.ts, auth.middleware.ts"
+    ↓
+Main context stays CLEAN!
+```
+
+### Enabling Skills
+
+1. Open **Cursor Settings → Rules → Import Settings**
+2. Toggle **Agent Skills** on
+3. Skills in `.cursor/agents/` are now available
+
+### Skills vs Commands
+
+| Aspect | Slash Commands | Agent Skills |
+|--------|----------------|--------------|
+| **Trigger** | User types `/command` | Cursor auto-activates |
+| **Location** | `.cursor/commands/` | `.cursor/agents/` |
+| **Control** | Explicit user action | Context-based activation |
+| **Use for** | Specific workflows | Focused subtasks |
+
+---
+
 ## 🚀 The `--until-finish` Flag
 
 **Automated execution mode** - run entire projects without stopping!
@@ -440,9 +506,11 @@ We ❤️ contributions!
 
 ### Recent Changes
 
+- ✅ v3.1: **Agent Skills** for Cursor 2.4+ (specialized subagents)
+- ✅ v3.1: **Agent Skills** for Cursor 2.4+ (specialized subagents)
 - ✅ v3.0: Agentic-first template rewrite
 - ✅ New commands: `/generate-prd`, `/audit`, `/refine`
-- ✅ **NEW: `--until-finish` flag** - Automated execution mode
+- ✅ `--until-finish` flag - Automated execution mode
 - ✅ Cursor mode integration (including Debug Mode)
 - ✅ Self-correction protocols
 - ✅ Shared agent protocols (`_shared/`)

@@ -1,64 +1,20 @@
 # /research Command
 
-Conduct comprehensive research before specification to find existing patterns, gather context, and inform technical decisions.
+Investigate existing patterns and gather context before specification.
 
 ---
 
-## IMPORTANT: This is Research Mode (Read-Only)
+## Role
 
-**You are a research agent.** Your job is to investigate existing patterns, explore solutions, and document findings without making any changes to the codebase.
+Research and document findings without making changes to the codebase.
 
-**Your role:**
-- Search the codebase for similar patterns and conventions
-- Analyze existing implementations for reuse opportunities
-- Research external solutions and best practices
-- Document findings with pros/cons for each approach
+**What you do:**
+- Search codebase for patterns and conventions
+- Analyze existing implementations
+- Research external solutions with pros/cons
 - Present options without making final decisions
 
-**Mode boundaries (What you will NOT do):**
-- Write implementation code
-- Modify existing files
-- Make final technical decisions (present options instead)
-- Skip codebase exploration
-- Create files outside of `specs/`
-
-**Recommended Cursor Mode:** Ask
-(Use `Cmd+.` to switch modes if needed - Ask mode is read-only)
-
----
-
-## State Assertion (REQUIRED)
-
-**Before starting, output:**
-
-```
-**SDD MODE: Research**
-Mode: research (read-only)
-Purpose: Investigating patterns and gathering context for informed specification
-Implementation: BLOCKED - I will research and document, not implement
-```
-
----
-
-## Self-Correction Protocol
-
-**DETECT**: If you find yourself doing any of these:
-
-| Type | What It Looks Like |
-|------|--------------------|
-| 1. Implementation Code | Writing functions, components, or modifying source files |
-| 2. Skipping Codebase Search | Not searching existing patterns before external research |
-| 3. Making Decisions | Choosing a solution without presenting options |
-| 4. No Examples | Not including code examples from codebase |
-| 5. Shallow Research | Surface-level findings without depth |
-| 6. Missing Pros/Cons | Recommending without trade-off analysis |
-
-**STOP**: Immediately halt the incorrect action
-
-**CORRECT**: Output:
-"I apologize - I was [describe mistake]. Let me return to research mode."
-
-**RESUME**: Return to the research workflow with correct approach.
+**Output:** `specs/active/[task-id]/research.md`
 
 ---
 
