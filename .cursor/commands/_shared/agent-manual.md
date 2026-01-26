@@ -1,6 +1,6 @@
-# SDD Agent Manual (v4.0)
+# SDD Agent Manual (v4.1)
 
-Consolidated agent protocol for SDD workflows. **Requires Cursor 2.3+** (2.4+ recommended for Agent Skills).
+Consolidated agent protocol for SDD workflows. **Requires Cursor 2.4+** for subagents and skills.
 
 ---
 
@@ -10,6 +10,7 @@ Consolidated agent protocol for SDD workflows. **Requires Cursor 2.3+** (2.4+ re
 2. **Save outputs to `specs/`** - All specs go in the specs directory
 3. **Verify file operations** - Confirm files were created
 4. **Ask when uncertain** - Don't guess, clarify
+5. **Delegate appropriately** - Use subagents for context isolation
 
 ---
 
@@ -35,34 +36,103 @@ specs/
 │       └── tasks/              # Individual task files
 ├── completed/                  # Delivered features
 └── backlog/                    # Future features
+
+.cursor/
+├── agents/                     # Subagents for delegation
+├── skills/                     # Domain knowledge packages
+├── commands/                   # Slash commands
+└── hooks/                      # Iteration hooks
 ```
 
 ---
 
-## Problem Handling
+## Subagents (Cursor 2.4+)
 
-| Problem Type | Action |
-|--------------|--------|
-| Folder missing | Create it automatically |
-| Task not found | Show available options |
-| Permission denied | Explain simply, suggest fix |
+Subagents run in **isolated context** - use them for operations that would bloat the main conversation.
 
-**Golden Rules:** Fix small issues yourself. Ask when uncertain. Never leave user stuck.
+### Available Subagents
+
+| Subagent | Purpose | Model | When to Use |
+|----------|---------|-------|-------------|
+| `sdd-explorer` | Codebase discovery | fast | Before research, pattern investigation |
+| `sdd-planner` | Architecture design | inherit | Creating plans, task breakdowns |
+| `sdd-implementer` | Code generation | inherit | Executing todos, long implementations |
+| `sdd-verifier` | Validation | fast | After implementation, quality checks |
+| `sdd-reviewer` | Code review | fast | Security/performance review |
+| `sdd-orchestrator` | Coordination | inherit | Parallel execution, DAG traversal |
+
+### Delegation Guidelines
+
+**Delegate to subagent when:**
+- Deep codebase exploration needed (use `sdd-explorer`)
+- Long implementation that would consume context (use `sdd-implementer`)
+- Independent tasks can run in parallel (use multiple subagents)
+- Verification of completed work (use `sdd-verifier`)
+- Code review before completion (use `sdd-reviewer`)
+
+**Keep in main context when:**
+- Simple, quick operations (few tool calls)
+- User interaction needed mid-task
+- Sequential dependent steps requiring shared context
+- Direct user communication expected
+
+### Spawning Subagents
+
+Use the Task tool to spawn subagents:
+
+```markdown
+[Use Task tool with:]
+- subagent_type: "generalPurpose" or "explore"
+- prompt: Detailed instructions with context
+- model: "fast" for exploration, "inherit" for complex work
+```
+
+**Parallel execution:** Send multiple Task tool calls in a single message.
+
+### Automatic Verification
+
+After every implementation phase, spawn `sdd-verifier`:
+
+```
+sdd-implementer completes → spawn sdd-verifier → validate work
+```
+
+This catches incomplete implementations before marking tasks done.
 
 ---
 
-## Agent Skills (Cursor 2.4+)
+## Skills (Cursor 2.4+)
 
-Skills provide **context isolation** - they work internally and return only summaries.
+Skills are auto-invoked based on context or manually via `/skill-name`.
 
-| Skill | Purpose |
-|-------|---------|
-| `sdd-research` | Pattern investigation, returns summary |
-| `sdd-planning` | Creates specs and plans |
-| `sdd-implementation` | Executes todo-lists systematically |
-| `sdd-audit` | Reviews code against specs |
+### Available Skills
 
-**Skills Location:** `.cursor/skills/*.md`
+| Skill | Location | Auto-Invoke When |
+|-------|----------|------------------|
+| `sdd-research` | `.cursor/skills/sdd-research/` | Technical approach unclear |
+| `sdd-planning` | `.cursor/skills/sdd-planning/` | Spec exists, need plan |
+| `sdd-implementation` | `.cursor/skills/sdd-implementation/` | Plan ready for execution |
+| `sdd-audit` | `.cursor/skills/sdd-audit/` | Code review requested |
+| `sdd-evolve` | `.cursor/skills/sdd-evolve/` | Discoveries during dev |
+
+### Skill Structure
+
+Skills use progressive loading - keep main SKILL.md focused:
+
+```
+.cursor/skills/[skill-name]/
+├── SKILL.md          # Core instructions (~50 lines)
+├── references/       # Loaded on demand
+├── scripts/          # Executable helpers
+└── assets/           # Templates, diagrams
+```
+
+### Using Skills in Subagents
+
+Subagents can invoke skills by including in their prompt:
+```
+"Use the sdd-implementation skill to execute the todo-list..."
+```
 
 ---
 
@@ -75,19 +145,61 @@ Tasks organized as Directed Acyclic Graph with dependencies:
 - **canParallelize**: Whether task can run in parallel with siblings
 - **parallelGroups**: Groups of tasks that can execute simultaneously
 
+### Parallel Execution Pattern
+
+1. Load `roadmap.json` and identify ready tasks
+2. Spawn subagent for each ready task (parallel Task tool calls)
+3. Collect results, update roadmap statuses
+4. Verify implementations with `sdd-verifier`
+5. Identify next ready tasks, repeat
+
+```markdown
+Batch 1 (parallel): task-001, task-003, task-005
+├── sdd-implementer → task-001
+├── sdd-implementer → task-003
+└── sdd-explorer → task-005
+
+[Wait for completion]
+
+sdd-verifier → validate all implementations
+
+Batch 2 (deps satisfied): task-002, task-004
+...
+```
+
 ---
 
-## Parallel Execution (agent-orchestration)
+## Problem Handling
 
-Use `/execute-parallel` with agent-orchestration MCP for multi-agent coordination:
+| Problem Type | Action |
+|--------------|--------|
+| Folder missing | Create it automatically |
+| Task not found | Show available options |
+| Permission denied | Explain simply, suggest fix |
+| Subagent blocked | Report blocker, continue others |
+| Verification failed | Report gaps, don't mark done |
 
-| Tool | Purpose |
-|------|---------|
-| `bootstrap` | Initialize orchestration session |
-| `task_create` | Create task with dependencies |
-| `claim_todo` | Sub-agent claims task |
-| `task_complete` | Mark done, unblock dependents |
-| `lock_acquire/release` | Prevent file conflicts |
+**Golden Rules:** 
+- Fix small issues yourself
+- Ask when uncertain
+- Never leave user stuck
+- Always verify implementation completeness
+
+---
+
+## Command-to-Subagent Mapping
+
+| Command | Primary Subagent | Skill Used |
+|---------|------------------|------------|
+| `/research` | sdd-explorer | sdd-research |
+| `/specify` | sdd-planner | sdd-planning |
+| `/plan` | sdd-planner | sdd-planning |
+| `/tasks` | sdd-planner | - |
+| `/implement` | sdd-implementer | sdd-implementation |
+| `/audit` | sdd-reviewer | sdd-audit |
+| `/evolve` | - | sdd-evolve |
+| `/execute-task` | sdd-implementer | varies |
+| `/execute-parallel` | sdd-orchestrator | varies |
 
 ---
 
@@ -100,4 +212,25 @@ Simple iteration loops via `.cursor/hooks/`:
 
 ---
 
-*SDD Agent Manual v4.0 - Cursor 2.3+ (2.4+ for Skills)*
+## Best Practices
+
+### Context Management
+- Use subagents for exploration to avoid context bloat
+- Keep main conversation focused on decisions and user communication
+- Let subagents handle verbose operations (test output, large codebases)
+
+### Parallel Efficiency
+- Identify independent tasks early
+- Spawn multiple subagents in single message
+- Use `model: fast` for exploration tasks
+- Reserve `model: inherit` for complex reasoning
+
+### Verification
+- Always verify after implementation
+- Don't trust "done" claims without checking
+- Run tests when available
+- Compare code to spec requirements
+
+---
+
+*SDD Agent Manual v4.1 - Cursor 2.4+ (Subagents + Skills)*

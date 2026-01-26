@@ -2,41 +2,81 @@
 alwaysApply: true
 ---
 
-# SDD (Spec-Driven Development) System v4.0
+# SDD (Spec-Driven Development) System v4.1
 
-**Requires Cursor 2.3+** (2.4+ recommended for Agent Skills)
+**Requires Cursor 2.4+** for full subagent and skill capabilities
 
 ## Core Philosophy
 
 Create specifications **before** code. Plan-approve-execute for all operations.
 
-## Agent Skills (Cursor 2.4+)
+## Architecture Overview
 
-| Skill | Location | Purpose |
-|-------|----------|---------|
-| `sdd-research` | `.cursor/skills/sdd-research.md` | Codebase investigation |
-| `sdd-planning` | `.cursor/skills/sdd-planning.md` | Specs and plans |
-| `sdd-implementation` | `.cursor/skills/sdd-implementation.md` | Todo execution |
-| `sdd-audit` | `.cursor/skills/sdd-audit.md` | Code review |
+SDD leverages Cursor 2.4's subagents and skills for parallel execution and context isolation:
+
+```
+User Request → Main Agent → Subagents (parallel) → Skills (auto-invoked)
+                    ↓
+              Verification → Completion
+```
+
+## Subagents (`.cursor/agents/`)
+
+Specialized agents with isolated context for specific SDD phases:
+
+| Subagent | Model | Purpose | Auto-Use |
+|----------|-------|---------|----------|
+| `sdd-explorer` | fast | Codebase discovery | Before research |
+| `sdd-planner` | inherit | Architecture design | During planning |
+| `sdd-implementer` | inherit | Code generation | During implement |
+| `sdd-verifier` | fast | Validation | After implementation |
+| `sdd-reviewer` | fast | Code review | Before completion |
+| `sdd-orchestrator` | inherit | Parallel coordination | For /execute-parallel |
+
+**Key behaviors:**
+- Subagents run in isolated context (don't bloat main conversation)
+- Can run in parallel for independent tasks
+- `sdd-verifier` runs automatically after implementation to catch incomplete work
+
+## Skills (`.cursor/skills/`)
+
+Domain knowledge packages with progressive loading:
+
+| Skill | Auto-Invoke When | Purpose |
+|-------|------------------|---------|
+| `sdd-research` | Technical approach unclear | Pattern investigation |
+| `sdd-planning` | Spec exists, no plan | Architecture generation |
+| `sdd-implementation` | Plan ready for execution | Todo-based coding |
+| `sdd-audit` | Code review requested | Spec compliance check |
+| `sdd-evolve` | Discoveries during dev | Spec updates |
+
+**Skill structure:**
+```
+.cursor/skills/[skill-name]/
+├── SKILL.md          # Core instructions
+├── references/       # Loaded on demand
+├── scripts/          # Executable helpers
+└── assets/           # Templates, diagrams
+```
 
 ## Workflows
 
 ### SDD 2.5: Quick Planning (80% of features)
-- `/brief` - 30-minute planning → `feature-brief.md`
-- `/evolve` - Update specs with discoveries
-- `/refine` - Iterate on existing specs
+- `/brief` → `feature-brief.md` (30-minute planning)
+- `/evolve` → Update specs with discoveries
+- `/refine` → Iterate on existing specs
 
 ### SDD 2.0: Full Planning (complex features)
 `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
-### Project Roadmaps
-- `/sdd-full-plan` - Create full project roadmap with DAG
-- `/execute-task` - Execute roadmap tasks
-- `/execute-parallel` - Parallel execution via agent-orchestration
+### Project Roadmaps with Parallel Execution
+- `/sdd-full-plan` → Create roadmap with DAG structure
+- `/execute-task` → Sequential task execution
+- `/execute-parallel` → Parallel via native subagents
 
 ## DAG-Based Execution
 
-Tasks organized as Directed Acyclic Graph with dependencies:
+Tasks as Directed Acyclic Graph with automatic parallelization:
 
 ```json
 {
@@ -47,15 +87,22 @@ Tasks organized as Directed Acyclic Graph with dependencies:
 }
 ```
 
-**EPIC 0 Pattern**: Prerequisites complete before feature work.
+**Parallel execution pattern:**
+1. Identify ready tasks (deps satisfied)
+2. Spawn subagents in parallel (one Task tool call per task)
+3. Collect results, update roadmap
+4. Verify with `sdd-verifier`
+5. Continue until complete
 
-## Automated Execution
+## Automated Verification
 
-**`--until-finish` flag:**
-- Sequential: Executes tasks in dependency order
-- With agent-orchestration: Parallel via sub-agents
+Every implementation phase includes automatic verification:
 
-**Hooks** (Cursor 2.3+): For simple iteration loops (run tests until pass).
+```
+sdd-implementer → [code] → sdd-verifier → [validation report]
+```
+
+This prevents marking tasks "done" when incomplete.
 
 ## File Organization
 
@@ -66,25 +113,38 @@ specs/
 └── completed/                 # Delivered features
 
 .cursor/
+├── agents/                    # Subagents (2.4+)
+│   ├── sdd-explorer.md
+│   ├── sdd-planner.md
+│   ├── sdd-implementer.md
+│   ├── sdd-verifier.md
+│   ├── sdd-reviewer.md
+│   └── sdd-orchestrator.md
 ├── skills/                    # Agent Skills (2.4+)
+│   ├── sdd-research/
+│   ├── sdd-planning/
+│   ├── sdd-implementation/
+│   ├── sdd-audit/
+│   └── sdd-evolve/
 ├── commands/                  # Slash commands
 └── hooks/                     # Iteration hooks (2.3+)
 ```
 
 ## Command Reference
 
-| Command | Purpose |
-|---------|---------|
-| `/brief` | Quick 30-min planning |
-| `/research` | Pattern investigation |
-| `/specify` | Detailed requirements |
-| `/plan` | Technical architecture |
-| `/tasks` | Task breakdown |
-| `/implement` | Execute implementation |
-| `/audit` | Spec-driven audit |
-| `/sdd-full-plan` | Full project roadmap |
-| `/execute-task` | Execute roadmap task |
-| `/execute-parallel` | Parallel DAG execution |
+| Command | Purpose | Uses |
+|---------|---------|------|
+| `/brief` | Quick 30-min planning | sdd-planning skill |
+| `/research` | Pattern investigation | sdd-explorer subagent |
+| `/specify` | Detailed requirements | sdd-planning skill |
+| `/plan` | Technical architecture | sdd-planner subagent |
+| `/tasks` | Task breakdown | sdd-planner subagent |
+| `/implement` | Execute implementation | sdd-implementer subagent |
+| `/audit` | Spec-driven audit | sdd-reviewer subagent |
+| `/evolve` | Update specs | sdd-evolve skill |
+| `/sdd-full-plan` | Full project roadmap | sdd-orchestrator |
+| `/execute-task` | Execute roadmap task | sdd-implementer |
+| `/execute-parallel` | Parallel DAG execution | sdd-orchestrator |
 
 ## Todo Execution Rules
 
@@ -92,8 +152,23 @@ specs/
 2. **Execute in order** - respect dependencies
 3. **Mark completion**: `- [ ]` → `- [x]`
 4. **Document blockers** - never skip silently
+5. **Verify after implementation** - use sdd-verifier
+
+## Subagent Delegation Guidelines
+
+Delegate to subagent when:
+- Task requires deep codebase exploration
+- Long-running implementation that would bloat context
+- Need parallel execution of independent tasks
+- Verification of completed work
+
+Keep in main context when:
+- Simple, quick operations
+- User interaction needed
+- Sequential dependent steps
 
 ## References
 
 - **Agent Manual**: `.cursor/commands/_shared/agent-manual.md`
-- **Skills**: `.cursor/skills/` (Cursor 2.4+)
+- **Subagents**: `.cursor/agents/`
+- **Skills**: `.cursor/skills/`
