@@ -123,14 +123,14 @@ sdd-[name]/
 ```mermaid
 flowchart LR
     subgraph quick [Quick Planning]
-        A[/brief] --> B[/evolve]
-        B --> C[/refine]
+        A["/brief"] --> B["/evolve"]
+        B --> C["/refine"]
     end
     subgraph full [Full Planning]
-        D[/research] --> E[/specify] --> F[/plan] --> G[/tasks] --> H[/implement]
+        D["/research"] --> E["/specify"] --> F["/plan"] --> G["/tasks"] --> H["/implement"]
     end
     subgraph parallel [Parallel Execution]
-        I[/sdd-full-plan] --> J[/execute-parallel]
+        I["/sdd-full-plan"] --> J["/execute-parallel"]
     end
 ```
 
