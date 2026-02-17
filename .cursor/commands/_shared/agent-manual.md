@@ -40,9 +40,10 @@ specs/
 .cursor/
 ├── agents/                     # Subagents for delegation
 ├── skills/                     # Domain knowledge packages
-├── commands/                   # Slash commands
-└── hooks/                      # Iteration hooks
+└── commands/                   # Slash commands
 ```
+
+**Note:** Hooks (Cursor 2.3+) can be added at `.cursor/hooks.json` for iteration loops—see Cursor docs.
 
 ---
 
@@ -200,15 +201,6 @@ Batch 2 (deps satisfied): task-002, task-004
 | `/evolve` | - | sdd-evolve |
 | `/execute-task` | sdd-implementer | varies |
 | `/execute-parallel` | sdd-orchestrator | varies |
-
----
-
-## Hooks (Cursor 2.3+)
-
-Simple iteration loops via `.cursor/hooks/`:
-- Run tests until pass
-- Iterate on UI until matches design
-- Fix linter errors until clean
 
 ---
 

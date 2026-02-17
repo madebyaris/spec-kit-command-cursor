@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/madebyaris/spec-kit-command-cursor?style=social)](https://github.com/madebyaris/spec-kit-command-cursor/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![Cursor 2.4+](https://img.shields.io/badge/Cursor-2.4%2B-blue)](https://cursor.com)
 
 **Spec-Driven Development for Cursor IDE**
 
@@ -28,16 +29,18 @@ Create specifications before code. Plan-approve-execute for all operations.
 ## Quick Start
 
 ```bash
-# Clone
 git clone https://github.com/madebyaris/spec-kit-command-cursor.git
+cd spec-kit-command-cursor
+```
 
-# Quick planning (80% of features)
+**Most common flow** (copy into Cursor chat):
+```
 /brief user-auth JWT authentication with login/logout
+```
 
-# Full project roadmap with parallel execution
+**Full planning:**
+```bash
 /sdd-full-plan blog-platform Full-featured blog with CMS
-
-# Execute tasks in parallel
 /execute-parallel blog-platform
 ```
 
@@ -117,20 +120,25 @@ sdd-[name]/
 
 ## Workflows
 
-### Quick Planning (80% of features)
-```
-/brief → /evolve → /refine
+```mermaid
+flowchart LR
+    subgraph quick [Quick Planning]
+        A[/brief] --> B[/evolve]
+        B --> C[/refine]
+    end
+    subgraph full [Full Planning]
+        D[/research] --> E[/specify] --> F[/plan] --> G[/tasks] --> H[/implement]
+    end
+    subgraph parallel [Parallel Execution]
+        I[/sdd-full-plan] --> J[/execute-parallel]
+    end
 ```
 
-### Full Planning (complex features)
-```
-/research → /specify → /plan → /tasks → /implement
-```
-
-### Project Roadmap with Parallel Execution
-```
-/sdd-full-plan → /execute-parallel
-```
+| Flow | Commands |
+|------|----------|
+| **Quick** (80% of features) | `/brief` → `/evolve` → `/refine` |
+| **Full** (complex features) | `/research` → `/specify` → `/plan` → `/tasks` → `/implement` |
+| **Parallel** (project roadmap) | `/sdd-full-plan` → `/execute-parallel` |
 
 ### Automated Execution
 ```bash
@@ -162,9 +170,9 @@ specs/
 
 ## Contributing
 
+- [Contributing guide](CONTRIBUTING.md) - How to add commands, subagents, and skills
 - [Report bugs](https://github.com/madebyaris/spec-kit-command-cursor/issues)
 - [Suggest features](https://github.com/madebyaris/spec-kit-command-cursor/discussions)
-- Submit PRs
 
 ## Acknowledgments
 
@@ -180,8 +188,6 @@ MIT License - see [LICENSE](LICENSE)
 
 **Made with ❤️ by [Aris](https://github.com/madebyaris)**
 
-```bash
-/brief hello-world Create a simple hello world feature
-```
+Try it: `/brief hello-world Create a simple hello world feature`
 
 </div>

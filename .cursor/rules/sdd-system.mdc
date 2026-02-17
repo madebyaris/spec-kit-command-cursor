@@ -126,9 +126,10 @@ specs/
 │   ├── sdd-implementation/
 │   ├── sdd-audit/
 │   └── sdd-evolve/
-├── commands/                  # Slash commands
-└── hooks/                     # Iteration hooks (2.3+)
+└── commands/                  # Slash commands
 ```
+
+**Note:** Hooks (Cursor 2.3+) can be added at `.cursor/hooks.json` for iteration loops (e.g., run tests until pass)—see [Cursor docs](https://cursor.com/docs/agent/hooks).
 
 ## Command Reference
 
