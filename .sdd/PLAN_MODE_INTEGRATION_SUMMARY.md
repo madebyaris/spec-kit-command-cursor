@@ -1,7 +1,11 @@
+> **ARCHIVED** - This document is a historical record.  
+> PLAN mode is now a core part of the SDD 5.0 workflow, integrated into all commands and subagents.  
+> See `.cursor/rules/sdd-system.mdc` for current documentation.
+
 # PLAN Mode Integration - Implementation Summary
 
 **Date Completed:** 2025-10-21  
-**Implementation Status:** ✅ COMPLETE
+**Implementation Status:** Archived (superseded by SDD 5.0)
 
 ## Overview
 

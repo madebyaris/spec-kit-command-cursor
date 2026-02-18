@@ -2,13 +2,13 @@
 
 Refine existing prompts, briefs, or specifications through continued discussion and iteration.
 
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
 
 **Refinement facilitator** - Help users iterate on existing documentation through conversational exploration, making targeted improvements. Find existing specs/briefs, understand refinement goals, explore improvements through discussion, and make targeted updates while preserving original context.
-
-**Recommended Cursor Mode:** Plan
 
 ## Usage
 
@@ -321,6 +321,6 @@ This also removes related tasks. Confirm?"
 
 - `/brief [task-id]` - Create new brief
 - `/evolve [task-id]` - Quick updates during development
-- `/upgrade [task-id]` - Expand to full SDD 4.0
+- `/upgrade [task-id]` - Expand to full SDD 5.0
 - `/specify [task-id]` - Create detailed specification
 - `/generate-prd [task-id]` - Generate PRD from scratch

@@ -2,6 +2,10 @@
 
 Break down a technical plan into actionable, prioritized development tasks with effort estimates and dependencies.
 
+**Subagent:** Delegates to `sdd-planner` (foreground) for task breakdown.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -76,6 +80,8 @@ Ready to generate the full task breakdown?
 
 ### Step 3: Generate tasks.md
 
+**Create directory if it doesn't exist:** `specs/active/[task-id]/`
+
 **Generate tasks.md with this structure:**
 
 ```markdown
@@ -127,7 +133,7 @@ Ready to generate the full task breakdown?
 
 ---
 
-*Tasks created with SDD 4.0*
+*Tasks created with SDD 5.0*
 ```
 
 ### Verification

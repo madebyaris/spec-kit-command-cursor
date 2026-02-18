@@ -1,17 +1,17 @@
 # Roadmap Format Specification
 
-**Version:** 1.0.0  
-**Compatible With:** SDD 2.5, Taskr Kanban, VSCode Extensions, Cursor 2.1+  
-**Last Updated:** 2025-10-21
+**Version:** 2.0.0  
+**Compatible With:** SDD 5.0, Taskr Kanban, VSCode Extensions, Cursor 2.5+  
+**Last Updated:** 2026-02-18
 
-## Cursor 2.1 Integration
+## Cursor 2.5 Integration
 
-This format works seamlessly with Cursor 2.1 features:
+This format works seamlessly with Cursor 2.5 features:
 
-- **Multi-Agent Execution** - Execute multiple tasks in parallel
-- **Background Planning** - Generate roadmaps while working
-- **Team Commands** - Share roadmaps via team commands
-- **Interactive UI** - Better question handling during roadmap creation
+- **Async Subagents** - Execute multiple tasks in parallel via `sdd-orchestrator`
+- **Subagent Tree** - Nested subagent spawning for complex task execution
+- **Skills** - Progressive loading of SDD knowledge via `.cursor/skills/`
+- **Hooks** - Automated tracking via `.cursor/hooks.json`
 
 ---
 
@@ -57,7 +57,7 @@ interface Roadmap {
   
   // Metadata
   metadata: {
-    sddVersion: string;           // SDD version (e.g., "2.5")
+    sddVersion: string;           // SDD version (e.g., "5.0")
     planMode: boolean;            // PLAN mode enabled
     estimatedDuration: string;    // e.g., "8 weeks"
     complexity: Complexity;       // "simple" | "medium" | "complex" | "enterprise"
@@ -407,34 +407,21 @@ Future VSCode extensions can:
 6. **Update status** - Sync changes back to JSON
 7. **Track progress** - Calculate completion percentage
 
-### Cursor 2.1 Multi-Agent Support
+### Cursor 2.5 Subagent Support
 
-**Parallel Execution:**
-- Execute multiple independent tasks simultaneously
-- Up to 8 agents can run in parallel
-- Each agent operates in isolated environment
-- No file conflicts between parallel executions
-
-**Task Independence Detection:**
-```typescript
-function canExecuteInParallel(task1: Task, task2: Task): boolean {
-  // Check if tasks have dependencies
-  if (task1.dependencies.includes(task2.id)) return false;
-  if (task2.dependencies.includes(task1.id)) return false;
-  
-  // Check if they modify same files
-  if (hasFileOverlap(task1, task2)) return false;
-  
-  return true;
-}
-```
+**Parallel Execution via `sdd-orchestrator`:**
+- Execute multiple independent tasks via async subagents
+- `sdd-orchestrator` runs as a background subagent
+- Each `sdd-implementer` operates in isolated context
+- DAG-based dependency resolution prevents conflicts
 
 **Usage:**
 ```bash
-# Execute 3 independent tasks in parallel
-/execute-task task-001  # Agent 1
-/execute-task task-002  # Agent 2
-/execute-task task-003  # Agent 3
+# Execute independent tasks in parallel via orchestrator
+/execute-parallel --until-finish
+
+# Or execute a single task
+/execute-task task-001
 ```
 
 ### Extension Development
@@ -532,18 +519,17 @@ See [FULL_PLAN_EXAMPLES.md](./FULL_PLAN_EXAMPLES.md) for complete examples of:
 
 ## Versioning
 
-**Current Version:** 1.0.0
+**Current Version:** 2.0.0
 
 **Version History:**
+- **2.0.0** (2026-02-18): SDD 5.0 / Cursor 2.5 update
+  - Async subagent execution support
+  - DAG-based parallel task resolution
+  - Hooks and sandbox integration
 - **1.0.0** (2025-10-21): Initial specification
   - Taskr Kanban compatibility
   - SDD command integration
   - PLAN mode support
-
-**Future Versions:**
-- **1.1.0**: Add time tracking features
-- **1.2.0**: Add custom fields support
-- **2.0.0**: Add real-time collaboration
 
 ---
 
@@ -557,6 +543,6 @@ See [FULL_PLAN_EXAMPLES.md](./FULL_PLAN_EXAMPLES.md) for complete examples of:
 ---
 
 **Maintained by:** SDD System  
-**Last Updated:** 2025-10-21  
+**Last Updated:** 2026-02-18  
 **Status:** Stable
 

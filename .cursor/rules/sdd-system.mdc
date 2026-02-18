@@ -2,45 +2,55 @@
 alwaysApply: true
 ---
 
-# SDD (Spec-Driven Development) System v4.1
+# SDD (Spec-Driven Development) System v5.0
 
-**Requires Cursor 2.4+** for full subagent and skill capabilities
+**Requires Cursor 2.5+** for async subagents, plugins, hooks, and skills.
 
 ## Core Philosophy
 
 Create specifications **before** code. Plan-approve-execute for all operations.
 
-## Architecture Overview
-
-SDD leverages Cursor 2.4's subagents and skills for parallel execution and context isolation:
+## Architecture
 
 ```
-User Request → Main Agent → Subagents (parallel) → Skills (auto-invoked)
-                    ↓
-              Verification → Completion
+User Request → Main Agent → Subagents (parallel/async) → Skills (auto-invoked)
+                    ↓                    ↓
+              Verification ←── Subagent Tree (nested spawning)
 ```
 
 ## Subagents (`.cursor/agents/`)
 
-Specialized agents with isolated context for specific SDD phases:
+| Subagent | Model | Mode | Purpose |
+|----------|-------|------|---------|
+| `sdd-explorer` | fast | foreground, readonly | Codebase discovery |
+| `sdd-planner` | inherit | foreground | Architecture design |
+| `sdd-implementer` | inherit | **background** | Code generation |
+| `sdd-verifier` | fast | foreground | Validation |
+| `sdd-reviewer` | fast | foreground, readonly | Code review |
+| `sdd-orchestrator` | inherit | **background** | Parallel coordination |
 
-| Subagent | Model | Purpose | Auto-Use |
-|----------|-------|---------|----------|
-| `sdd-explorer` | fast | Codebase discovery | Before research |
-| `sdd-planner` | inherit | Architecture design | During planning |
-| `sdd-implementer` | inherit | Code generation | During implement |
-| `sdd-verifier` | fast | Validation | After implementation |
-| `sdd-reviewer` | fast | Code review | Before completion |
-| `sdd-orchestrator` | inherit | Parallel coordination | For /execute-parallel |
+### Foreground vs Background
 
-**Key behaviors:**
-- Subagents run in isolated context (don't bloat main conversation)
-- Can run in parallel for independent tasks
-- `sdd-verifier` runs automatically after implementation to catch incomplete work
+- **Foreground** blocks the parent until complete. Use when results are needed immediately (exploration, planning, verification).
+- **Background** (`is_background: true`) returns immediately. The parent continues working. Use for long-running implementations and orchestration.
+
+### Subagent Tree (2.5+)
+
+Subagents can spawn their own subagents:
+
+```
+sdd-orchestrator (background)
+├── sdd-implementer (task 1) → sdd-verifier
+├── sdd-implementer (task 2) → sdd-verifier
+└── sdd-implementer (task 3) → sdd-verifier
+```
+
+### Delegation Guidelines
+
+**Delegate when:** deep exploration, long implementation, parallel tasks, verification.
+**Keep in main context when:** simple operations, user interaction needed, sequential dependent steps.
 
 ## Skills (`.cursor/skills/`)
-
-Domain knowledge packages with progressive loading:
 
 | Skill | Auto-Invoke When | Purpose |
 |-------|------------------|---------|
@@ -50,14 +60,7 @@ Domain knowledge packages with progressive loading:
 | `sdd-audit` | Code review requested | Spec compliance check |
 | `sdd-evolve` | Discoveries during dev | Spec updates |
 
-**Skill structure:**
-```
-.cursor/skills/[skill-name]/
-├── SKILL.md          # Core instructions
-├── references/       # Loaded on demand
-├── scripts/          # Executable helpers
-└── assets/           # Templates, diagrams
-```
+Skills use progressive loading — keep `SKILL.md` focused, put details in `references/`, scripts in `scripts/`, templates in `assets/`.
 
 ## Workflows
 
@@ -69,10 +72,10 @@ Domain knowledge packages with progressive loading:
 ### SDD 2.0: Full Planning (complex features)
 `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
-### Project Roadmaps with Parallel Execution
+### Parallel Execution with DAG
 - `/sdd-full-plan` → Create roadmap with DAG structure
 - `/execute-task` → Sequential task execution
-- `/execute-parallel` → Parallel via native subagents
+- `/execute-parallel` → Parallel via async subagents
 
 ## DAG-Based Execution
 
@@ -87,22 +90,32 @@ Tasks as Directed Acyclic Graph with automatic parallelization:
 }
 ```
 
-**Parallel execution pattern:**
-1. Identify ready tasks (deps satisfied)
-2. Spawn subagents in parallel (one Task tool call per task)
-3. Collect results, update roadmap
-4. Verify with `sdd-verifier`
-5. Continue until complete
+**Pattern:** Identify ready tasks → spawn background subagents in parallel → collect results → verify with `sdd-verifier` → continue.
 
 ## Automated Verification
 
-Every implementation phase includes automatic verification:
+Every implementation triggers verification:
 
 ```
 sdd-implementer → [code] → sdd-verifier → [validation report]
 ```
 
-This prevents marking tasks "done" when incomplete.
+Background implementers spawn foreground verifiers as child subagents.
+
+## Hooks (`.cursor/hooks.json`)
+
+SDD uses hooks for workflow automation:
+
+| Hook | Trigger | Purpose |
+|------|---------|---------|
+| `subagentStop` | Subagent completes | Track completion in roadmap |
+| `stop` | Agent session ends | Generate completion summary |
+
+See [Cursor hooks docs](https://cursor.com/docs/agent/hooks) for configuration.
+
+## Sandbox (`.cursor/sandbox.json`)
+
+Network access controls for sandboxed commands. Configure allowed domains for package registries and APIs. See `.cursor/sandbox.json` for project defaults.
 
 ## File Organization
 
@@ -113,23 +126,12 @@ specs/
 └── completed/                 # Delivered features
 
 .cursor/
-├── agents/                    # Subagents (2.4+)
-│   ├── sdd-explorer.md
-│   ├── sdd-planner.md
-│   ├── sdd-implementer.md
-│   ├── sdd-verifier.md
-│   ├── sdd-reviewer.md
-│   └── sdd-orchestrator.md
-├── skills/                    # Agent Skills (2.4+)
-│   ├── sdd-research/
-│   ├── sdd-planning/
-│   ├── sdd-implementation/
-│   ├── sdd-audit/
-│   └── sdd-evolve/
-└── commands/                  # Slash commands
+├── agents/                    # Subagents (foreground + background)
+├── skills/                    # Agent Skills (progressive loading)
+├── commands/                  # Slash commands
+├── hooks.json                 # Workflow automation hooks
+└── sandbox.json               # Network access controls
 ```
-
-**Note:** Hooks (Cursor 2.3+) can be added at `.cursor/hooks.json` for iteration loops (e.g., run tests until pass)—see [Cursor docs](https://cursor.com/docs/agent/hooks).
 
 ## Command Reference
 
@@ -150,26 +152,19 @@ specs/
 ## Todo Execution Rules
 
 1. **Read entire list** before starting
-2. **Execute in order** - respect dependencies
+2. **Execute in order** — respect dependencies
 3. **Mark completion**: `- [ ]` → `- [x]`
-4. **Document blockers** - never skip silently
-5. **Verify after implementation** - use sdd-verifier
+4. **Document blockers** — never skip silently
+5. **Verify after implementation** — use sdd-verifier
 
-## Subagent Delegation Guidelines
+## Plugin Distribution
 
-Delegate to subagent when:
-- Task requires deep codebase exploration
-- Long-running implementation that would bloat context
-- Need parallel execution of independent tasks
-- Verification of completed work
-
-Keep in main context when:
-- Simple, quick operations
-- User interaction needed
-- Sequential dependent steps
+This system can be packaged as a Cursor Marketplace plugin. See `.cursor-plugin/plugin.json` for manifest.
 
 ## References
 
 - **Agent Manual**: `.cursor/commands/_shared/agent-manual.md`
 - **Subagents**: `.cursor/agents/`
 - **Skills**: `.cursor/skills/`
+- **Hooks**: `.cursor/hooks.json`
+- **Sandbox**: `.cursor/sandbox.json`

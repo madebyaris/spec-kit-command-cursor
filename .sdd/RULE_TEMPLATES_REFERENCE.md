@@ -1,3 +1,7 @@
+> **ARCHIVED** - This document is a historical reference.  
+> See `.cursor/commands/generate-rules.md` for the current command documentation.  
+> Rule templates in `.sdd/templates/rules/` are still usable as starting points.
+
 # Rule Templates Reference
 
 Reference documentation for all rule templates used by `/generate-rules` command.

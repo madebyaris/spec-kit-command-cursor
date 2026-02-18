@@ -1,35 +1,53 @@
 # SDD Features Index
 
 ## Navigation
-- [📋 Project Overview](00-overview.md)
-- [📖 Guidelines](../.sdd/guidelines.md)
-- [⚙️ Configuration](../.sdd/config.json)
+
+- [Project Overview](00-overview.md)
+- [Agent Manual](../.cursor/commands/_shared/agent-manual.md)
 
 ## Feature Status Dashboard
 
 ### Active Features (In Development)
-Currently no active features.
+
+| Task ID | Feature | Status | Created |
+|---------|---------|--------|---------|
+| *none* | — | — | — |
 
 ### Completed Features
-Currently no completed features.
+
+| Task ID | Feature | Completed |
+|---------|---------|-----------|
+| *none* | — | — |
 
 ### Backlog Features
-Currently no backlog features.
+
+| Task ID | Feature | Priority |
+|---------|---------|----------|
+| *none* | — | — |
 
 ## Quick Actions
-- 🆕 [Create New Feature](active/)
-- 📊 [View All Features](.)
-- 📝 [Update Guidelines](../.sdd/guidelines.md)
-- ⚙️ [Modify Configuration](../.sdd/config.json)
 
-## Statistics
-- **Total Features**: 0
-- **Active**: 0
-- **Completed**: 0
-- **Backlog**: 0
+- Create new feature: `/brief [task-id] [description]`
+- Full project roadmap: `/sdd-full-plan [project-id] [description]`
+- View active specs: `specs/active/`
+- View roadmaps: `specs/todo-roadmap/`
 
-## Recent Activity
-No recent activity.
+## How Specs Are Created
+
+Each command writes to `specs/active/[task-id]/`:
+
+| Command | Creates |
+|---------|---------|
+| `/brief` | `feature-brief.md` |
+| `/research` | `research.md` |
+| `/specify` | `spec.md` |
+| `/plan` | `plan.md` |
+| `/tasks` | `tasks.md` |
+| `/implement` | `todo-list.md` + code |
+| `/evolve` | Updates existing spec files |
+| `/audit` | Audit report (in chat, not saved) |
+
+Project roadmaps go to `specs/todo-roadmap/[project-id]/`.
 
 ---
-Last updated: 2024-09-19
+**Version:** SDD 5.0

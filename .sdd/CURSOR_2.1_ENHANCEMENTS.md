@@ -1,8 +1,12 @@
+> **ARCHIVED** - This document is a historical record from the Cursor 2.1 era.  
+> The active system now runs on **SDD 5.0 / Cursor 2.5+** with subagents, skills, hooks, and sandbox.  
+> See `.cursor/rules/sdd-system.mdc` and `.cursor/commands/_shared/agent-manual.md` for current documentation.
+
 # Cursor 2.1 Enhancements for SDD
 
 **Date:** 2025-10-21  
 **Cursor Version:** 2.1+  
-**Status:** ✅ Integrated
+**Status:** Archived (superseded by SDD 5.0)
 
 ---
 

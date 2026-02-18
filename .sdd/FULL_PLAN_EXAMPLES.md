@@ -13,17 +13,15 @@ This document provides comprehensive examples of using `/sdd-full-plan` and `/pe
 5. [Task Execution Flow](#task-execution-flow)
 6. [Tips and Best Practices](#tips-and-best-practices)
 
-## Cursor 2.1 Features
+## Cursor 2.5 Features
 
-This guide leverages Cursor 2.1 enhancements:
+This guide leverages Cursor 2.5 capabilities:
 
-- **Interactive Questions** - Questions appear in UI (faster workflow)
-- **Plan Search** - Use ⌘+F to search within plans
-- **AI Code Reviews** - Automatic review after implementation
-- **Instant Grep** - Faster codebase searches
-- **Background Planning** - Create plans while working
-- **Multi-Agents** - Parallel task execution
-- **Team Commands** - Shared team-wide commands
+- **Async Subagents** - Parallel task execution via `sdd-orchestrator`
+- **Subagent Tree** - Nested spawning for complex workflows
+- **Skills** - Progressive loading of SDD knowledge
+- **Hooks** - Automated tracking of subagent completion
+- **DAG Execution** - Dependency-aware parallel task batches
 
 ---
 
@@ -45,7 +43,7 @@ Analyzing project...
 - Complexity: Simple
 - Estimated duration: 2 weeks
 - Team: 1-2 developers
-- Approach: SDD 2.5 (Brief)
+- Approach: Brief (lightweight)
 
 Questions:
 1. What types of notifications? (email, push, in-app?)
@@ -70,7 +68,7 @@ Questions:
 - **Complexity:** Simple
 - **Duration:** 2 weeks (80 hours)
 - **Team:** 1-2 developers
-- **Approach:** SDD 2.5 Brief
+- **Approach:** Brief (lightweight)
 
 ## Roadmap Structure
 
@@ -155,7 +153,7 @@ I understand the project well, create everything at once.
   "type": "feature",
   "complexity": "simple",
   "metadata": {
-    "sddVersion": "2.5",
+    "sddVersion": "5.0",
     "planMode": true,
     "estimatedDuration": "2 weeks",
     "complexity": "simple"
@@ -231,7 +229,7 @@ Analyzing project...
 - Complexity: Medium
 - Estimated duration: 6 weeks
 - Team: 3-4 developers
-- Approach: Mixed SDD (2.5 + 2.0)
+- Approach: Mixed (Brief + Full Planning)
 
 Questions:
 1. Target users? (bloggers, organizations, both?)
@@ -295,7 +293,7 @@ Questions:
 **Total: 5 epics, 20 subtasks, 240 hours**
 
 ## SDD Approach by Epic
-- Epic 1: Full SDD 2.0 (research → specify → plan)
+- Epic 1: Full Planning (research → specify → plan)
 - Epic 2-4: Brief for each major feature
 - Epic 5: Implementation-focused
 
@@ -312,7 +310,7 @@ Approve this plan?
   "type": "application",
   "complexity": "medium",
   "metadata": {
-    "sddVersion": "2.5",
+    "sddVersion": "5.0",
     "estimatedDuration": "6 weeks",
     "teamSize": 3
   },
@@ -417,7 +415,7 @@ Analyzing project...
 - Complexity: Complex
 - Estimated duration: 16 weeks
 - Team: 8-10 developers
-- Approach: Full SDD 2.0
+- Approach: Full Planning
 
 Questions:
 1. Target market? (B2C, B2B, both?)
@@ -450,7 +448,7 @@ Questions:
 - **Complexity:** Complex
 - **Duration:** 16 weeks (640 hours)
 - **Team:** 8-10 developers
-- **Approach:** Full SDD 2.0
+- **Approach:** Full Planning
 
 ## Critical Considerations
 - PCI compliance requirements
@@ -564,7 +562,7 @@ Approve this plan?
   "type": "platform",
   "complexity": "complex",
   "metadata": {
-    "sddVersion": "2.5",
+    "sddVersion": "5.0",
     "estimatedDuration": "16 weeks",
     "teamSize": 8,
     "tags": ["ecommerce", "marketplace", "payments", "shipping", "pci-compliance"]
@@ -962,7 +960,7 @@ syncRoadmapChanges();
 /sdd-full-plan feature-name Brief description
 → Simple complexity
 → 1-2 epics
-→ SDD 2.5 approach
+→ Brief approach
 ```
 
 ### Pattern 2: New Application
@@ -980,7 +978,7 @@ syncRoadmapChanges();
 /sdd-full-plan platform-name Detailed description with integrations and compliance
 → Complex complexity
 → 10+ epics
-→ Full SDD 2.0 workflow
+→ Full Planning workflow
 ```
 
 ---

@@ -2,6 +2,10 @@
 
 Perform a spec-driven technical audit, comparing implementation against specifications. Generate actionable review comments with severity levels.
 
+**Subagent:** Delegates to `sdd-reviewer` (fast, readonly, foreground) for code review and `sdd-verifier` for automated validation. Uses `sdd-audit` skill for structured compliance checks.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -12,8 +16,6 @@ Perform a spec-driven technical audit, comparing implementation against specific
 - Identify gaps, bugs, and violations
 - Generate structured review comments with severity levels
 - Propose fixes only after thorough investigation
-
-**Recommended Cursor Mode:** Debug (leverages log instrumentation for runtime evidence)
 
 ---
 
@@ -107,7 +109,7 @@ Read in order:
 - "Mark #N as outdated" - Code correct, update spec
 ```
 
-*Audit report generated with SDD 4.0*
+*Audit report generated with SDD 5.0*
 
 ---
 

@@ -1,0 +1,23 @@
+{
+  "name": "sdd-spec-kit",
+  "displayName": "SDD Spec Kit",
+  "version": "5.0.0",
+  "description": "Spec-Driven Development framework with subagents, skills, and DAG-based parallel execution. Plan-approve-execute workflow for systematic feature development.",
+  "author": {
+    "name": "spec-kit",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": [
+    "sdd",
+    "spec-driven-development",
+    "planning",
+    "subagents",
+    "parallel-execution",
+    "dag",
+    "code-review",
+    "verification",
+    "skills",
+    "agents"
+  ]
+}

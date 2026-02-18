@@ -1,3 +1,6 @@
+> **ARCHIVED** - This document is a historical reference.  
+> See `.cursor/commands/generate-rules.md` for the current command documentation.
+
 # Generate Rules Command Guide
 
 Complete guide for using the `/generate-rules` command to automatically generate coding rules for your project.

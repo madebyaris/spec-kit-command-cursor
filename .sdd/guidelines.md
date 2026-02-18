@@ -1,4 +1,4 @@
-# Spec-Driven Development Guidelines v3.0
+# Spec-Driven Development Guidelines v5.0
 
 ## Overview
 
@@ -42,33 +42,23 @@ Common mistakes to detect:
 - Making assumptions without informing user
 - Claiming features don't exist without checking
 
-## Cursor Mode Integration
+## Subagent Architecture
 
-### Mode Mapping
+### Subagent Mapping
 
-| SDD Command | Cursor Mode | Tools Available |
-|-------------|-------------|-----------------|
-| `/brief` | Plan | Codebase, Read, Terminal |
-| `/research` | Ask | Search only (read-only) |
-| `/specify` | Plan | Codebase, Read, Terminal |
-| `/plan` | Plan | Codebase, Read, Terminal |
-| `/tasks` | Plan | Codebase, Read, Terminal |
-| `/implement` | Agent | All tools |
-| `/evolve` | Plan | Codebase, Read, Terminal |
-| `/upgrade` | Plan | Codebase, Read, Terminal |
-| `/refine` | Plan | Codebase, Read, Terminal |
-| `/generate-prd` | Plan | Codebase, Read, Terminal |
-| `/debug` | Custom (Debug) | All Search, Terminal, Edit |
-| `/execute-task` | Agent | All tools |
-| `/generate-rules` | Plan | Codebase, Read, Terminal |
+| SDD Command | Primary Subagent | Mode |
+|-------------|-----------------|------|
+| `/research` | `sdd-explorer` | foreground, readonly |
+| `/brief`, `/specify`, `/plan`, `/tasks` | `sdd-planner` | foreground, readonly |
+| `/implement`, `/execute-task` | `sdd-implementer` | foreground |
+| `/audit` | `sdd-reviewer` | foreground, readonly |
+| `/execute-parallel` | `sdd-orchestrator` | background |
 
-### Switching Modes
+### Subagent Tree (Cursor 2.5)
 
-Users can switch modes with `Cmd+.` (Mac) or `Ctrl+.` (Windows/Linux).
-
-Suggest mode switches when appropriate:
-- "/research works best in Ask mode for read-only exploration"
-- "/implement needs Agent mode for full file access"
+Subagents can spawn child subagents:
+- `sdd-orchestrator` spawns multiple `sdd-implementer` instances
+- `sdd-implementer` spawns `sdd-verifier` after completion
 
 ## PLAN Mode Integration
 
@@ -104,7 +94,7 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
 
 ## Workflow Phases
 
-### SDD 2.5: Lightweight (80% of features)
+### Lightweight Path (80% of features)
 
 #### `/brief` - 30-Minute Planning
 - **Purpose**: Quick planning for rapid development
@@ -121,7 +111,7 @@ User Command → Analysis (Readonly) → Create Plan → User Approval → Execu
 - **Output**: Refined documentation
 - **Use for**: Improving existing specs
 
-### SDD 2.0: Full Planning (20% of features)
+### Full Planning Path (20% of features)
 
 #### `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
@@ -167,11 +157,11 @@ specs/
 ├── 00-overview.md              # Project-wide specifications
 ├── active/                     # Features in development
 │   └── [task-id]/
-│       ├── feature-brief.md    # SDD 2.5 brief
-│       ├── research.md         # SDD 2.0 research
-│       ├── spec.md             # SDD 2.0 specification
-│       ├── plan.md             # SDD 2.0 technical plan
-│       ├── tasks.md            # SDD 2.0 task breakdown
+│       ├── feature-brief.md    # Lightweight brief
+│       ├── research.md         # Full planning: research
+│       ├── spec.md             # Full planning: specification
+│       ├── plan.md             # Full planning: technical plan
+│       ├── tasks.md            # Full planning: task breakdown
 │       ├── todo-list.md        # Implementation checklist
 │       └── progress.md         # Development tracking
 ├── todo-roadmap/               # Project roadmaps
@@ -184,11 +174,16 @@ specs/
 └── backlog/                    # Future features
 
 .cursor/
+├── agents/                     # SDD subagent definitions
+│   ├── sdd-explorer.md
+│   ├── sdd-planner.md
+│   ├── sdd-implementer.md
+│   ├── sdd-verifier.md
+│   ├── sdd-reviewer.md
+│   └── sdd-orchestrator.md
 ├── commands/                   # SDD slash commands
-│   ├── _shared/               # Shared agent protocols
-│   │   ├── agent-manual.md    # Universal protocols
-│   │   ├── self-correction.md # Self-correction protocol
-│   │   └── cursor-modes.md    # Cursor mode reference
+│   ├── _shared/
+│   │   └── agent-manual.md    # Universal protocols
 │   ├── brief.md
 │   ├── research.md
 │   ├── specify.md
@@ -197,14 +192,20 @@ specs/
 │   ├── implement.md
 │   ├── evolve.md
 │   ├── upgrade.md
-│   ├── refine.md
-│   ├── generate-prd.md
-│   ├── debug.md
-│   ├── generate-rules.md
+│   ├── execute-task.md
+│   ├── execute-parallel.md
 │   ├── sdd-full-plan.md
-│   └── execute-task.md
-└── rules/
-    └── sdd-system.mdc          # Always-applied SDD rules
+│   └── ...
+├── skills/                     # SDD skills (progressive loading)
+│   ├── sdd-research/
+│   ├── sdd-planning/
+│   ├── sdd-implementation/
+│   ├── sdd-audit/
+│   └── sdd-evolve/
+├── rules/
+│   └── sdd-system.mdc          # Always-applied SDD rules
+├── hooks.json                  # Automated subagent tracking
+└── sandbox.json                # Network access controls
 ```
 
 ## Task ID Convention
@@ -272,6 +273,6 @@ Todo-lists are NOT suggestions - they are executable checklists that MUST be fol
 
 ## References
 
-- **Shared Protocols**: `.cursor/commands/_shared/`
-- **Implementation Guide**: `.sdd/IMPLEMENTATION_GUIDE.md`
+- **System Rules**: `.cursor/rules/sdd-system.mdc`
+- **Agent Manual**: `.cursor/commands/_shared/agent-manual.md`
 - **Roadmap Spec**: `.sdd/ROADMAP_FORMAT_SPEC.md`

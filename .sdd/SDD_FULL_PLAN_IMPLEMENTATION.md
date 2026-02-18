@@ -1,8 +1,11 @@
+> **ARCHIVED** - This document is a historical record of the initial full-plan implementation.  
+> See `.cursor/commands/sdd-full-plan.md` and `.cursor/commands/execute-parallel.md` for current documentation.
+
 # SDD Full Plan Implementation Summary
 
 **Feature:** Complete A-to-Z Project Planning with Kanban Roadmaps  
 **Date Completed:** 2025-10-21  
-**Status:** ✅ COMPLETE
+**Status:** Archived (superseded by SDD 5.0)
 
 ---
 

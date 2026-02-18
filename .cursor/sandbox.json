@@ -1,0 +1,21 @@
+{
+  "networkPolicy": {
+    "default": "deny",
+    "allow": [
+      "registry.npmjs.org",
+      "registry.yarnpkg.com",
+      "pypi.org",
+      "files.pythonhosted.org",
+      "*.githubusercontent.com",
+      "github.com",
+      "api.github.com",
+      "*.docker.io",
+      "ghcr.io",
+      "deno.land",
+      "esm.sh",
+      "cdn.jsdelivr.net",
+      "unpkg.com"
+    ]
+  },
+  "enableSharedBuildCache": true
+}

@@ -1,28 +1,30 @@
-# SDD Cursor Commands v4.1
+# SDD Cursor Commands v5.0
 
 <div align="center">
 
 [![GitHub stars](https://img.shields.io/github/stars/madebyaris/spec-kit-command-cursor?style=social)](https://github.com/madebyaris/spec-kit-command-cursor/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Cursor 2.4+](https://img.shields.io/badge/Cursor-2.4%2B-blue)](https://cursor.com)
+[![Cursor 2.5+](https://img.shields.io/badge/Cursor-2.5%2B-blue)](https://cursor.com)
 
 **Spec-Driven Development for Cursor IDE**
 
 Create specifications before code. Plan-approve-execute for all operations.
 
-[Quick Start](#quick-start) • [Commands](#commands) • [Subagents & Skills](#subagents--skills) • [Contributing](#contributing)
+[Quick Start](#quick-start) • [Commands](#commands) • [Subagents & Skills](#subagents--skills) • [What's New](#whats-new-in-v50) • [Contributing](#contributing)
 
 </div>
 
 ---
 
-## What's New in v4.1
+## What's New in v5.0
 
-- **Native Subagents** - 6 specialized agents for parallel execution (no MCP required)
-- **Folder-Based Skills** - Progressive loading with references, scripts, and assets
-- **Automatic Verification** - `sdd-verifier` runs after every implementation
-- **Cursor 2.4+ Optimized** - Full subagent and skill support
+- **Async Subagents** — Background subagents (`is_background: true`) let the parent agent continue working while long tasks run
+- **Subagent Tree** — Subagents spawn their own subagents: orchestrator → implementers → verifiers
+- **Hooks** — Workflow automation via `.cursor/hooks.json` (`subagentStop`, `stop` events)
+- **Sandbox Controls** — Granular network access via `.cursor/sandbox.json`
+- **Plugin Packaging** — Distributable as a Cursor Marketplace plugin (`.cursor-plugin/`)
+- **Trimmed Prompts** — All agent prompts shortened per Cursor 2.5 best practices
 
 ---
 
@@ -66,7 +68,7 @@ cd spec-kit-command-cursor
 |---------|---------|
 | `/implement` | Execute implementation with todo tracking |
 | `/execute-task` | Run single task from roadmap |
-| `/execute-parallel` | Parallel execution via native subagents |
+| `/execute-parallel` | Parallel execution via async subagents |
 
 ### Maintenance
 
@@ -84,20 +86,31 @@ cd spec-kit-command-cursor
 
 ### Subagents (`.cursor/agents/`)
 
-Specialized agents with isolated context for parallel execution:
+Specialized agents with isolated context. Background agents run asynchronously — the parent continues working.
 
-| Subagent | Model | Purpose |
-|----------|-------|---------|
-| `sdd-explorer` | fast | Codebase discovery |
-| `sdd-planner` | inherit | Architecture design |
-| `sdd-implementer` | inherit | Code generation |
-| `sdd-verifier` | fast | Validation after implementation |
-| `sdd-reviewer` | fast | Security & performance review |
-| `sdd-orchestrator` | inherit | Parallel task coordination |
+| Subagent | Model | Mode | Purpose |
+|----------|-------|------|---------|
+| `sdd-explorer` | fast | foreground, readonly | Codebase discovery |
+| `sdd-planner` | inherit | foreground | Architecture design |
+| `sdd-implementer` | inherit | **background** | Code generation |
+| `sdd-verifier` | fast | foreground | Validation after implementation |
+| `sdd-reviewer` | fast | foreground, readonly | Security & performance review |
+| `sdd-orchestrator` | inherit | **background** | Parallel task coordination |
+
+#### Subagent Tree (Cursor 2.5+)
+
+Subagents can spawn their own subagents, enabling true parallel DAG execution:
+
+```
+sdd-orchestrator (background)
+├── sdd-implementer (task 1) → sdd-verifier
+├── sdd-implementer (task 2) → sdd-verifier
+└── sdd-implementer (task 3) → sdd-verifier
+```
 
 ### Skills (`.cursor/skills/`)
 
-Auto-invoked domain knowledge packages:
+Auto-invoked domain knowledge packages with progressive loading:
 
 | Skill | Auto-Invoke When |
 |-------|------------------|
@@ -151,20 +164,71 @@ flowchart LR
 
 ---
 
+## Architecture
+
+```mermaid
+graph TD
+    User["User Request"] --> MainAgent["Main Agent"]
+    MainAgent -->|foreground| Explorer["sdd-explorer"]
+    MainAgent -->|foreground| Planner["sdd-planner"]
+    MainAgent -->|background| Orchestrator["sdd-orchestrator"]
+    MainAgent -->|background| Implementer["sdd-implementer"]
+    MainAgent -->|foreground| Reviewer["sdd-reviewer"]
+
+    Orchestrator -->|spawns| Impl1["implementer (task 1)"]
+    Orchestrator -->|spawns| Impl2["implementer (task 2)"]
+    Orchestrator -->|spawns| Impl3["implementer (task 3)"]
+
+    Implementer -->|spawns| Verifier["sdd-verifier"]
+    Impl1 -->|spawns| V1["verifier"]
+    Impl2 -->|spawns| V2["verifier"]
+    Impl3 -->|spawns| V3["verifier"]
+```
+
+---
+
 ## Project Structure
 
 ```
 .cursor/
-├── agents/           # Subagents (6 specialized)
-├── skills/           # Skills (5 with progressive loading)
+├── agents/           # 6 subagents (foreground + background)
+├── skills/           # 5 skills with progressive loading
 ├── commands/         # Slash commands
-└── rules/            # Always-applied rules
+├── rules/            # Always-applied rules
+├── hooks.json        # Workflow automation hooks
+└── sandbox.json      # Network access controls
+
+.cursor-plugin/
+└── plugin.json       # Cursor Marketplace manifest
 
 specs/
 ├── active/           # Features in development
 ├── todo-roadmap/     # Project roadmaps with DAG
 └── completed/        # Delivered features
 ```
+
+---
+
+## Hooks & Sandbox
+
+### Hooks (`.cursor/hooks.json`)
+
+Workflow automation triggered by agent events:
+
+| Hook | Trigger | Purpose |
+|------|---------|---------|
+| `subagentStop` | SDD subagent completes | Track completion in roadmap |
+| `stop` | Agent session ends | Generate completion summary |
+
+### Sandbox (`.cursor/sandbox.json`)
+
+Granular network access controls for sandboxed commands. Defaults allow common package registries (npm, pypi, GitHub, Docker, Deno) while denying private networks. Customize by editing `.cursor/sandbox.json`.
+
+---
+
+## Plugin Distribution
+
+SDD is packaged as a Cursor Marketplace plugin. Install via `/add-plugin` or clone the repo directly. See `.cursor-plugin/plugin.json` for the manifest.
 
 ---
 

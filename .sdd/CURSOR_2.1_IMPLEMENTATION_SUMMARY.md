@@ -1,8 +1,12 @@
+> **ARCHIVED** - This document is a historical record from the Cursor 2.1 era.  
+> The active system now runs on **SDD 5.0 / Cursor 2.5+**.  
+> See `.cursor/rules/sdd-system.mdc` for current documentation.
+
 # Cursor 2.1 Enhancements Implementation Summary
 
 **Date Completed:** 2025-10-21  
 **Cursor Version:** 2.1+  
-**Status:** ✅ COMPLETE
+**Status:** Archived (superseded by SDD 5.0)
 
 ---
 

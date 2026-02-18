@@ -2,6 +2,10 @@
 
 Generate a detailed technical implementation plan from specifications, including architecture decisions, tech stack, and design patterns.
 
+**Subagent:** Delegates to `sdd-planner` (foreground) for architecture design. Uses `sdd-planning` skill.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -81,6 +85,8 @@ Ready to generate the full plan?
 ```
 
 ### Phase 3: Generate Plan
+
+**Create directory if it doesn't exist:** `specs/active/[task-id]/`
 
 **Generate `plan.md` with this structure:**
 

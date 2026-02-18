@@ -1,8 +1,10 @@
 # /execute-parallel Command
 
-Execute multiple tasks in parallel using native Cursor subagents for coordination.
+Execute multiple tasks in parallel using async background subagents for coordination.
 
-**Leverages:** Native subagents (Cursor 2.4+), no external MCP required
+**Leverages:** Async subagents (Cursor 2.5+), subagent tree pattern, hooks for completion tracking.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full subagent protocol.
 
 ---
 
@@ -30,8 +32,8 @@ Execute multiple tasks in parallel using native Cursor subagents for coordinatio
 **Step 1: Read roadmap DAG**
 
 Read `specs/todo-roadmap/[project-id]/roadmap.json` and extract:
-- `dag.roots` - Starting tasks with no dependencies
-- `dag.parallelGroups` - Tasks that can run simultaneously
+- `dag.roots` — starting tasks with no dependencies
+- `dag.parallelGroups` — tasks that can run simultaneously
 - All tasks with their `dependencies` and `status` fields
 
 **Step 2: Identify ready tasks**
@@ -43,102 +45,80 @@ Tasks are ready when:
 
 **Step 3: Plan execution batches**
 
-Group tasks into parallel batches based on:
-- Dependency satisfaction
-- Resource requirements (file conflicts)
-- Estimated effort
+Group tasks into parallel batches based on dependency satisfaction, resource requirements (file conflicts), and estimated effort.
 
-### Phase 2: Parallel Execution with Subagents
+### Phase 2: Parallel Execution with Async Subagents
 
-**For each parallel batch:**
-
-Spawn multiple subagents simultaneously using the Task tool. Each subagent handles one task.
+**For each parallel batch, spawn background subagents simultaneously using multiple Task tool calls in a single message.**
 
 **Task-to-Subagent Mapping:**
 
-| Task Phase | Subagent | Model |
-|------------|----------|-------|
-| research | sdd-explorer | fast |
-| brief | sdd-planner | inherit |
-| specify | sdd-planner | inherit |
-| plan | sdd-planner | inherit |
-| tasks | sdd-planner | inherit |
-| implement | sdd-implementer | inherit |
-| review | sdd-reviewer | fast |
-| verify | sdd-verifier | fast |
+| Task Phase | Subagent | Model | Mode |
+|------------|----------|-------|------|
+| research | sdd-explorer | fast | foreground |
+| brief/specify/plan/tasks | sdd-planner | inherit | foreground |
+| implement | sdd-implementer | inherit | **background** |
+| review | sdd-reviewer | fast | foreground |
+| verify | sdd-verifier | fast | foreground |
 
-**Execution Pattern:**
+**Subagent Tree Pattern (2.5+):**
 
-```markdown
-## Batch 1 (Parallel)
+Each background `sdd-implementer` automatically spawns `sdd-verifier` as a child subagent after completing its work. This means verification happens inside the subagent tree without blocking the orchestrator.
 
-Spawning subagents for: task-001, task-003, task-005
-
-[Task tool calls - all in single message for parallel execution]
-
-Task: sdd-implementer for task-001
-Task: sdd-implementer for task-003  
-Task: sdd-explorer for task-005
+```
+sdd-orchestrator (background)
+├── sdd-implementer (task 1) → spawns sdd-verifier
+├── sdd-implementer (task 2) → spawns sdd-verifier
+└── sdd-explorer (task 3)
 ```
 
-**Each subagent receives:**
-- Task details from roadmap
-- Relevant spec/plan file paths
-- Expected deliverables
-- Status update instructions
+**Spawning subagents:**
+
+```
+Task 1: {
+  subagent_type: "sdd-implementer",
+  prompt: "Execute task-001: [details from roadmap]. Read specs at [path]...",
+  model: "inherit"
+}
+
+Task 2: {
+  subagent_type: "sdd-implementer",
+  prompt: "Execute task-003: [details from roadmap]. Read specs at [path]...",
+  model: "inherit"
+}
+```
+
+**Each subagent receives:** task details from roadmap, relevant spec/plan file paths, expected deliverables, status update instructions.
 
 ### Phase 3: Progress Tracking
 
 **After each batch completes:**
 
 1. **Collect results** from subagent responses
-2. **Update roadmap.json** statuses:
-   - `todo` → `in-progress` (when starting)
-   - `in-progress` → `review` (when implementation done)
-   - `review` → `done` (when verified)
-3. **Verify with sdd-verifier** for implementation tasks
-4. **Identify next ready tasks** based on completed dependencies
+2. **Update roadmap.json** statuses: `todo` → `in-progress` → `review` → `done`
+3. **Identify next ready tasks** based on completed dependencies
+4. The `subagentStop` hook in `.cursor/hooks.json` auto-logs completion
 
 **Progress Report Format:**
 
 ```markdown
 ## Batch 1 Complete
 
-| Task | Status | Duration | Notes |
-|------|--------|----------|-------|
-| task-001 | done | 2m | Files: src/auth.ts |
-| task-003 | done | 3m | Files: src/api.ts |
-| task-005 | done | 1m | Research complete |
+| Task | Status | Notes |
+|------|--------|-------|
+| task-001 | done | Files: src/auth.ts |
+| task-003 | done | Files: src/api.ts |
 
 ## Next Batch Ready
 - task-002 (deps satisfied: task-001)
 - task-004 (deps satisfied: task-003)
 ```
 
-### Phase 4: Automatic Verification
-
-**After implementation tasks:**
-
-Always spawn `sdd-verifier` subagent to confirm:
-- Implementation exists and is functional
-- Tests pass
-- Spec requirements met
-- No incomplete work marked as done
-
-```markdown
-Verification for task-001:
-[Task tool: sdd-verifier with implementation context]
-```
-
-### Phase 5: Completion
+### Phase 4: Completion
 
 **When all tasks done:**
 
-1. **Final roadmap.json update:**
-   - All task statuses: "done"
-   - `dag.parallelGroups`: empty
-   - Update statistics
-
+1. **Final roadmap.json update** — all statuses "done", update statistics
 2. **Generate completion report:**
 
 ```markdown
@@ -147,23 +127,15 @@ Verification for task-001:
 **Project:** [project-id]
 **Tasks Executed:** [N]
 **Parallel Batches:** [M]
-**Total Duration:** [time]
 
 ### Execution Timeline
-| Batch | Tasks | Duration | Parallelism |
-|-------|-------|----------|-------------|
-| 1 | task-001, task-003, task-005 | 3m | 3x |
-| 2 | task-002, task-004 | 4m | 2x |
-| 3 | task-006 | 2m | 1x |
-
-### Files Created/Modified
-- `src/auth.ts`: User authentication
-- `src/api.ts`: API endpoints
-- [...]
+| Batch | Tasks | Parallelism |
+|-------|-------|-------------|
+| 1 | task-001, task-003, task-005 | 3x |
+| 2 | task-002, task-004 | 2x |
 
 ### Verification Summary
-- All implementations verified: YES
-- Tests passing: YES
+- All implementations verified via subagent tree: YES
 - Spec compliance: 100%
 
 ### Next Steps
@@ -174,53 +146,21 @@ Verification for task-001:
 
 ---
 
-## Subagent Orchestration
-
-### Spawning Parallel Subagents
-
-Use multiple Task tool calls in a single message:
-
-```
-Task 1: {
-  subagent_type: "generalPurpose",
-  prompt: "Execute task-001: [details]. Use sdd-implementation skill...",
-  model: "inherit"
-}
-
-Task 2: {
-  subagent_type: "generalPurpose", 
-  prompt: "Execute task-003: [details]. Use sdd-implementation skill...",
-  model: "inherit"
-}
-```
-
-### Handling Blockers
-
-If a subagent reports a blocker:
-
-1. Mark task as `blocked` in roadmap
-2. Continue with non-dependent tasks
-3. Report blocker for user resolution
-4. Resume with `--resume` flag
-
-### File Conflict Prevention
-
-When multiple tasks modify same files:
-1. Execute those tasks sequentially within their batch
-2. Or restructure into separate batches
-3. Verify no conflicts before parallel execution
-
----
-
 ## Flags
 
-| Flag | Description |
-|------|-------------|
-| `--epic [id]` | Execute only tasks in specified epic |
-| `--until-finish` | Continue until all tasks complete or blocked |
-| `--resume` | Resume from last incomplete batch |
-| `--verify` | Run verification after each implementation |
-| `--dry-run` | Show execution plan without running |
+| Flag | Description | Behavior |
+|------|-------------|----------|
+| `--epic [id]` | Scope to one epic | Only execute tasks within the specified epic |
+| `--until-finish` | Loop until done | Repeat batch cycle until all tasks complete or all remaining are blocked |
+| `--resume` | Resume after error | Skip completed tasks, restart from last incomplete batch |
+| `--dry-run` | Preview only | Show execution plan and batch groupings without running |
+
+### `--until-finish` Behavior
+
+Without `--until-finish`: executes one batch of ready tasks and reports.
+With `--until-finish`: continuously identifies ready tasks, spawns batches, collects results, and repeats until the entire roadmap is complete or all remaining tasks are blocked.
+
+This is the **parallel** equivalent of `/execute-task --until-finish` (which runs sequentially).
 
 ---
 
@@ -230,19 +170,23 @@ When multiple tasks modify same files:
 1. Task marked as `blocked` in roadmap
 2. Error details captured
 3. Dependent tasks remain blocked
-4. Continue with independent tasks
-5. Report failures at end
+4. Continue with independent tasks in same batch
+5. Report all failures at end of batch
+
+**File Conflict Prevention:** When multiple tasks modify same files, execute those tasks sequentially within their batch or restructure into separate batches.
 
 **Recovery:**
 ```
 /execute-parallel [project] --resume
 ```
+Skips all `done` tasks and restarts from the last incomplete batch.
 
 ---
 
 ## Related
 
-- `/sdd-full-plan` - Create roadmap with DAG
-- `/execute-task` - Execute single task sequentially
-- `sdd-orchestrator` subagent - Detailed orchestration logic
-- `sdd-verifier` subagent - Implementation validation
+- `/sdd-full-plan` — Create roadmap with DAG
+- `/execute-task` — Execute single task sequentially
+- `sdd-orchestrator` subagent — Detailed orchestration logic
+- `.cursor/hooks.json` — Auto-tracks subagent completion
+- `.cursor/commands/_shared/agent-manual.md` — Full agent protocol

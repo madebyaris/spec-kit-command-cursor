@@ -1,10 +1,14 @@
 # /sdd-full-plan Command
 
-Create a comprehensive project roadmap from A to Z with kanban-style task organization, epic hierarchy, and VSCode extension compatibility.
+Create a comprehensive project roadmap from A to Z with kanban-style task organization, epic hierarchy, and DAG-based parallel execution.
 
 **Aliases:** `/pecut-all-in-one`
 
 **Supports `--until-finish` flag** for automated execution of the entire project after roadmap creation.
+
+**Subagent:** Uses `sdd-orchestrator` (background) for parallel execution. Spawns `sdd-implementer` and `sdd-verifier` as child subagents.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
 
 ---
 
@@ -83,7 +87,7 @@ specs/todo-roadmap/[project-id]/
 ```
 
 **Generate roadmap.json** with:
-- Project metadata (id, title, description, sddVersion: "4.0")
+- Project metadata (id, title, description, sddVersion: "5.0")
 - Kanban columns (todo, in-progress, review, done)
 - Tasks/epics with dependencies, SDD command mappings, and DAG structure
 - Statistics (totalTasks, completionPercentage)
@@ -119,13 +123,19 @@ Before final output, verify:
 
 ### Phase 5: Automated Execution (Only with `--until-finish`)
 
-If `--until-finish` flag provided:
+If `--until-finish` flag provided, execution begins immediately after roadmap creation:
 
-1. **Pre-Execution Summary** - Show roadmap summary and execution queue
-2. **Execute All Tasks** - Follow `/execute-task --until-finish` workflow for each epic/task in dependency order
-3. **Progress Updates** - Report after each task/epic completion
-4. **Error Handling** - Stop on error, report progress, provide resume command
-5. **Final Completion** - Show epic summary, files created, and next steps
+1. **Pre-Execution Summary** — Show roadmap summary and execution queue
+2. **Delegate to `sdd-orchestrator`** (background subagent) for parallel DAG execution
+3. **Orchestrator identifies ready tasks** from `dag.roots` and `dag.parallelGroups`
+4. **Orchestrator spawns** `sdd-implementer` subagents for each ready task in parallel
+5. **Each implementer spawns** `sdd-verifier` as child subagent (subagent tree pattern)
+6. **Batch completion** — collect results, update roadmap, identify next ready tasks
+7. **Repeat** until all tasks complete or a blocker is hit
+8. **Error Handling** — mark failed task as `blocked`, continue independent tasks, report at end
+9. **Final Completion** — show epic summary, files created, verification results
+
+**This is equivalent to running `/execute-parallel [project-id] --until-finish` after roadmap creation.** The `--until-finish` flag simply combines both steps into one command.
 
 ---
 
@@ -161,12 +171,14 @@ Follow Phase 5 execution workflow with progress updates and completion summary.
 
 | Complexity | Epics | Tasks | Approach |
 |------------|-------|-------|----------|
-| Simple | 2-3 | 5-10 | SDD 2.5 (Brief) |
+| Simple | 2-3 | 5-10 | Quick Planning (Brief) |
 | Medium | 3-5 | 10-20 | Mixed |
-| Complex | 5-8 | 20-40 | SDD 2.0 (Full) |
-| Enterprise | 8+ | 40+ | Multi-phase SDD 2.0 |
+| Complex | 5-8 | 20-40 | Full Planning |
+| Enterprise | 8+ | 40+ | Multi-phase Full Planning |
 
 ## Related Commands
 
-- `/execute-task [task-id] --until-finish` - Execute task/epic until complete
+- `/execute-task [task-id] --until-finish` — Execute task/epic until complete
+- `/execute-parallel [project-id]` — Parallel execution via async subagents
 - `/brief`, `/research`, `/specify`, `/plan`, `/tasks`, `/implement`, `/audit`
+- `.cursor/commands/_shared/agent-manual.md` — Full agent protocol

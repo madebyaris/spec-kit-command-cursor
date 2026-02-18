@@ -12,7 +12,6 @@ Compare implementations against specifications and generate structured review re
 - Code review before marking tasks complete
 - Quality assurance checks
 - Verifying implementation matches spec
-- Identifying technical debt and issues
 
 ## Workflow
 
@@ -24,11 +23,7 @@ Compare implementations against specifications and generate structured review re
 
 ## Audit Checklist
 
-Reference `references/checklist.md` for the complete audit checklist covering:
-- Functional requirements compliance
-- Non-functional requirements (performance, security)
-- Code quality standards
-- Edge case handling
+Reference `references/checklist.md` for the complete audit checklist.
 
 ## Severity Levels
 
@@ -43,33 +38,22 @@ Reference `references/checklist.md` for the complete audit checklist covering:
 ## Audit Report: [Feature]
 
 **Status:** Pass | Fail | Warnings
-**Date:** [timestamp]
-**Spec Version:** [version]
 
 ### Quick Stats
-- CRITICAL: [N]
-- MAJOR: [N]  
-- MINOR: [N]
+- CRITICAL: [N] | MAJOR: [N] | MINOR: [N]
 
 ### Review Comments
 | ID | Severity | Location | Issue | Recommendation |
-|:--:|:--------:|:---------|:------|:---------------|
-| #1 | CRITICAL | `file:line` | Description | Fix suggestion |
 
 ### Spec Compliance
 | Requirement | Status | Evidence |
-|-------------|--------|----------|
-| Req 1 | MET | [file:line] |
-| Req 2 | NOT MET | [gap description] |
 
 ### Recommended Actions
 1. [Priority action]
-2. [Secondary action]
 ```
 
 ## Integration
 
 - Works with `sdd-verifier` subagent for automated validation
 - Can trigger `scripts/validate.sh` for automated checks
-- Best used with Cursor's Debug Mode for runtime evidence
 - Use the ask question tool if audit criteria are unclear

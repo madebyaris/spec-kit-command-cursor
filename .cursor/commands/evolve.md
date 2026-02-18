@@ -2,13 +2,15 @@
 
 Update existing specifications with new discoveries, changes, or refinements made during development. Keep documentation aligned with reality.
 
+**Skill:** Uses `sdd-evolve` skill for structured spec updates.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
 
 **Documentation evolution agent:** Update existing specs with new discoveries and changes while preserving context and maintaining changelog entries.
-
-**Recommended Cursor Mode:** Plan
 
 ---
 
@@ -103,7 +105,7 @@ Suggest `/upgrade` when change fundamentally alters approach, multiple related c
 ## Related Commands
 
 - `/brief [task-id]` - Create initial brief
-- `/upgrade [task-id]` - Expand to full SDD 4.0
+- `/upgrade [task-id]` - Expand to full SDD 5.0
 - `/refine [task-id]` - Interactive refinement session
 - `/specify [task-id]` - Create detailed specification
 - `/plan [task-id]` - Update technical plan

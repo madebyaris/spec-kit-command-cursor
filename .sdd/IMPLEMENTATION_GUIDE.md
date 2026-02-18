@@ -1,3 +1,7 @@
+> **ARCHIVED** - This document is a historical reference.  
+> The current implementation workflow is managed by the `sdd-implementer` subagent.  
+> See `.cursor/skills/sdd-implementation/SKILL.md` for current guidance.
+
 # Implementation Guide
 
 ## Critical: Following the Todo-List

@@ -1,3 +1,6 @@
+> **ARCHIVED** - This document is a historical record of an early optimization.  
+> The current SDD 5.0 system uses concise templates and progressive loading via skills.
+
 # Issue #1 Resolution: Files Too Large
 
 ## Problem Statement

@@ -2,6 +2,10 @@
 
 Execute the planned implementation with systematic todo-list execution and continuous progress tracking.
 
+**Subagent:** Delegates to `sdd-implementer` (background) for long implementations. After completion, `sdd-verifier` is spawned as a child subagent to validate work.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -13,8 +17,6 @@ Execute the planned implementation with systematic todo-list execution and conti
 - Mark each item complete as you finish it
 - Document blockers and deviations
 - Write production-quality code
-
-**Recommended Cursor Mode:** Agent
 
 ---
 
@@ -65,6 +67,8 @@ Present implementation plan before starting:
 
 ### Phase 3: Execution
 
+**Create directory if it doesn't exist:** `specs/active/[task-id]/`
+
 **Create or update todo-list.md** with:
 - Task phases
 - Individual todos with dependencies
@@ -92,12 +96,14 @@ Present implementation plan before starting:
 
 ### Phase 4: Verification
 
-Verify:
+Spawn `sdd-verifier` subagent to independently validate:
 - [ ] All todos complete or blocked
 - [ ] Code follows project patterns
 - [ ] No linter errors
 - [ ] Tests pass (if applicable)
-- [ ] Check AI Code Review in sidepanel
+- [ ] Spec requirements met
+
+The `subagentStop` hook in `.cursor/hooks.json` auto-logs completion.
 
 ---
 
@@ -123,7 +129,7 @@ Verify:
 
 **Next steps:**
 - Run tests: `[test command]`
-- Review changes: Check AI Code Review in sidepanel
+- Review changes in IDE
 - Update specs: `/evolve [task-id] [discovery]`
 
 **Files:**
@@ -137,6 +143,10 @@ Verify:
 **Todo item too large:** Break into subtasks (e.g., "Implement authentication" → auth service, login endpoint, logout endpoint, JWT generation, middleware)
 
 **Too many blocked items:** List blockers, prioritize unblocking, continue with independent tasks
+
+## Subagent Delegation
+
+For long implementations, the main agent delegates to `sdd-implementer` (background subagent). The implementer spawns `sdd-verifier` as a child subagent after completing work — this is the subagent tree pattern from Cursor 2.5+.
 
 ## Related Commands
 

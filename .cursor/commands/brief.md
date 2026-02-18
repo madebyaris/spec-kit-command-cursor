@@ -2,6 +2,10 @@
 
 Create a lightweight feature brief in ~30 minutes, then start coding.
 
+**Skill:** Uses `sdd-planning` skill. Delegates to `sdd-explorer` (fast, readonly) for codebase pattern discovery.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -77,7 +81,7 @@ Before I create the brief, I have a few questions:
 | Dependencies | Few/none | Multiple external |
 
 If complexity suggests Full SDD, mention:
-> "This looks like it might benefit from full SDD 2.0 planning. Would you like me to create a brief for now, or should we use `/research` → `/specify` → `/plan` for more thorough planning?"
+> "This looks like it might benefit from full SDD planning. Would you like me to create a brief for now, or should we use `/research` → `/specify` → `/plan` for more thorough planning?"
 
 ### Phase 2: Planning (Create Plan)
 
@@ -184,7 +188,7 @@ Use this structure:
 
 ---
 
-*Brief created with SDD 4.0 - Ready to code!*
+*Brief created with SDD 5.0 - Ready to code!*
 ```
 
 ### Phase 4: Verification
@@ -203,7 +207,7 @@ Verify file created and contains: problem statement, 3+ requirements, actionable
 - Core requirements: [Count] must-haves
 - Next actions: [Count] items
 
-**Next:** Start coding or run `/upgrade [task-id]` for full SDD 2.0
+**Next:** Start coding or run `/upgrade [task-id]` for full SDD planning
 ```
 
 ---
@@ -219,7 +223,7 @@ Verify file created and contains: problem statement, 3+ requirements, actionable
 
 ### Issue: Feature is too complex for brief
 **Cause**: Multi-team, high-risk, or architecturally significant feature
-**Solution**: Suggest Full SDD 2.0:
+**Solution**: Suggest Full SDD planning:
 - "This looks complex. Would you prefer full planning with `/research` → `/specify` → `/plan`?"
 
 ### Issue: Can't find existing patterns
@@ -232,7 +236,7 @@ Verify file created and contains: problem statement, 3+ requirements, actionable
 ## Related Commands
 
 - `/evolve [task-id]` - Update brief as you discover things
-- `/upgrade [task-id]` - Expand to full SDD 2.0 if needed
+- `/upgrade [task-id]` - Expand to full SDD 5.0 if needed
 - `/implement [task-id]` - Start implementation (requires plan.md)
 - `/refine [task-id]` - Refine the brief through discussion
-- `/research [task-id]` - Deep pattern research (Full SDD 2.0)
+- `/research [task-id]` - Deep pattern research (Full SDD planning)

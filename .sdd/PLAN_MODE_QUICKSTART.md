@@ -1,3 +1,7 @@
+> **ARCHIVED** - This document was written for an earlier SDD version.  
+> PLAN mode is now built into all SDD 5.0 commands by default.  
+> See `.cursor/commands/_shared/agent-manual.md` for the current workflow.
+
 # PLAN Mode Quick Start Guide
 
 Welcome to the enhanced SDD system with PLAN mode integration! This guide will help you understand and use the new plan-approve-execute workflow.

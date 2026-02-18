@@ -2,6 +2,10 @@
 
 Investigate existing patterns and gather context before specification.
 
+**Subagent:** Delegates to `sdd-explorer` (fast, readonly, foreground) for codebase discovery. Uses `sdd-research` skill for structured investigation.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -257,7 +261,7 @@ Use this structure:
 
 ---
 
-*Research completed with SDD 2.0*
+*Research completed with SDD 5.0*
 ```
 
 ### Phase 4: Verification

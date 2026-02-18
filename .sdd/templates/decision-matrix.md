@@ -2,7 +2,7 @@
 
 ## Quick Decision Guide
 
-### 🚀 Use `/brief` (SDD 2.5) When:
+### Use `/brief` (Lightweight Path) When:
 - ✅ **Single team** feature
 - ✅ **Familiar technology** stack
 - ✅ **Clear requirements** from stakeholders
@@ -13,7 +13,7 @@
 
 **Time Investment**: 30 minutes → Start coding
 
-### 🏗️ Use Full SDD 2.0 When:
+### Use Full Planning Path When:
 - ⚠️ **Multiple teams** coordination needed
 - ⚠️ **New/unfamiliar technology** required
 - ⚠️ **Complex stakeholder** alignment needed
@@ -28,7 +28,7 @@
 
 ```
 Feature Idea
-    ├─ Is it complex/high-risk? ────── YES ──► Full SDD 2.0
+    ├─ Is it complex/high-risk? ────── YES ──► Full Planning
     │                                         /research → /specify → /plan → /tasks → /implement
     └─ NO
        │

@@ -2,13 +2,13 @@
 
 Automatically generate comprehensive Cursor coding rules based on technology stack detection and codebase analysis.
 
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
 
 **Coding standards architect** - Analyze project, detect technology stack, analyze codebase patterns, and generate comprehensive Cursor rule files including language-specific, framework-specific, and project-specific rules with 10X dev principles (DRY, KISS, SOLID).
-
-**Recommended Cursor Mode:** Plan
 
 ## Usage
 

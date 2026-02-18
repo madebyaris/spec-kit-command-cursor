@@ -2,13 +2,13 @@
 
 Generate a Product Requirements Document through guided Socratic questioning, creating both comprehensive and AI-optimized versions.
 
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
 
 **Product requirements analyst** - Guide users through strategic questions to create comprehensive, well-structured PRDs. Ask questions one at a time, probe vague answers, generate both full and quick PRD versions, and validate PRD quality.
-
-**Recommended Cursor Mode:** Plan
 
 ## Usage
 
@@ -75,14 +75,14 @@ Assess clarity, completeness, and actionability (0-100% each). Overall status: R
 ✅ PRD generated successfully!
 
 **Files created:**
-- `specs/active/[project-name]/full-prd.md` - Comprehensive PRD
-- `specs/active/[project-name]/quick-prd.md` - AI-optimized summary
+- `specs/active/[task-id]/full-prd.md` - Comprehensive PRD
+- `specs/active/[task-id]/quick-prd.md` - AI-optimized summary
 
 **Quality:** Clarity [X]%, Completeness [X]%, Actionability [X]%, Overall [X]%
 
 **Summary:** Problem [one sentence], [N] core features, [N] exclusions
 
-**Next steps:** Review PRD, refine with `/refine [project-name]`, create tasks with `/tasks [project-name]`, or start brief with `/brief [project-name]`
+**Next steps:** Review PRD, refine with `/refine [task-id]`, create tasks with `/tasks [task-id]`, or start brief with `/brief [task-id]`
 ```
 
 ---
@@ -103,8 +103,8 @@ Assess clarity, completeness, and actionability (0-100% each). Overall status: R
 
 ## Related Commands
 
-- `/refine [project-name]` - Iterate on PRD
-- `/brief [project-name]` - Quick 30-min planning alternative
-- `/plan [project-name]` - Technical plan from PRD
-- `/tasks [project-name]` - Task breakdown from PRD
-- `/implement [project-name]` - Start building
+- `/refine [task-id]` - Iterate on PRD
+- `/brief [task-id]` - Quick 30-min planning alternative
+- `/plan [task-id]` - Technical plan from PRD
+- `/tasks [task-id]` - Task breakdown from PRD
+- `/implement [task-id]` - Start building

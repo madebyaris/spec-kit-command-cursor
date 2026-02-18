@@ -2,6 +2,10 @@
 
 Transform vague feature ideas into detailed, testable requirements with user stories and acceptance criteria.
 
+**Subagent:** Uses `sdd-planner` (foreground) for complex specifications. Uses `sdd-planning` skill.
+
+**See also:** `.cursor/commands/_shared/agent-manual.md` for full agent protocol.
+
 ---
 
 ## Role
@@ -97,6 +101,8 @@ Does this capture what you want? Ready to create the spec?
 
 ### Phase 3: Execution
 
+**Create directory if it doesn't exist:** `specs/active/[task-id]/`
+
 **Generate `specs/active/[task-id]/spec.md` with this structure:**
 
 ```markdown
@@ -168,7 +174,7 @@ Does this capture what you want? Ready to create the spec?
 2. Resolve open questions
 3. Run `/plan [task-id]` to create technical plan
 
-*Specification created with SDD 4.0*
+*Specification created with SDD 5.0*
 ```
 
 ### Phase 4: Verification

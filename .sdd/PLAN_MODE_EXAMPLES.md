@@ -1,3 +1,7 @@
+> **ARCHIVED** - This document was written for an earlier SDD version.  
+> PLAN mode is now built into all SDD 5.0 commands by default.  
+> See `.cursor/commands/` for current command documentation.
+
 # PLAN Mode Examples
 
 This document demonstrates typical PLAN mode interactions for each SDD command, showing the plan-approve-execute workflow in action.
