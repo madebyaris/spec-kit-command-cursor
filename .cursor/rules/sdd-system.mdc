@@ -64,12 +64,12 @@ Skills use progressive loading — keep `SKILL.md` focused, put details in `refe
 
 ## Workflows
 
-### SDD 2.5: Quick Planning (80% of features)
+### Quick Planning (80% of features)
 - `/brief` → `feature-brief.md` (30-minute planning)
 - `/evolve` → Update specs with discoveries
 - `/refine` → Iterate on existing specs
 
-### SDD 2.0: Full Planning (complex features)
+### Full Planning (complex features)
 `/research` → `/specify` → `/plan` → `/tasks` → `/implement`
 
 ### Parallel Execution with DAG
@@ -145,6 +145,7 @@ specs/
 | `/implement` | Execute implementation | sdd-implementer subagent |
 | `/audit` | Spec-driven audit | sdd-reviewer subagent |
 | `/evolve` | Update specs | sdd-evolve skill |
+| `/refine` | Iterate on existing specs | sdd-planning skill |
 | `/sdd-full-plan` | Full project roadmap | sdd-orchestrator |
 | `/execute-task` | Execute roadmap task | sdd-implementer |
 | `/execute-parallel` | Parallel DAG execution | sdd-orchestrator |

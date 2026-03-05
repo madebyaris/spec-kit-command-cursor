@@ -128,10 +128,10 @@ Create Product Requirements Documents through Socratic questioning.
 - **Output**: `full-prd.md` + `quick-prd.md`
 - **Use for**: New products, major features
 
-#### `/debug` - Spec-Driven Audit
+#### `/audit` - Spec-Driven Audit
 Investigate issues by comparing code against specs.
-- **Output**: Debug report with severity ratings
-- **Use for**: Bug investigation, code review
+- **Output**: Audit report with severity ratings
+- **Use for**: Bug investigation, code review, spec compliance
 
 #### `/generate-rules` - Coding Rules
 Auto-generate Cursor rules based on tech stack detection.
@@ -261,15 +261,40 @@ Todo-lists are NOT suggestions - they are executable checklists that MUST be fol
    - `/sdd-full-plan` - For full applications
    - `/research` + `/specify` - For complex features
 
-2. **Keep specs updated with `/evolve`**
+2. **Heavy App Path** (new apps with 20+ tasks, enterprise complexity):
+   - Start with `/sdd-full-plan [project-id] [description]`
+   - For 40+ tasks: Use **Option C: Phased Creation** — create epics one at a time, approve each, optionally execute or continue
+   - Execute with `/execute-parallel [project-id] --until-finish`
+   - Resume after interruption: `/execute-parallel [project-id] --resume`
 
-3. **Use `/refine` for iterative improvements**
+3. **Keep specs updated with `/evolve`**
 
-4. **Upgrade when complexity emerges with `/upgrade`**
+4. **Use `/refine` for iterative improvements**
 
-5. **Use `/debug` to investigate issues systematically**
+5. **Upgrade when complexity emerges with `/upgrade`**
 
-6. **Generate coding rules for new projects with `/generate-rules`**
+6. **Use `/audit` to investigate issues systematically**
+
+7. **Generate coding rules for new projects with `/generate-rules`**
+
+## Spec Archival Workflow
+
+When a feature is fully implemented, verified, and merged:
+
+1. **Verify completion** — all todo-list items checked, verifier passed, no open blockers
+2. **Create retrospective** (optional) — use `.sdd/templates/retrospective.md` for lessons learned
+3. **Move to completed** — `mv specs/active/[task-id] specs/completed/[task-id]`
+4. **Update roadmap** — set task status to `done`, update `completedAt` timestamp
+5. **Update index** — remove from active features in `specs/index.md`
+
+**When to archive:**
+- All acceptance criteria met
+- Code merged to main branch
+- No pending review items
+
+**Do not archive if:**
+- Feature is partially complete (keep in `active/`)
+- Follow-up work is planned (keep in `active/`, create new tasks)
 
 ## References
 

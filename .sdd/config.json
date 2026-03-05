@@ -12,6 +12,7 @@
     "collaborationMode": true,
     "defaultWorkflow": "brief", 
     "planningTimeLimit": 30,
+    "maxParallelImplementers": 4,
     "templates": {
       "brief": ".sdd/templates/feature-brief-v2.md",
       "spec": ".sdd/templates/spec-compact.md",

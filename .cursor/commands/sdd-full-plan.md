@@ -68,6 +68,7 @@ When provided, automatically executes all tasks after roadmap creation:
 **Ask execution mode:**
 - **Option A:** One-by-one processing (interactive, step-by-step)
 - **Option B:** Immediate execution (generate all at once)
+- **Option C:** Phased creation (recommended for enterprise: 8+ epics, 40+ tasks) — create Epic 1 + tasks → approve → optionally execute or pause → Epic 2 + tasks → repeat until all epics created
 
 Wait for execution mode selection before proceeding.
 
@@ -75,7 +76,14 @@ Wait for execution mode selection before proceeding.
 
 **Option A: One-by-One Processing** - For each epic, present tasks and wait for approval before creating.
 
-**Option B: Immediate Execution** - Create all files at once:
+**Option B: Immediate Execution** - Create all files at once.
+
+**Option C: Phased Creation** (for enterprise roadmaps):
+1. Create Epic 1 + its tasks → present for approval
+2. User approves → create files for Epic 1
+3. Ask: execute Epic 1 now, or continue to Epic 2?
+4. Create Epic 2 + its tasks (with cross-epic dependencies to Epic 1) → approve
+5. Repeat until all epics created. Each phase can be executed via `/execute-parallel` or paused for review.
 
 **Create directory structure:**
 ```
@@ -108,6 +116,7 @@ specs/todo-roadmap/[project-id]/
 - Task metadata (id, title, description, type, parentId, status, priority)
 - Dependencies and parallelization flags
 - SDD command mappings (`phase`, `commands`, `executeCommand`)
+- **`sdd.touchedFiles`** (for implementation tasks): Array of file paths/globs this task will modify (e.g. `["src/auth/**", "package.json"]`). Infer from task scope — e.g. "Implement auth API" → `["src/auth/**", "src/api/auth.ts"]`. Enables conflict detection during parallel execution. Omit for research/brief/spec/plan phases.
 - Orchestration fields for agent-orchestration
 
 **Create execution-log.md** for tracking task history and status changes.
