@@ -60,7 +60,7 @@ Subagents run in **isolated context**. Use them for operations that would bloat 
 | `sdd-planner` | Architecture design | inherit | foreground |
 | `sdd-implementer` | Code generation | inherit | **background** |
 | `sdd-verifier` | Validation | fast | foreground |
-| `sdd-reviewer` | Code review | fast | foreground, readonly |
+| `sdd-reviewer` | Pre-merge code review | fast | foreground, readonly |
 | `sdd-orchestrator` | Coordination | inherit | **background** |
 
 ### Foreground vs Background
@@ -117,6 +117,20 @@ After every implementation phase, the implementer spawns `sdd-verifier` as a chi
 ```
 sdd-implementer completes → spawns sdd-verifier → validates work → reports back
 ```
+
+### Reviewer vs Verifier
+
+These two agents serve distinct purposes — do not confuse them:
+
+| Aspect | `sdd-reviewer` | `sdd-verifier` |
+|--------|---------------|----------------|
+| **When** | Before merging / on demand via `/audit` | Automatically after every implementation |
+| **Perspective** | Code review — quality, security, performance | Completeness — does the code match the spec? |
+| **Scope** | Broad: style, patterns, security, perf | Focused: spec requirements, file existence, tests pass |
+| **Spawned by** | Main agent or user request | `sdd-implementer` (child subagent) |
+| **Mode** | Readonly | Foreground (can report but not edit) |
+
+**Rule of thumb:** Verifier answers "is it done?", Reviewer answers "is it good?"
 
 ---
 
@@ -187,11 +201,16 @@ Tasks organized as Directed Acyclic Graph with dependencies:
 
 ### Parallel Execution Pattern
 
-1. Load `roadmap.json` and identify ready tasks
-2. Spawn background subagent for each ready task (parallel Task tool calls)
+1. Load `roadmap.json` (for heavy roadmaps: only `dag`, `statistics`, and current batch tasks — not full `tasks` object)
+2. Spawn background subagent for each ready task (parallel Task tool calls). Pass minimal context: `task-id`, `title`, `linkedSpec path`, `executeCommand` — implementer loads full details on demand
 3. Collect results, update roadmap statuses
 4. Each implementer spawns `sdd-verifier` as child subagent
 5. Identify next ready tasks, repeat
+
+### Context Management for Heavy Roadmaps
+
+- **Orchestrator:** Load only `dag.roots`, `dag.parallelGroups`, and `tasks.[id]` for the current batch. Avoid loading 40+ task objects.
+- **Implementer prompts:** Pass task ID and paths; implementer reads `specs/todo-roadmap/[project-id]/tasks/[task-id].json` and spec files itself.
 
 ```markdown
 Batch 1 (parallel, background):
@@ -217,8 +236,12 @@ Batch 2 (deps satisfied):
 | Permission denied | Explain simply, suggest fix |
 | Subagent blocked | Report blocker, continue others |
 | Verification failed | Report gaps, don't mark done |
+| Implementation breaks build | Revert with `git checkout -- [files]`, document blocker, re-attempt with fix |
+| Verification fails critically | Revert task changes, update task status to `blocked`, report to orchestrator |
+| Context window exhaustion | Save progress to spec files, summarize state, hand off to new session |
+| Concurrent file conflict | Only orchestrator writes to `roadmap.json`; implementers report results back |
 
-**Golden Rules:** Fix small issues yourself. Ask when uncertain. Never leave user stuck. Always verify implementation completeness.
+**Golden Rules:** Fix small issues yourself. Ask when uncertain. Never leave user stuck. Always verify implementation completeness. When in doubt, revert and retry rather than building on broken state.
 
 ---
 

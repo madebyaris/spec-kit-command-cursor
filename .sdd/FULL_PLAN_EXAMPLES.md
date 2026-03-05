@@ -179,7 +179,7 @@ I understand the project well, create everything at once.
       "type": "subtask",
       "parentId": "epic-001",
       "priority": "high",
-      "complexity": "low",
+      "complexity": "simple",
       "estimatedHours": 8,
       "dependencies": [],
       "sdd": {
@@ -801,6 +801,25 @@ Available tasks:
 
 **Remember:** You can switch modes mid-process if needed!
 
+### 0. Execution Mode: Phased vs Immediate
+
+**Use Phased Creation (Option C)** when:
+- Enterprise complexity: 8+ epics, 40+ tasks
+- Need to review and approve each epic before proceeding
+- Want to execute epics incrementally (run Epic 1, then Epic 2, etc.)
+- Prefer smaller batches to avoid overwhelming context
+
+**Use Immediate Execution (Option B)** when:
+- Medium/complex: 3-8 epics, 10-40 tasks
+- Well-understood project scope
+- Want full roadmap visible from the start
+- Ready for team collaboration immediately
+
+**Use One-by-One (Option A)** when:
+- Learning the project structure
+- First time planning this type of project
+- Need to adjust approach as understanding grows
+
 ### 1. Choosing the Right Complexity
 
 **Use Simple** when:
@@ -830,6 +849,8 @@ Available tasks:
 **Good task size:** 4-16 hours (0.5-2 days)
 **Too small:** 1-2 hours (creates overhead)
 **Too large:** 40+ hours (hard to track)
+
+**For parallel execution:** Prefer tasks that touch **disjoint file sets** (e.g. `src/auth/` vs `src/billing/`). Tasks that share files (e.g. both edit `package.json`) should run sequentially or be merged. Populate `sdd.touchedFiles` on implementation tasks to enable conflict detection.
 
 **Example - Good:**
 ```

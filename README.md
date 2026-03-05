@@ -21,10 +21,15 @@ Create specifications before code. Plan-approve-execute for all operations.
 
 - **Async Subagents** — Background subagents (`is_background: true`) let the parent agent continue working while long tasks run
 - **Subagent Tree** — Subagents spawn their own subagents: orchestrator → implementers → verifiers
+- **Deep Research** — Multi-pass external investigation with web search, documentation deep-dives, real-world validation, and confidence scoring (`/research --deep`)
+- **File Conflict Detection** — Tasks declare `touchedFiles` so the orchestrator can prevent parallel edits to the same files
+- **Progressive Context Loading** — Heavy roadmaps (40+ tasks) load only the current batch, not the full task list
+- **Checkpoints & Resume** — `execution-checkpoint.json` enables `/execute-parallel --resume` after interruption
+- **Downstream Propagation** — `/evolve` marks stale downstream docs when a spec changes
+- **Deadlock Detection** — Orchestrator detects circular dependency deadlocks and per-task timeouts
 - **Hooks** — Workflow automation via `.cursor/hooks.json` (`subagentStop`, `stop` events)
 - **Sandbox Controls** — Granular network access via `.cursor/sandbox.json`
 - **Plugin Packaging** — Distributable as a Cursor Marketplace plugin (`.cursor-plugin/`)
-- **Trimmed Prompts** — All agent prompts shortened per Cursor 2.5 best practices
 
 ---
 
@@ -43,7 +48,12 @@ cd spec-kit-command-cursor
 **Full planning:**
 ```bash
 /sdd-full-plan blog-platform Full-featured blog with CMS
-/execute-parallel blog-platform
+/execute-parallel blog-platform --until-finish
+```
+
+**Deep research before planning:**
+```bash
+/research database-engine Best database for our use case --deep
 ```
 
 ---
@@ -55,7 +65,7 @@ cd spec-kit-command-cursor
 | Command | Purpose | Output |
 |---------|---------|--------|
 | `/brief` | 30-min quick planning | `feature-brief.md` |
-| `/research` | Pattern investigation | `research.md` |
+| `/research` | Pattern investigation (supports `--deep`) | `research.md` |
 | `/specify` | Detailed requirements | `spec.md` |
 | `/plan` | Technical architecture | `plan.md` |
 | `/tasks` | Task breakdown | `tasks.md` |
@@ -67,14 +77,14 @@ cd spec-kit-command-cursor
 | Command | Purpose |
 |---------|---------|
 | `/implement` | Execute implementation with todo tracking |
-| `/execute-task` | Run single task from roadmap |
-| `/execute-parallel` | Parallel execution via async subagents |
+| `/execute-task` | Run single task from roadmap (`--until-finish` supported) |
+| `/execute-parallel` | Parallel DAG execution via async subagents (`--resume`, `--dry-run`) |
 
 ### Maintenance
 
 | Command | Purpose |
 |---------|---------|
-| `/evolve` | Update specs with discoveries |
+| `/evolve` | Update specs with discoveries + downstream propagation |
 | `/refine` | Iterate on specs through discussion |
 | `/upgrade` | Brief → Full SDD planning |
 | `/audit` | Compare implementation against specs |
@@ -93,9 +103,11 @@ Specialized agents with isolated context. Background agents run asynchronously �
 | `sdd-explorer` | fast | foreground, readonly | Codebase discovery |
 | `sdd-planner` | inherit | foreground | Architecture design |
 | `sdd-implementer` | inherit | **background** | Code generation |
-| `sdd-verifier` | fast | foreground | Validation after implementation |
-| `sdd-reviewer` | fast | foreground, readonly | Security & performance review |
-| `sdd-orchestrator` | inherit | **background** | Parallel task coordination |
+| `sdd-verifier` | fast | foreground | Post-implementation completeness check |
+| `sdd-reviewer` | fast | foreground, readonly | Pre-merge quality review |
+| `sdd-orchestrator` | inherit | **background** | Parallel task coordination with DAG |
+
+**Reviewer vs Verifier:** The reviewer is a pre-merge quality gate (security, performance, style). The verifier is a post-implementation completeness check (does the code match the spec?). Verifier answers "is it done?", Reviewer answers "is it good?"
 
 #### Subagent Tree (Cursor 2.5+)
 
@@ -112,13 +124,13 @@ sdd-orchestrator (background)
 
 Auto-invoked domain knowledge packages with progressive loading:
 
-| Skill | Auto-Invoke When |
-|-------|------------------|
-| `sdd-research` | Technical approach unclear |
-| `sdd-planning` | Spec exists, need plan |
-| `sdd-implementation` | Plan ready for execution |
-| `sdd-audit` | Code review requested |
-| `sdd-evolve` | Discoveries during development |
+| Skill | Auto-Invoke When | Key References |
+|-------|------------------|----------------|
+| `sdd-research` | Technical approach unclear | `patterns.md`, `deep-research-guide.md` |
+| `sdd-planning` | Spec exists, need plan | `estimation-heuristics.md`, `diagram-templates.md` |
+| `sdd-implementation` | Plan ready for execution | `patterns.md`, `progress.sh` |
+| `sdd-audit` | Code review requested | `checklist.md`, `validate.sh` |
+| `sdd-evolve` | Discoveries during development | `changelog-format.md`, `propagation-guide.md`, `check-staleness.sh` |
 
 Each skill folder contains:
 ```
@@ -151,7 +163,26 @@ flowchart LR
 |------|----------|
 | **Quick** (80% of features) | `/brief` → `/evolve` → `/refine` |
 | **Full** (complex features) | `/research` → `/specify` → `/plan` → `/tasks` → `/implement` |
+| **Deep Research** (unfamiliar domain) | `/research --deep` → `/specify` → `/plan` → `/tasks` → `/implement` |
 | **Parallel** (project roadmap) | `/sdd-full-plan` → `/execute-parallel` |
+| **Heavy App** (20+ tasks) | `/sdd-full-plan` (Option C: Phased for 40+) → `/execute-parallel --until-finish` |
+
+### Heavy App Path
+
+For new apps with 20+ tasks or enterprise complexity:
+1. `/sdd-full-plan [project-id] [description]` — create roadmap with DAG
+2. For 40+ tasks: choose **Option C: Phased Creation** to create epics incrementally
+3. `/execute-parallel [project-id] --until-finish` — run all tasks with conflict detection
+4. `/execute-parallel [project-id] --resume` — resume after interruption via checkpoint
+
+### Deep Research
+
+For high-stakes technical decisions (database engines, auth providers, cloud platforms):
+```bash
+/research auth-provider Compare Auth0 vs Clerk vs Supabase Auth --deep
+```
+
+Deep research performs 4 passes: landscape scan → documentation deep-dive → real-world validation → integration feasibility. Results include source URLs, reliability ratings, and a confidence assessment.
 
 ### Automated Execution
 ```bash
@@ -175,9 +206,12 @@ graph TD
     MainAgent -->|background| Implementer["sdd-implementer"]
     MainAgent -->|foreground| Reviewer["sdd-reviewer"]
 
-    Orchestrator -->|spawns| Impl1["implementer (task 1)"]
-    Orchestrator -->|spawns| Impl2["implementer (task 2)"]
-    Orchestrator -->|spawns| Impl3["implementer (task 3)"]
+    Orchestrator -->|"conflict check"| BatchSelector["Batch Selector"]
+    BatchSelector -->|spawns| Impl1["implementer (task 1)"]
+    BatchSelector -->|spawns| Impl2["implementer (task 2)"]
+    BatchSelector -->|spawns| Impl3["implementer (task 3)"]
+
+    Orchestrator -->|checkpoint| Checkpoint["execution-checkpoint.json"]
 
     Implementer -->|spawns| Verifier["sdd-verifier"]
     Impl1 -->|spawns| V1["verifier"]
@@ -201,8 +235,17 @@ graph TD
 .cursor-plugin/
 └── plugin.json       # Cursor Marketplace manifest
 
+.sdd/
+├── config.json       # Project configuration
+├── guidelines.md     # Methodology guide
+├── ROADMAP_FORMAT_SPEC.md  # Roadmap JSON schema (with DAG)
+├── FULL_PLAN_EXAMPLES.md   # Worked examples at 3 complexity levels
+├── templates/        # Document templates (compact + specialized)
+└── archive/          # Historical implementation docs
+
 specs/
 ├── active/           # Features in development
+├── backlog/          # Future features
 ├── todo-roadmap/     # Project roadmaps with DAG
 └── completed/        # Delivered features
 ```
@@ -217,12 +260,34 @@ Workflow automation triggered by agent events:
 
 | Hook | Trigger | Purpose |
 |------|---------|---------|
-| `subagentStop` | SDD subagent completes | Track completion in roadmap |
-| `stop` | Agent session ends | Generate completion summary |
+| `subagentStop` | SDD subagent completes | Log task ID, timestamp, and outcome |
+| `stop` | Agent session ends | Generate session timestamp |
 
 ### Sandbox (`.cursor/sandbox.json`)
 
 Granular network access controls for sandboxed commands. Defaults allow common package registries (npm, pypi, GitHub, Docker, Deno) while denying private networks. Customize by editing `.cursor/sandbox.json`.
+
+---
+
+## Templates
+
+Available in `.sdd/templates/`:
+
+| Template | Purpose |
+|----------|---------|
+| `feature-brief-v2.md` | Quick 30-min planning brief |
+| `spec-compact.md` | Requirements specification |
+| `plan-compact.md` | Technical plan (with heavy-app extensions) |
+| `tasks-compact.md` | Task breakdown |
+| `research-compact.md` | Research findings |
+| `todo-compact.md` | Implementation checklist |
+| `audit-report.md` | Structured audit output |
+| `changelog.md` | Spec evolution log |
+| `progress-report.md` | Execution progress summary |
+| `retrospective.md` | Post-mortem / lessons learned |
+| `roadmap-template.json` | Kanban JSON structure |
+| `roadmap-template.md` | Human-readable roadmap |
+| `decision-matrix.md` | Brief vs Full SDD decision guide |
 
 ---
 
@@ -234,7 +299,7 @@ SDD is packaged as a Cursor Marketplace plugin. Install via `/add-plugin` or clo
 
 ## Contributing
 
-- [Contributing guide](CONTRIBUTING.md) - How to add commands, subagents, and skills
+- [Contributing guide](CONTRIBUTING.md) - How to add commands, subagents, skills, and templates
 - [Report bugs](https://github.com/madebyaris/spec-kit-command-cursor/issues)
 - [Suggest features](https://github.com/madebyaris/spec-kit-command-cursor/discussions)
 

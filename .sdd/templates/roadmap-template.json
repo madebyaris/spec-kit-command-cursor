@@ -8,7 +8,7 @@
   "updated": "{{UPDATED_TIMESTAMP}}",
   "status": "planning",
   "metadata": {
-    "sddVersion": "2.5",
+    "sddVersion": "5.0",
     "planMode": true,
     "estimatedDuration": "{{ESTIMATED_DURATION}}",
     "complexity": "{{COMPLEXITY}}",

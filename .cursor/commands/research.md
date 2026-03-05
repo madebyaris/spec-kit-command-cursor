@@ -26,13 +26,19 @@ Research and document findings without making changes to the codebase.
 
 ```
 /research [task-id] [research-topic]
+/research [task-id] [research-topic] --deep
 ```
+
+**Flags:**
+- `--deep` — Activate deep research mode: multi-pass web investigation with source verification, documentation deep-dives, real-world validation, and confidence assessment. Use for unfamiliar domains, high-stakes decisions, or when standard research leaves too many unknowns.
 
 **Examples:**
 ```
 /research user-auth JWT vs session-based authentication patterns
 /research payment-system Stripe integration patterns in existing codebase
 /research caching Redis vs in-memory caching for our use case
+/research database-engine Best database for our use case --deep
+/research auth-provider Compare Auth0 vs Clerk vs Supabase Auth --deep
 ```
 
 ---
@@ -144,7 +150,7 @@ Search the codebase for:
 
 **Step 3: Conduct external research**
 
-For each option/technology:
+**Standard mode** — For each option/technology:
 ```markdown
 ### [Option Name]
 
@@ -160,6 +166,15 @@ For each option/technology:
 
 **Fit for our use case:** [High/Medium/Low] - [Why]
 ```
+
+**Deep mode** (`--deep` flag) — Perform multi-pass investigation per the `sdd-research` skill's deep research protocol:
+
+1. **Pass 1 — Landscape scan:** Use `WebSearch` to survey the solution space, identify top 3-5 candidates
+2. **Pass 2 — Documentation deep-dive:** Use `WebFetch` to read official docs, API references, pricing pages for each candidate. Extract: API surface, limits, pricing, platform support, license
+3. **Pass 3 — Real-world validation:** Search for production reviews, benchmarks, comparisons, and known issues. Check community health (GitHub stars, npm downloads, SO activity)
+4. **Pass 4 — Integration feasibility:** Search for integration guides with the project's detected stack. Verify SDK/adapter availability and runtime compatibility
+
+For each finding, record the source URL and reliability rating. See `sdd-research` skill `references/deep-research-guide.md` for search strategies and source evaluation criteria.
 
 **Step 4: Generate research.md**
 
@@ -253,6 +268,23 @@ Use this structure:
 
 ---
 
+## Sources (deep research only)
+
+| # | URL | Type | Reliability | Key Finding |
+|---|-----|------|-------------|-------------|
+| 1 | [url] | [Official docs / Benchmark / Blog / Discussion] | [High/Medium/Low] | [finding] |
+
+---
+
+## Confidence Assessment (deep research only)
+
+**Overall confidence:** [High/Medium/Low]
+**Reasoning:** [Why this confidence level]
+**Gaps:** [What we still don't know]
+**Suggested spike:** [If Low confidence — describe a 2-4h prototype to validate]
+
+---
+
 ## Next Steps
 
 1. Review findings with team
@@ -287,15 +319,18 @@ Before final output, verify:
 ```
 ✅ Research complete: `specs/active/[task-id]/research.md`
 
+**Mode:** Standard | Deep
 **Key Findings:**
 - [Finding 1]
 - [Finding 2]
 - [Finding 3]
 
 **Recommendation:** [Primary recommendation]
+**Confidence:** [High/Medium/Low] (deep research only)
 
 **Codebase patterns found:** [Count] reusable patterns
 **Options evaluated:** [Count] approaches compared
+**Sources consulted:** [Count] (deep research only)
 
 **Next steps:**
 - Review the research document

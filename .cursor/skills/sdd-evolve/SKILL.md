@@ -51,6 +51,16 @@ Modify the appropriate files: `spec.md`, `plan.md`, `tasks.md`, `todo-list.md`.
 3. **Link to context** — reference related tasks
 4. **Assess impact** — flag if review is needed
 5. **Preserve history** — never delete, always add changelog
+6. **Propagate downstream** — mark stale docs when upstream spec changes
+
+## References
+
+- `references/changelog-format.md` — Standard changelog formats for briefs, specs, and standalone changelogs
+- `references/propagation-guide.md` — How to detect and flag stale downstream documents when a spec changes
+
+## Scripts
+
+- `scripts/check-staleness.sh <task-id>` — Compare spec modification dates against plan, tasks, and todo-list
 
 ## Integration
 

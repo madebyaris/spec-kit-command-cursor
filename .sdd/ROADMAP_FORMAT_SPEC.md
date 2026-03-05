@@ -27,11 +27,27 @@ specs/todo-roadmap/
 └── [project-id]/
     ├── roadmap.json              # Main kanban board data
     ├── roadmap.md                # Human-readable markdown view
+    ├── execution-checkpoint.json # Resume state (written after each batch)
     ├── tasks/                    # Individual task details
     │   ├── epic-001.json
     │   ├── task-001-1.json
     │   └── ...
     └── execution-log.md          # Execution history
+```
+
+### execution-checkpoint.json (Resume Support)
+
+Written after each batch during `/execute-parallel --until-finish`. Enables `/execute-parallel [project-id] --resume`:
+
+```typescript
+interface ExecutionCheckpoint {
+  projectId: string;
+  lastCompletedBatch: string[];   // Task IDs that completed in last batch
+  failedTaskId: string | null;     // Task that failed (if any)
+  nextReadyTasks: string[];       // Task IDs ready to execute next
+  timestamp: string;              // ISO8601
+  batchNumber: number;
+}
 ```
 
 ---
@@ -83,6 +99,12 @@ interface Roadmap {
     totalEstimatedHours: number;
     totalActualHours: number;
     completionPercentage: number;
+  };
+  
+  // DAG (Directed Acyclic Graph) for parallel execution
+  dag?: {
+    roots: string[];              // Task IDs with no dependencies (entry points)
+    parallelGroups: string[][];   // Groups of tasks that can execute simultaneously
   };
   
   // History
@@ -139,6 +161,7 @@ interface Task {
     commands: string[];           // SDD commands to run: ["/research", "/specify", etc.]
     linkedSpec: string | null;    // Path to spec in specs/active/
     executeCommand: string;       // Command to execute this task: "/execute-task task-id"
+    touchedFiles?: string[];      // File paths/globs this task modifies (e.g. ["src/auth/**", "package.json"]) — used for conflict detection in parallel execution
     executedAt: ISO8601DateTime | null;     // When task was executed
     completedAt: ISO8601DateTime | null;    // When task was completed
     executedBy: string | null;              // Who executed the task

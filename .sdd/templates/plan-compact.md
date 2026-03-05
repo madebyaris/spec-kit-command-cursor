@@ -51,5 +51,23 @@ Res: `{{this.response}}`
 - Integration: {{INT_TESTS}}
 - E2E: {{E2E_TESTS}}
 
+{{!-- Optional for heavy apps: monorepo, microservices, multi-team --}}
+{{#if HEAVY_APP}}
+## Monorepo / Multi-Package
+- **Packages**: {{MONOREPO_PACKAGES}}
+- **Boundaries**: {{MONOREPO_BOUNDARIES}}
+- **Shared libs**: {{MONOREPO_SHARED}}
+
+## Team / Ownership
+{{TEAM_OWNERSHIP}}
+
+## Integration Contracts
+{{INTEGRATION_CONTRACTS}}
+
+## Deployment Topology
+- **Services**: {{DEPLOYMENT_SERVICES}}
+- **Environments**: {{DEPLOYMENT_ENVS}}
+{{/if}}
+
 ---
 Status: {{STATUS}} | Lead: {{TECH_LEAD}} | {{CREATED_DATE}}

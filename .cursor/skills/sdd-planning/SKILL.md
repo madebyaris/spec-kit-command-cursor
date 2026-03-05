@@ -54,7 +54,9 @@ Generate `plan.md` with:
 
 ## References
 
-See `assets/diagram-templates.md` for architecture diagram patterns.
+- `assets/diagram-templates.md` — Architecture diagram patterns (Mermaid templates)
+- `references/estimation-heuristics.md` — Task sizing guidelines, common pitfalls, and estimation by task type
+- `.sdd/templates/decision-matrix.md` — When to use Brief vs Full SDD planning
 
 ## Integration
 

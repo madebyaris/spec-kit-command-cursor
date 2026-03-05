@@ -149,4 +149,5 @@ If a task is permanently blocked, manually mark it as `blocked` in `roadmap.json
 
 - `/sdd-full-plan [project-id] --until-finish` — Create roadmap and execute all tasks (parallel)
 - `/execute-parallel [project-id]` — Parallel execution via async subagents
+- `/execute-parallel [project-id] --resume` — Resume parallel execution from checkpoint
 - `/brief`, `/research`, `/specify`, `/plan`, `/tasks`, `/implement`, `/evolve`, `/audit`

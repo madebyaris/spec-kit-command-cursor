@@ -29,6 +29,7 @@ Transform specifications into actionable technical plans with architecture, task
 - Organize into phases: Setup → Core → Integration → Polish
 - Estimate effort (2-8 hours per task)
 - Define dependencies and DAG structure for parallel execution
+- **For parallel execution:** Prefer tasks that touch **disjoint file sets** (e.g. `src/auth/` vs `src/billing/`). Flag or merge tasks that share files (e.g. both edit `package.json`) — run those sequentially. Populate `sdd.touchedFiles` for implementation tasks.
 
 ### 5. Assess Risks
 - Identify technical risks with mitigations
@@ -37,6 +38,8 @@ Transform specifications into actionable technical plans with architecture, task
 ## Output
 
 Generate `plan.md` with: Overview, Architecture (Mermaid diagram), Technology Stack, Components, APIs, Data Models, Security, Performance Targets, Implementation Phases, Risks, Testing Strategy.
+
+**For heavy apps** (monorepo, microservices, multi-team): Include optional sections from plan-compact template: Monorepo/Multi-Package, Team/Ownership, Integration Contracts, Deployment Topology. Set `HEAVY_APP: true` and populate those fields.
 
 ## Key Behaviors
 

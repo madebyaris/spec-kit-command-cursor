@@ -54,11 +54,28 @@ Present evolution plan with:
 3. **Note cross-references** if change affects other documents
 4. **Update status** if spec was marked "Complete"
 
-### Phase 4: Verification
+### Phase 4: Downstream Propagation
+
+Check for stale downstream documents:
+
+1. **List downstream files** in `specs/active/[task-id]/` — check for `plan.md`, `tasks.md`, `todo-list.md`
+2. **Assess impact** using the change category:
+   - Discovery/Refinement → downstream docs usually unaffected
+   - Addition/Modification → `plan.md` and `tasks.md` likely stale
+   - Removal/Architecture → all downstream docs stale
+3. **Add staleness marker** to affected files (insert at top of file):
+   ```
+   > **[STALE]** — Upstream spec updated on [DATE]. Review needed.
+   > Change: [Brief description] (spec.md v[VERSION])
+   ```
+4. **Report affected files** in the evolution summary output
+
+### Phase 5: Verification
 
 Verify before final output:
 - Spec file updated, changelog added, version incremented
 - Context preserved, cross-references noted
+- Staleness markers added to affected downstream files
 - **Read file back to confirm changes applied**
 
 ---
@@ -72,8 +89,9 @@ End response with:
 
 **Change:** [Type] | Impact: [Level] | Version: [old] → [new]
 **Changelog:** | [version] | [date] | [description] | [reason] |
+**Downstream impact:** [List of files marked STALE, or "None"]
 **Cross-references:** [Other files that may need updates]
-**Next steps:** Review spec, update related docs if needed, or consider `/upgrade` for major changes
+**Next steps:** Review spec, update stale downstream docs, or consider `/upgrade` for major changes
 ```
 
 ---
