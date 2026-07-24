@@ -1,0 +1,20 @@
+{
+  "name": "spec-kit-command-cursor-marketplace",
+  "displayName": "SDD Cursor Commands Marketplace",
+  "owner": {
+    "name": "Aris Setiawan",
+    "email": "arissetia.m@gmail.com"
+  },
+  "metadata": {
+    "description": "A marketplace for SDD Cursor Commands",
+    "version": "0.0.1",
+    "pluginRoot": "plugins"
+  },
+  "plugins": [
+    {
+      "name": "spec-kit-command-cursor",
+      "source": "spec-kit-command-cursor",
+      "description": "Spec-Driven Development framework for Cursor 3.8 — subagents, skills, DAG-based parallel + cloud execution, native review integration, and a pluggable memory layer (standard / Cursor-native / mem0). Plan-approve-execute workflow for systematic feature development."
+    }
+  ]
+}
